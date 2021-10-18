@@ -1,0 +1,1 @@
+zebble-build update-plugin --publish --api-key %1 --commit

@@ -1,0 +1,51 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <PackAsTool>true</PackAsTool>
+    <ToolCommandName>zebble-compile-zbl</ToolCommandName>
+    <Company>Geeks Ltd</Company>
+    <Authors>Geeks Ltd</Authors>
+    <Description>Provides zbl files compilation for Zebble projects</Description>
+    <AssemblyName>zebble-compile-zbl</AssemblyName>
+    <PackageIcon>icon.png</PackageIcon>
+    <Product>zebble-compile-zbl</Product>
+    <PackageId>zebble-compile-zbl</PackageId>
+    <LangVersion>preview</LangVersion>
+    <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
+    <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
+    <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
+    <Version>1.0.25.0</Version>
+    <RepositoryUrl>https://github.com/Geeksltd/zebble-compile-zbl</RepositoryUrl>
+    <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>TRACE;FX46</DefineConstants>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="CICD\**" />
+    <EmbeddedResource Remove="CICD\**" />
+    <None Remove="CICD\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove=".gitattributes" />
+    <None Remove=".gitignore" />
+    <None Remove="README.md" />
+    <None Remove="Resources\gitignore.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Resources\gitignore.txt">
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Olive" Version="2.1.250" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\icon.png" Pack="true" PackagePath="" />
+  </ItemGroup>
+  <Import Project="..\Zebble.Tooling\Zebble.Tooling.projitems" Label="Shared" />
+  <Import Project="..\Css\Css.projitems" Label="Shared" />
+  <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
+  <Import Project="..\ZblFormat\ZblFormat.projitems" Label="Shared" />
+</Project>

@@ -1,0 +1,99 @@
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
+  <PropertyGroup>
+    <TargetFrameworks>Xamarin.iOS10;MonoAndroid90;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362;uap10.0.17763</TargetFrameworks>
+    <AssemblyName>Zebble</AssemblyName>
+    <RootNamespace>Zebble</RootNamespace>
+    <PackageId>Zebble</PackageId>
+    <Product>$(AssemblyName) ($(TargetFramework))</Product>
+    <Version>4.5.570.0</Version>
+    <PackOnBuild>true</PackOnBuild>
+    <NeutralLanguage>en</NeutralLanguage>
+    <DefineConstants>$(DefineConstants)</DefineConstants>
+    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <LangVersion>latest</LangVersion>
+    <DebugType>portable</DebugType>
+    <PackageProjectUrl>https://nuget.org/packages/Zebble/</PackageProjectUrl>
+    <RepositoryUrl>http://zebble.net/</RepositoryUrl>
+    <PackageIconUrl>https://dashboard.geeksltd.co.uk/content/ZebbleNuGetIcon.png</PackageIconUrl>
+    <PackageTags>xamarin, windows, ios, android, zebble</PackageTags>
+    <Title>Zebble for Xamarin</Title>
+    <Description>Zebble framework for cross platform Xamarin-based solutions.</Description>
+    <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
+    <Owners>Geeks Ltd</Owners>
+    <Authors>Geeks Ltd</Authors>
+    <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
+    <DisableExtraReferences>true</DisableExtraReferences>
+  </PropertyGroup>
+  <PropertyGroup Condition=" $(Configuration.StartsWith('Debug')) ">
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" $(Configuration.StartsWith('Release')) ">
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <DebugSymbols>true</DebugSymbols>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
+    <DefineConstants>$(DefineConstants);UWP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+    <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
+    <AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+    <DefineConstants>$(DefineConstants);IOS</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
+    <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
+  </PropertyGroup>
+  <PropertyGroup>
+    <DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
+    <AssemblyVersion>4.5.555.0</AssemblyVersion>
+    <FileVersion>4.5.555.0</FileVersion>
+  </PropertyGroup>
+  <ItemGroup Condition=" $(DefineConstants.Contains('UWP')) ">
+    <SDKReference Include="WindowsMobile, Version=10.0.19041.0">
+      <Name>Windows Mobile Extensions for the UWP</Name>
+    </SDKReference>
+    <Compile Include="UWP\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
+    <Reference Include="System.Xml.Linq" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.0" />
+    <Compile Include="Android\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
+    <Reference Include="System.Xml.Linq" />
+    <Compile Include="iOS\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(DefineConstants.Contains('NETCOREAPP')) ">
+    <Compile Include="Console\**\*.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove=".gitignore" />
+    <None Remove="icon.png" />
+    <None Remove="README.md" />
+    <None Remove="Zebble-LicenseAgreement.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
+    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
+    <PackageReference Include="Olive" Version="2.1.280" />
+    <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+  </ItemGroup>
+  <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
+  <Import Project="..\Css\Css.projitems" Label="Shared" />
+  <Import Project="..\Framework\Framework.projitems" Label="Shared" />
+  <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />
+  <Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
+  <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="update-local-nuget-cache $(TargetDir)" />
+  </Target>
+  <ItemGroup>
+    <None Remove="iOS\IosRenderer.Background.cs" />
+  </ItemGroup>
+</Project>

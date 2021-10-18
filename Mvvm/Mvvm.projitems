@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>8a2852b6-2ad1-4ce9-bbb6-5cb77baaec4c</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Mvvm</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\ValueNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\ViewModelNode.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\Node.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\Command.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\ViewModel.Bindables.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelNavigation.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.Nav.Shortcuts.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)VmExecutionContext.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\CollectionViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\DialogViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\FullScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ModalScreen.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\PageTransition.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.Nav.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.Singleton.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\CssReference.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\ITemplate.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\Template.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\Templates.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\View.cs" />
+  </ItemGroup>
+</Project>

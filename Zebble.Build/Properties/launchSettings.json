@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Zebble.Build": {
+      "commandName": "Project",
+      "commandLineArgs": "convert-plugin",
+      "workingDirectory": "C:\\TheGeeksTrunk\\Zebble.Widgets"
+    }
+  }
+}

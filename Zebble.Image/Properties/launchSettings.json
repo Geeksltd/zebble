@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Zebble.Image": {
+      "commandName": "Project",
+      "commandLineArgs": "splash",
+      "workingDirectory": "E:\\Projects\\SaferPet\\saferpet.mobile\\"
+    }
+  }
+}

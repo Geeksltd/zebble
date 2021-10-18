@@ -1,0 +1,24 @@
+﻿namespace Zebble.Device
+{
+    using Zebble;
+
+    partial class Screen
+    {
+        public static partial class SafeAreaInsets
+        {
+            public static void DoUpdateValues()
+            {
+                if (!OS.IsAtLeast((Android.OS.BuildVersionCodes)28)) return;
+
+                var insets = UIRuntime.CurrentActivity?.Window?.DecorView?.RootWindowInsets;
+
+                if (insets == null) return;
+
+                Top = Scale.ToZebble(insets.SystemWindowInsetTop);
+                Bottom = Scale.ToZebble(insets.SystemWindowInsetBottom);
+                Left = Scale.ToZebble(insets.SystemWindowInsetLeft);
+                Right = Scale.ToZebble(insets.SystemWindowInsetRight);
+            }
+        }
+    }
+}

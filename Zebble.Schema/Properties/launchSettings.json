@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "Zebble.Schema": {
+      "commandName": "Project",
+      "commandLineArgs": "--block",
+      "workingDirectory": "E:\\Projects\\Fyio\\fyio.mobile"
+    }
+  }
+}

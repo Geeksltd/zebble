@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Zebble.FormatZbl": {
+      "commandName": "Project",
+      "workingDirectory": "E:\\Projects\\Fyio\\fyio.mobile"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>bcb312c3-38b7-4ea3-b9fa-bc6b0f27be3a</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Css</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)CssSetting.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)CssBodyProcessor.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)ZebbleCssSetting.cs" />
+  </ItemGroup>
+</Project>

@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <MSBuildAllProjects Condition="'$(MSBuildVersion)' == '' Or '$(MSBuildVersion)' &lt; '16.0'">$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
+    <HasSharedItems>true</HasSharedItems>
+    <SharedGUID>854f5799-fa26-4e2c-944d-9c7cf8b190d1</SharedGUID>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <Import_RootNamespace>Zebble.Tooling.Core</Import_RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="$(MSBuildThisFileDirectory)Builders\Builder.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Commands.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommandArgsExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DirectoryInfoExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Markup\BaseGenerator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Markup\CSharpFormatter.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Runtime.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Builders\Unknown.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConsoleHelpers.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DirectoryContext.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="$(MSBuildThisFileDirectory)Builders\" />
+  </ItemGroup>
+</Project>

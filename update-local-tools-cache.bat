@@ -1,0 +1,4 @@
+copy /y Zebble.Css\bin\Debug\netcoreapp3.1\*.* C:\Users\paymon\.dotnet\tools\.store\zebble-css\1.1.32\zebble-css\1.1.32\tools\netcoreapp3.1\any
+copy /y Zebble.FormatZbl\bin\Debug\netcoreapp3.1\*.* C:\Users\paymon\.dotnet\tools\.store\zebble-format-zbl\1.0.3\zebble-format-zbl\1.0.3\tools\netcoreapp3.1\any
+copy /y Zebble.Schema\bin\Debug\netcoreapp3.1\*.* C:\Users\paymon\.dotnet\tools\.store\zebble-schema\0.0.12\zebble-schema\0.0.12\tools\netcoreapp3.1\any
+copy /y Zebble.CompileZbl\bin\Debug\netcoreapp3.1\*.* C:\Users\paymon\.dotnet\tools\.store\zebble-compile-zbl\1.0.21\zebble-compile-zbl\1.0.21\tools\netcoreapp3.1\any

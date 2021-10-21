@@ -100,7 +100,7 @@ namespace Zebble.AndroidOS
             // TODO: This isn't working as expected.
             // Thread.UI.Post(() => Zebble.View.Root.TrySyncLayout());
             // TODO: This is heavy but at the moment, I found no other way to fix it.
-            Thread.UI.Post(async () => await Nav.FullRefresh());
+            // Thread.UI.Post(async () => await Nav.FullRefresh());
 
             base.OnAttachedToWindow();
         }

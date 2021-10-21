@@ -75,10 +75,10 @@ namespace Zebble.IOS
         {
             DismissKeyboard(null, EventArgs.Empty);
 
-            if (View.KeyboardActionType == KeyboardActionType.Next)
-                View.FocusOnNextInput();
+            if (View?.KeyboardActionType == KeyboardActionType.Next)
+                View?.FocusOnNextInput();
 
-            View.UserTextChangeSubmitted.SignalRaiseOn(Thread.Pool);
+            View?.UserTextChangeSubmitted.SignalRaiseOn(Thread.Pool);
             return true;
         }
 

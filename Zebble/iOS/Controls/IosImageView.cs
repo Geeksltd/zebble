@@ -298,26 +298,34 @@ namespace Zebble.IOS
 
             var stretch = View.BackgroundImageStretch;
 
-            if (stretch == Stretch.Fill) ContentMode = UIViewContentMode.ScaleToFill;
-            else if (stretch == Stretch.AspectFill) ContentMode = UIViewContentMode.ScaleAspectFill;
-            else if (stretch == Stretch.Fit) ContentMode = UIViewContentMode.ScaleAspectFit;
-            else
+            switch (stretch)
             {
-                ContentMode = View.BackgroundImageAlignment switch
-                {
-                    Alignment.Bottom => UIViewContentMode.Bottom,
-                    Alignment.Top => UIViewContentMode.Top,
-                    Alignment.TopLeft => UIViewContentMode.TopLeft,
-                    Alignment.TopRight => UIViewContentMode.TopRight,
-                    Alignment.TopMiddle => UIViewContentMode.Top,
-                    Alignment.Left => UIViewContentMode.Left,
-                    Alignment.Right => UIViewContentMode.Right,
-                    Alignment.Middle => stretch == Stretch.Fit ? UIViewContentMode.ScaleAspectFit : UIViewContentMode.Center,
-                    Alignment.BottomLeft => UIViewContentMode.BottomLeft,
-                    Alignment.BottomRight => UIViewContentMode.BottomRight,
-                    Alignment.BottomMiddle => UIViewContentMode.Bottom,
-                    _ => UIViewContentMode.ScaleAspectFit
-                };
+                case Stretch.Fill:
+                    ContentMode = UIViewContentMode.ScaleToFill;
+                    break;
+                case Stretch.AspectFill:
+                    ContentMode = UIViewContentMode.ScaleAspectFill;
+                    break;
+                case Stretch.Fit:
+                    ContentMode = UIViewContentMode.ScaleAspectFit;
+                    break;
+                default:
+                    ContentMode = View.BackgroundImageAlignment switch
+                    {
+                        Alignment.Bottom => UIViewContentMode.Bottom,
+                        Alignment.Top => UIViewContentMode.Top,
+                        Alignment.TopLeft => UIViewContentMode.TopLeft,
+                        Alignment.TopRight => UIViewContentMode.TopRight,
+                        Alignment.TopMiddle => UIViewContentMode.Top,
+                        Alignment.Left => UIViewContentMode.Left,
+                        Alignment.Right => UIViewContentMode.Right,
+                        Alignment.Middle => stretch == Stretch.Fit ? UIViewContentMode.ScaleAspectFit : UIViewContentMode.Center,
+                        Alignment.BottomLeft => UIViewContentMode.BottomLeft,
+                        Alignment.BottomRight => UIViewContentMode.BottomRight,
+                        Alignment.BottomMiddle => UIViewContentMode.Bottom,
+                        _ => UIViewContentMode.ScaleAspectFit
+                    };
+                    break;
             }
         }
 

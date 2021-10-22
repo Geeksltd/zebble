@@ -16,21 +16,19 @@ namespace Zebble.Services
             Bitmap result;
 
             if (desiredSize is null)
-            {
                 result = await BitmapFactory.DecodeByteArrayAsync(data, 0, data.Length);
-                if (result is null) throw new Exception($"Failed to decode the specified byte[{data.Length}] into an Image.");
-                return result;
-            }
-
-            var originalSize = FindImageSize(data);
-            var newSize = GetPixelSize(originalSize, desiredSize.Value, stretch);
-
-            result = await BitmapFactory.DecodeByteArrayAsync(data, 0, data.Length, new BitmapFactory.Options
+            else
             {
-                InSampleSize = FindInSampleSize(originalSize, newSize).LimitMin(1),
-                InScreenDensity = 1,
-                InTargetDensity = 1
-            });
+                var originalSize = FindImageSize(data);
+                var newSize = GetPixelSize(originalSize, desiredSize.Value, stretch);
+
+                result = await BitmapFactory.DecodeByteArrayAsync(data, 0, data.Length, new BitmapFactory.Options
+                {
+                    InSampleSize = FindInSampleSize(originalSize, newSize).LimitMin(1),
+                    InScreenDensity = 1,
+                    InTargetDensity = 1
+                });
+            }
 
             if (result is null) throw new Exception($"Failed to decode the specified byte[{data.Length}] into an Image.");
 
@@ -54,7 +52,7 @@ namespace Zebble.Services
 
             result = await BitmapFactory.DecodeFileAsync(file.FullName, options);
 
-            if (result is null) throw new Exception($"Failed to decode the specified image file: " + file.FullName);
+            if (result is null) throw new Exception($"Failed to decode the specified image file: {file.FullName}");
 
             return result;
         }
@@ -62,7 +60,7 @@ namespace Zebble.Services
         public static async Task<Bitmap> DecodeImage(FileInfo file, Size? desiredSize = null, Stretch stretch = Stretch.Default)
         {
             if (file is null) throw new ArgumentNullException(nameof(file));
-            if (!await file.ExistsAsync()) throw new Exception("File not found: " + file.FullName);
+            if (!await file.ExistsAsync()) throw new Exception($"File not found: {file.FullName}");
 
             for (var retry = 3; retry > 0; retry--)
             {
@@ -245,7 +243,6 @@ namespace Zebble.Services
 
                 bmp.Recycle();
                 bmp.Dispose();
-                bmp = null;
             }
         }
     }

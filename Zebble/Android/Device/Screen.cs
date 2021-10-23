@@ -9,6 +9,7 @@
     using static Android.Graphics.Bitmap;
     using Olive;
     using Android.Util;
+    using AndroidX.Core.View;
 
     partial class Screen
     {
@@ -28,8 +29,11 @@
         /// </summary>
         public static float Density { get; internal set; } = 1;
 
-        internal static async Task LoadConfiguration()
+        internal static void LoadConfiguration(ViewGroup rootScreen)
         {
+            rootScreen.SetFitsSystemWindows(true);
+            ViewCompat.SetOnApplyWindowInsetsListener(rootScreen, new ApplyWindowInstetsListener());
+
             SystemtResources = GetResources();
 
             HardwareDensity = SystemtResources.DisplayMetrics.Density;
@@ -52,7 +56,6 @@
                     var size = new Android.Graphics.Point();
                     Display.GetRealSize(size);
 
-                    // TODO: Shouldn't we remove NavigationBarHeight??!!
                     return Scale.ToZebble(size.Y) - NavigationBarHeight;
                 }
             );
@@ -207,6 +210,53 @@
 
                     return result;
                 }
+            }
+        }
+
+        class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
+        {
+            public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
+            {
+                var statusBar = insets.GetInsets(WindowInsetsCompat.Type.StatusBars()).Top;
+                var keyboard = insets.GetInsets(WindowInsetsCompat.Type.Ime()).Bottom;
+
+                var windowInsetsCompat = new WindowInsetsCompat.Builder()
+                    .SetInsets(WindowInsetsCompat.Type.SystemBars(), AndroidX.Core.Graphics.Insets.Of(0, statusBar, 0, keyboard))
+                    .Build();
+
+                ViewCompat.OnApplyWindowInsets(view, windowInsetsCompat);
+
+                HeightProvider = () => OnHeightProvider(insets, keyboard, statusBar);
+
+                Thread.Pool.RunAction(async () =>
+                {
+                    await Task.Delay(300);
+                    UpdateLayout();
+                });
+
+                return windowInsetsCompat;
+            }
+
+            float OnHeightProvider(WindowInsetsCompat insets, int keyboard, int statusBar)
+            {
+                var size = new Android.Graphics.Point();
+                Display.GetRealSize(size);
+
+                var navigationBar = insets.GetInsets(WindowInsetsCompat.Type.NavigationBars()).Bottom;
+                var totalBottom = keyboard == 0 ? statusBar + navigationBar : statusBar + keyboard;
+
+                if (keyboard > 0)
+                {
+                    Keyboard.SoftKeyboardHeight = Scale.ToZebble(keyboard);
+                    Keyboard.RaiseShown();
+                }
+                else
+                {
+                    Keyboard.SoftKeyboardHeight = 0;
+                    Keyboard.RaiseHidden();
+                }
+
+                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom);
             }
         }
     }

@@ -15,7 +15,7 @@ namespace Zebble.AndroidOS
 
             UIRuntime.NativeRootScreen = rootViewController;
 
-            await Device.Screen.LoadConfiguration();
+            Device.Screen.LoadConfiguration(rootScreen);
 
             await AddRootView();
 

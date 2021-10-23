@@ -83,7 +83,7 @@ namespace Zebble.AndroidOS
 
         void HandleTapped(Zebble.View handler, Point point, int touches)
         {
-            HideKeyBoard(except: handler);
+            HideKeyBoard();
 
             point = point.RelativeTo(handler);
             handler.RaiseTapped(new Zebble.TouchEventArgs(handler, point, touches));
@@ -98,7 +98,7 @@ namespace Zebble.AndroidOS
 
         void HandleLongPressed(Zebble.View handler, Point point, int touches)
         {
-            HideKeyBoard(except: handler);
+            HideKeyBoard();
             handler.RaiseLongPressed(new Zebble.TouchEventArgs(handler, point, touches));
         }
 
@@ -147,7 +147,7 @@ namespace Zebble.AndroidOS
             Recognizers.Add(gesture.Set(x => x.NativeView = this));
         }
 
-        void HideKeyBoard(Zebble.View except)
+        void HideKeyBoard()
         {
             Keyboard.Hide();
             FindTextInputs().Do(t => t.UnFocus());
@@ -191,7 +191,7 @@ namespace Zebble.AndroidOS
         public Zebble.View GetHostView() => Host;
 
         public ViewGroup GetGestureLayout() => this;
-        
+
         public override bool OnTouchEvent(MotionEvent ev)
         {
             var handler = DetectHandler(ev);

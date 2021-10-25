@@ -225,6 +225,7 @@
                     .Build();
 
                 ViewCompat.OnApplyWindowInsets(view, windowInsetsCompat);
+                SafeAreaInsets.UpdateValues();
 
                 HeightProvider = () => OnHeightProvider(insets, keyboard, statusBar);
 

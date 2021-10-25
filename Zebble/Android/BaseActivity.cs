@@ -88,21 +88,6 @@ namespace Zebble.AndroidOS
             }
 
             base.OnStart();
-
-            Device.Screen.SafeAreaInsets.UpdateValues();
-        }
-
-        public override void OnAttachedToWindow()
-        {
-            // We've access to the inset values here
-            // so we ask Zebble to react to the changes and update/recalculate the layout accordingly.
-            Device.Screen.SafeAreaInsets.UpdateValues();
-            // TODO: This isn't working as expected.
-            // Thread.UI.Post(() => Zebble.View.Root.TrySyncLayout());
-            // TODO: This is heavy but at the moment, I found no other way to fix it.
-            // Thread.UI.Post(async () => await Nav.FullRefresh());
-
-            base.OnAttachedToWindow();
         }
 
         protected override void OnStop()

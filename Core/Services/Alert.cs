@@ -62,7 +62,8 @@ namespace Zebble
                 var button = await alert.ButtonsRow.Add(new Button
                 {
                     Text = b.Key,
-                    CssClass = "primary-button".OnlyWhen(b.Value?.ToStringOrEmpty() == "true")
+                    CssClass = "primary-button".OnlyWhen(b.Value?.ToStringOrEmpty() == "true"),
+                    Id = b.Value.ToString().ToPascalCaseId()
                 });
 
                 button.On(x => x.Tapped, async () =>

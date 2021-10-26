@@ -63,7 +63,7 @@ namespace Zebble
                 {
                     Text = b.Key,
                     CssClass = "primary-button".OnlyWhen(b.Value?.ToStringOrEmpty() == "true"),
-                    Id = b.Value.ToString()
+                    Id = $"AlertBtn_{b.Value}"
                 });
 
                 button.On(x => x.Tapped, async () =>

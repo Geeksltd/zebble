@@ -50,8 +50,7 @@ namespace Zebble.UWP
                 IsTapEnabled = false;
                 IsHitTestVisible = false;
             }
-            else if (view.BackgroundColor.IsTransparent() || !view.Effective.HasBorder())
-                Background = view.BackgroundColor.RenderBrush();
+            else Background = view.BackgroundColor.RenderBrush();
         }
 
         public void Dispose()

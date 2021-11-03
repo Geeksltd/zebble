@@ -243,11 +243,7 @@ namespace Zebble
                         UIWorkBatch.Publish(view, "[DISPOSE]", null);
                 }
             }
-            else
-            {
-                if (view.ShouldDisposeWhenRemoved())
-                    view.Dispose();
-            }
+            else if (view.ShouldDisposeWhenRemoved()) view.Dispose();
         }
 
         public async Task InitializeWithAllChildren()
@@ -342,7 +338,7 @@ namespace Zebble
 
         public Task ClearChildren(bool awaitNative)
         {
-            return UIWorkBatch.Run(async () =>
+            return Thread.UI.Run(async () =>
                    {
                        foreach (var child in AllChildren.Reverse().ToArray()) await Remove(child, awaitNative);
                    });

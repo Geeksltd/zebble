@@ -268,7 +268,8 @@ namespace Zebble
             IsDisposing = true;
 
             ResultWrapper?.Dispose();
-            RenderOrchestrator?.Dispose(); RenderOrchestrator = null;
+            RenderOrchestrator?.Dispose();
+            RenderOrchestrator = null;
 
             GestureRecognizer?.Dispose();
             (NativeElement as IDisposable)?.Dispose();

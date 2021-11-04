@@ -29,6 +29,8 @@
         /// </summary>
         public static float Density { get; internal set; } = 1;
 
+        public static readonly DisplaySettings DisplaySetting = new();
+
         internal static void LoadConfiguration(ViewGroup rootScreen)
         {
             rootScreen.SetFitsSystemWindows(true);
@@ -59,6 +61,26 @@
                     return Scale.ToZebble(size.Y) - NavigationBarHeight;
                 }
             );
+
+            //set display settings
+            var size = new Android.Graphics.Point();
+            var realSize = new Android.Graphics.Point();
+            var screen = new DisplayMetrics();
+            Display.GetSize(size);
+            Display.GetRealSize(realSize);
+            Display.GetMetrics(screen);
+
+            DisplaySetting.WindowWidth = size.X;
+            DisplaySetting.WindowHeight = size.Y;
+
+            DisplaySetting.HardwareWidth = screen.WidthPixels;
+            DisplaySetting.HardwareHeight = screen.HeightPixels;
+
+            DisplaySetting.RealWidth = realSize.X;
+            DisplaySetting.RealHeight = realSize.Y;
+
+            DisplaySetting.OutOfWindowNavbarHeight = NavigationBarHeight;
+            DisplaySetting.OutOfWindowStatusBarHeight = (int)StatusBar.Height;
         }
 
         static Resources GetResources()
@@ -210,54 +232,6 @@
 
                     return result;
                 }
-            }
-        }
-
-        class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
-        {
-            public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
-            {
-                var statusBar = insets.GetInsets(WindowInsetsCompat.Type.StatusBars()).Top;
-                var keyboard = insets.GetInsets(WindowInsetsCompat.Type.Ime()).Bottom;
-
-                var windowInsetsCompat = new WindowInsetsCompat.Builder()
-                    .SetInsets(WindowInsetsCompat.Type.SystemBars(), AndroidX.Core.Graphics.Insets.Of(0, statusBar, 0, keyboard))
-                    .Build();
-
-                ViewCompat.OnApplyWindowInsets(view, windowInsetsCompat);
-                SafeAreaInsets.UpdateValues();
-
-                HeightProvider = () => OnHeightProvider(insets, keyboard, statusBar);
-
-                Thread.Pool.RunAction(async () =>
-                {
-                    await Task.Delay(300);
-                    UpdateLayout();
-                });
-
-                return windowInsetsCompat;
-            }
-
-            float OnHeightProvider(WindowInsetsCompat insets, int keyboard, int statusBar)
-            {
-                var size = new Android.Graphics.Point();
-                Display.GetRealSize(size);
-
-                var navigationBar = insets.GetInsets(WindowInsetsCompat.Type.NavigationBars()).Bottom;
-                var totalBottom = keyboard == 0 ? statusBar + navigationBar : statusBar + keyboard;
-
-                if (keyboard > 0)
-                {
-                    Keyboard.SoftKeyboardHeight = Scale.ToZebble(keyboard);
-                    Keyboard.RaiseShown();
-                }
-                else
-                {
-                    Keyboard.SoftKeyboardHeight = 0;
-                    Keyboard.RaiseHidden();
-                }
-
-                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom);
             }
         }
     }

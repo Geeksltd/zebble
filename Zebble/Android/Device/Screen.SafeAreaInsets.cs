@@ -18,6 +18,9 @@
                 Bottom = Scale.ToZebble(insets.SystemWindowInsetBottom);
                 Left = Scale.ToZebble(insets.SystemWindowInsetLeft);
                 Right = Scale.ToZebble(insets.SystemWindowInsetRight);
+
+                DisplaySetting.TopInset = insets.SystemWindowInsetTop;
+                DisplaySetting.BottomInset = insets.SystemWindowInsetBottom;
             }
         }
     }

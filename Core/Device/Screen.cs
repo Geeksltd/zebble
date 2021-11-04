@@ -108,7 +108,6 @@ namespace Zebble.Device
         }
 
         internal static bool darkMode;
-
         public static bool DarkMode { get => darkMode; set => darkMode = value; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

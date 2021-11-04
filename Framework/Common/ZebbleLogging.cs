@@ -15,15 +15,20 @@
 
         public ZebbleLoggerProvider(IOptions<ZebbleLoggerOptions> options) => Options = options;
 
-        public ILogger CreateLogger(string categoryName) => new ZebbleLogger(Options);
+        public ILogger CreateLogger(string categoryName) => new ZebbleLogger(Options, categoryName);
 
         public void Dispose() { }
 
         class ZebbleLogger : ILogger<string>
         {
             readonly Action<ExceptionLog> OnError;
+            string Category;
 
-            public ZebbleLogger(IOptions<ZebbleLoggerOptions> options) => OnError = options.Value.OnError;
+            public ZebbleLogger(IOptions<ZebbleLoggerOptions> options, string category)
+            {
+                Category = category;
+                OnError = options.Value.OnError;
+            }
 
             public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
             {
@@ -33,7 +38,7 @@
                 if (message.IsEmpty()) return;
 
 #if UWP || IOS
-                System.Diagnostics.Debug.WriteLine(message);
+                System.Diagnostics.Debug.WriteLine(logLevel + ": " + Category + "> " + message);
 #elif ANDROID
                 Android.Util.Log.Info("app", message);
 #else
@@ -42,11 +47,12 @@
 
                 if (UIRuntime.IsDebuggerAttached) return;
 
-                try { OnError?.Invoke(new ExceptionLog(exception, null, null, -1)); }
-                catch
-                {
-                    // No logging needed.
-                }
+                if (exception != null)
+                    try { OnError?.Invoke(new ExceptionLog(exception, null, null, -1)); }
+                    catch
+                    {
+                        // No logging needed.
+                    }
             }
 
             public bool IsEnabled(LogLevel logLevel) => UIRuntime.IsDebuggerAttached || logLevel >= LogLevel.Warning;
@@ -67,6 +73,8 @@
 
             if (configure != null)
                 builder.Services.Configure(configure);
+
+            builder.SetMinimumLevel(UIRuntime.IsDebuggerAttached ? LogLevel.Debug : LogLevel.Information);
 
             return builder;
         }

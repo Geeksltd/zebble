@@ -66,7 +66,11 @@ namespace Zebble.IOS
 
         internal void LoadImage()
         {
-            if (View.BackgroundImagePath.OrEmpty().EndsWith(".gif") || View.HasAnimatedBackgroundImage) Thread.UI.Run(SetGifAnimationLayers);
+            if (View?.IsDisposing != false)
+                return;
+
+            if (View.BackgroundImagePath.OrEmpty().EndsWith(".gif") || View.HasAnimatedBackgroundImage)
+                Thread.UI.Run(SetGifAnimationLayers);
             else Layer.RemoveAllAnimations();
 
             var oldSource = Source;

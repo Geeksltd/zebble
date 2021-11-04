@@ -8,7 +8,7 @@ namespace Zebble.Services
 
     partial class ImageService
     {
-        const int SmallImageFileSize = 20000;
+        const int SmallImageFileSize = 100000;
 
         /// <summary>
         /// It will disposed images which are not currently being viewed.
@@ -45,8 +45,6 @@ namespace Zebble.Services
 
         public partial class ImageSource
         {
-            internal const float RESIZE_IF_LARGER_THAN = 1.2f;
-
             internal string CacheKey, Url;
             internal int Viewers;
             public string Source;
@@ -190,10 +188,13 @@ namespace Zebble.Services
                 if (sizedFile != null && await sizedFile.ExistsAsync() && sizedFile.Length > 0)
                     await DecodeImageFile(sizedFile);
                 else
+                {
                     await DecodeImageFile(file);
 
-                // Create a snapshot
-                if (sizedFile != null) GetExactSizedFile().GetAwaiter();
+                    // Create a snapshot
+                    if (sizedFile != null)
+                        GetExactSizedFile().RunInParallel();
+                }
             }
 
             async Task SaveSpecificSizedCache(FileInfo source, FileInfo cache, Stretch stretch)
@@ -206,12 +207,12 @@ namespace Zebble.Services
 
                 var wantedSize = GetPixelSize(sourceSize, Size, stretch);
 
-                var isNeeded = wantedSize.Scale(RESIZE_IF_LARGER_THAN).IsSmallerThan(sourceSize);
+                var isNeeded = IsWorthResizing(sourceSize, wantedSize);
 #if ANDROID
                 if (FindInSampleSize(sourceSize, wantedSize) < 2) isNeeded = false;
 #endif
                 if (isNeeded) await Resize(source, cache, wantedSize);
-                else source.CopyTo(cache);
+                else await source.CopyToAsync(cache);
             }
 
             async Task DecodeImageFile(FileInfo toLoad)
@@ -280,6 +281,23 @@ namespace Zebble.Services
                             if (Viewers == 0) ImageService.Dispose(this);
                     });
                 });
+            }
+
+            public override int GetHashCode() => ToString().GetHashCode();
+
+            public static bool operator !=(ImageSource @this, ImageSource another) => !(@this == another);
+
+            public static bool operator ==(ImageSource @this, ImageSource another) => @this?.Equals(another) ?? another is null;
+
+            public override bool Equals(object obj)
+            {
+                var another = obj as ImageSource;
+                if (another is null) return false;
+
+                return CacheKey == another.CacheKey &&
+                    Stretch == another.Stretch &&
+                    Size.AlmostEquals(another.Size) &&
+                    Source == another.Source;
             }
         }
     }

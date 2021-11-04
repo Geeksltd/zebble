@@ -55,7 +55,7 @@ namespace Zebble.Device
 
                 //Android.Util.Log.Error("Palaver", DisplaySetting.ToString());
 
-                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom) + NavigationBarHeight;
+                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom);
             }
 
             WindowInsetsCompat UpdateLayoutInsets()

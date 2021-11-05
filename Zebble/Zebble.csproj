@@ -6,7 +6,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>4.5.585.0</Version>
+    <Version>4.5.586.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <DefineConstants>$(DefineConstants)</DefineConstants>
@@ -25,6 +25,7 @@
     <Authors>Geeks Ltd</Authors>
     <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
     <DisableExtraReferences>true</DisableExtraReferences>
+    <DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" $(Configuration.StartsWith('Debug')) ">
     <DebugSymbols>true</DebugSymbols>
@@ -47,11 +48,6 @@
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
     <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup>
-    <DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
-    <AssemblyVersion>4.5.584.0</AssemblyVersion>
-    <FileVersion>4.5.584.0</FileVersion>
   </PropertyGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('UWP')) ">
     <SDKReference Include="WindowsMobile, Version=10.0.19041.0">

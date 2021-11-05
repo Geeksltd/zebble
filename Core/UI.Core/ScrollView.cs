@@ -1,10 +1,10 @@
 namespace Zebble
 {
+    using Olive;
     using System;
     using System.ComponentModel;
     using System.Linq;
     using System.Threading.Tasks;
-    using Olive;
 
     public partial class ScrollView : View
     {
@@ -60,7 +60,7 @@ namespace Zebble
         public float ScrollX
         {
             get => scrollX;
-            set => ScrollTo(xOffset: value.LimitMin(0)).GetAwaiter();
+            set => _ = ScrollTo(xOffset: value.LimitMin(0));
         }
 
         internal void SetUserScrolledX(float newX)
@@ -103,7 +103,7 @@ namespace Zebble
         public float ScrollY
         {
             get => scrollY;
-            set => ScrollTo(yOffset: value.LimitMin(0)).GetAwaiter();
+            set => _ = ScrollTo(yOffset: value.LimitMin(0));
         }
 
         public async Task ScrollTo(float? yOffset = null, float? xOffset = null, bool animate = false)
@@ -131,8 +131,7 @@ namespace Zebble
                 await Task.Delay(Animation.OneFrame);
                 var renderArgs = new ApiMoveToEventArgs { XOffset = scrollX, YOffset = scrollY, Animate = animate };
                 await ApiScrolledTo.Raise(renderArgs);
-            }
-           )));
+            })));
         }
 
         public bool ShowScroll { get; set; }
@@ -148,9 +147,15 @@ namespace Zebble
         internal async Task RaiseContentSizeChanged()
         {
             await ContentSizeChanged.Raise();
-
-            if (ScrollY > 0 && IsShown)
+            if (IsContentHeightShorterThanActualHeight())
+                ScrollY = 0;
+            else if (ScrollY > 0 && IsShown)
                 ScrollY = Math.Min(ScrollY, CalculateContentHeight() - ActualHeight);
+        }
+
+        public bool IsContentHeightShorterThanActualHeight()
+        {
+            return CalculateContentHeight() - ActualHeight <= 0;
         }
 
         protected override async Task ChildAdded(View view)

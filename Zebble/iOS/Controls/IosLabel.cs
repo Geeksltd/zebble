@@ -94,6 +94,8 @@ namespace Zebble.IOS
                 var color = (change as TextColorChangedEventArgs).Value.Render();
                 if (change.Animation == null) Label.TextColor = color;
             }
+            else if (property == "Bounds")
+                SyncInnerView();
         }
 
         void ViewLineHeightChanged()
@@ -117,7 +119,7 @@ namespace Zebble.IOS
         void ViewTextAlignmentChanged()
         {
             Label.TextAlignment = StringAttributes.ParagraphStyle.Alignment = View.TextAlignment.Render();
-            
+
             if (View.TextAlignment.ToVerticalAlignment() == VerticalAlignment.Middle)
                 Label.BaselineAdjustment = UIBaselineAdjustment.AlignCenters;
 

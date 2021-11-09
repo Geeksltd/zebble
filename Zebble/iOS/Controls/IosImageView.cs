@@ -7,8 +7,9 @@ namespace Zebble.IOS
     using System.Threading.Tasks;
     using UIKit;
     using Olive;
+    using System.Reflection.Emit;
 
-    public class IosImageWrapper : UIView
+    public class IosImageWrapper : UIView, UIChangeCommand.IHandler
     {
         ImageView View;
         public IosImageView NestedImage;
@@ -39,6 +40,11 @@ namespace Zebble.IOS
             NestedImage.Frame = View.GetEffectiveFrame();
 
             if (View.IsRendered()) NestedImage.LoadImage();
+        }
+
+        public void Apply(string property, UIChangedEventArgs change)
+        {
+            if (property == "Bounds") SyncInnerView();
         }
 
         protected override void Dispose(bool disposing)

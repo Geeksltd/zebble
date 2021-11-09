@@ -58,7 +58,7 @@
                     var size = new Android.Graphics.Point();
                     Display.GetRealSize(size);
 
-                    return Scale.ToZebble(size.Y) - NavigationBarHeight;
+                    return Scale.ToZebble(size.Y) - StatusBar.Height  - NavigationBarHeight;
                 }
             );
 

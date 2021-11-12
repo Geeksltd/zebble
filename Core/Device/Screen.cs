@@ -108,7 +108,6 @@ namespace Zebble.Device
         }
 
         internal static bool darkMode;
-
         public static bool DarkMode { get => darkMode; set => darkMode = value; }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
@@ -117,7 +116,7 @@ namespace Zebble.Device
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static float Height { get; private set; }
 
-        static Func<float> WidthProvider, HeightProvider;
+        internal static Func<float> WidthProvider, HeightProvider;
 
         public static readonly AsyncEvent OrientationChanged = new AsyncEvent(ConcurrentEventRaisePolicy.Queue);
 

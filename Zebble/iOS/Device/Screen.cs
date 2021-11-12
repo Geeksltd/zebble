@@ -39,8 +39,8 @@ namespace Zebble.Device
 
                     // This will make UIViewController.PreferredStatusBarStyle to be re-evaluated.
                     CoreFoundation.DispatchQueue.MainQueue.DispatchAsync(
-                        () => UIApplication.SharedApplication.KeyWindow
-                                           .RootViewController.SetNeedsStatusBarAppearanceUpdate()
+                        () => UIApplication.SharedApplication?.KeyWindow?
+                                           .RootViewController?.SetNeedsStatusBarAppearanceUpdate()
                     );
                 }
             }

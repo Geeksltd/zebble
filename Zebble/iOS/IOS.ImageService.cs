@@ -37,8 +37,7 @@ namespace Zebble.Services
 
             var newSize = GetPixelSize(originalSize, desiredSize.Value, stretch);
 
-            if (newSize.Scale(ImageSource.RESIZE_IF_LARGER_THAN).IsLargerThan(originalSize))
-                return originalImage; // Close enough
+            if (!IsWorthResizing(originalSize, newSize)) return originalImage;
 
             UIImage resultImage;
             lock (ResizeLock)

@@ -76,12 +76,7 @@ namespace Zebble
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        void UpdateHashCode()
-        {
-            if (!(Id is null)) HashCode = Id.GetHashCode();
-            else if (!(Class is null)) HashCode = Class.GetHashCode();
-            else HashCode = Type.GetHashCode();
-        }
+        void UpdateHashCode() => HashCode = System.HashCode.Combine(Type, Id, Class, Pseudo);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void SetParent(CssReference cssReference) => Parent = cssReference.GetWeakReference();

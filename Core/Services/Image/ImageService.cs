@@ -23,6 +23,11 @@ namespace Zebble.Services
             SetFailedPlaceholderImagePath(null);
         }
 
+        internal static bool IsWorthResizing(Size source, Size window)
+        {
+            return source.IsLargerThan(window.Scale(1.2f));
+        }
+
         static string Clean(string path) => path.ToLowerOrEmpty().Replace("\\", "/").KeepReplacing("//", "/").TrimStart("/");
 
         public static void SetFailedPlaceholderImagePath(string path) => FailedPlaceholderImagePath = path.Or(NOT_FOUND);

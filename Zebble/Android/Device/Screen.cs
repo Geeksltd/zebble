@@ -28,8 +28,13 @@
         /// </summary>
         public static float Density { get; internal set; } = 1;
 
-        internal static async Task LoadConfiguration()
+        public static readonly DisplaySettings DisplaySetting = new();
+
+        internal static void LoadConfiguration(ViewGroup rootScreen)
         {
+            rootScreen.SetFitsSystemWindows(true);
+            ViewCompat.SetOnApplyWindowInsetsListener(rootScreen, new ApplyWindowInstetsListener());
+
             SystemtResources = GetResources();
 
             HardwareDensity = SystemtResources.DisplayMetrics.Density;
@@ -51,11 +56,30 @@
                 {
                     var size = new Android.Graphics.Point();
                     Display.GetRealSize(size);
-
                     // TODO: Shouldn't we remove NavigationBarHeight??!!
                     return Scale.ToZebble(size.Y);// - NavigationBarHeight;
                 }
             );
+
+            //set display settings
+            var size = new Android.Graphics.Point();
+            var realSize = new Android.Graphics.Point();
+            var screen = new DisplayMetrics();
+            Display.GetSize(size);
+            Display.GetRealSize(realSize);
+            Display.GetMetrics(screen);
+
+            DisplaySetting.WindowWidth = size.X;
+            DisplaySetting.WindowHeight = size.Y;
+
+            DisplaySetting.HardwareWidth = screen.WidthPixels;
+            DisplaySetting.HardwareHeight = screen.HeightPixels;
+
+            DisplaySetting.RealWidth = realSize.X;
+            DisplaySetting.RealHeight = realSize.Y;
+
+            DisplaySetting.OutOfWindowNavbarHeight = NavigationBarHeight;
+            DisplaySetting.OutOfWindowStatusBarHeight = (int)StatusBar.Height;
         }
 
         static Resources GetResources()

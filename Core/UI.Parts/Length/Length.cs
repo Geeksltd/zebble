@@ -341,7 +341,7 @@ namespace Zebble
                 default: throw new NotSupportedException();
             }
 
-            ApplyNewValue(ExpressionValue());
+            if (ExpressionValue is not null) ApplyNewValue(ExpressionValue());
         }
 
         /// <summary>

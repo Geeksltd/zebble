@@ -146,13 +146,23 @@ namespace Zebble
         }
 
         /// <summary>Redirects to the specified page.</summary>
-        public static Task Go<TPage>(PageTransition transition) where TPage : Page => Go<TPage>(null, transition);
+        public static Task Go<TPage>(PageTransition transition) where TPage : Page => Go(typeof(TPage), null, transition);
+
+        /// <summary>Redirects to the specified page.</summary>
+        public static Task Go(Type pageType, PageTransition transition) => Go(pageType, null, transition);
 
         /// <summary>Redirects to the specified page.</summary>
         /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
         public static Task Go<TPage>(object navParams = null, PageTransition transition = PageTransition.SlideForward) where TPage : Page
         {
-            var temp = GetOrCreateTargetPage(typeof(TPage));
+            return Go(typeof(TPage), navParams, transition);
+        }
+
+        /// <summary>Redirects to the specified page.</summary>
+        /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
+        public static Task Go(Type pageType, object navParams = null, PageTransition transition = PageTransition.SlideForward)
+        {
+            var temp = GetOrCreateTargetPage(pageType);
             return Go(temp.Item1, navParams, transition, clearStack: true, revisiting: temp.Item2);
         }
 
@@ -294,10 +304,13 @@ namespace Zebble
         }
 
         /// <summary>This is the same as Go() but with the reverse transition. </summary>
-        public static Task GoBack<TPage>(object navParams = null)
+        public static Task GoBack<TPage>(object navParams = null) => GoBack(typeof(TPage), navParams);
+
+        /// <summary>This is the same as Go() but with the reverse transition. </summary>
+        public static Task GoBack(Type pageType, object navParams = null)
         {
-            var page = GetFromCache(typeof(TPage)) ?? typeof(TPage).CreateInstance<Page>();
-            return GoBack(page, navParams);
+            var temp = GetOrCreateTargetPage(pageType);
+            return GoBack(temp.Item1, navParams);
         }
 
         /// <summary>This is the same as Go() but with the reverse transition. </summary>
@@ -307,14 +320,24 @@ namespace Zebble
         }
 
         /// <summary>The same as Go() but it also adds the page to the Stack to enable «going back».</summary>
-        public static Task Forward<TPage>(PageTransition transition) where TPage : Page => Forward<TPage>(null, transition);
+        public static Task Forward<TPage>(PageTransition transition) where TPage : Page => Forward(typeof(TPage), null, transition);
+
+        /// <summary>The same as Go() but it also adds the page to the Stack to enable «going back».</summary>
+        public static Task Forward(Type pageType, PageTransition transition) => Forward(pageType, null, transition);
 
         /// <summary>The same as Go() but it also adds the page to the Stack to enable «going back».</summary>
         /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
         public static Task Forward<TPage>(object navParams = null, PageTransition transition = PageTransition.SlideForward)
             where TPage : Page
         {
-            var temp = GetOrCreateTargetPage(typeof(TPage));
+            return Forward(typeof(TPage), navParams, transition);
+        }
+
+        /// <summary>The same as Go() but it also adds the page to the Stack to enable «going back».</summary>
+        /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
+        public static Task Forward(Type pageType, object navParams = null, PageTransition transition = PageTransition.SlideForward)
+        {
+            var temp = GetOrCreateTargetPage(pageType);
             return Forward(temp.Item1, navParams, transition, temp.Item2);
         }
 

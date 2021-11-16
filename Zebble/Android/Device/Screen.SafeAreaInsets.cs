@@ -14,7 +14,7 @@
 
                 if (insets == null) return;
 
-                Top = Scale.ToZebble(insets.SystemWindowInsetTop);
+                Top = Scale.ToZebble(insets.SystemWindowInsetTop) - StatusBar.Height;
                 Bottom = Scale.ToZebble(insets.SystemWindowInsetBottom);
                 Left = Scale.ToZebble(insets.SystemWindowInsetLeft);
                 Right = Scale.ToZebble(insets.SystemWindowInsetRight);

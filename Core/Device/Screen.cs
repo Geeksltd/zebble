@@ -1,10 +1,10 @@
 namespace Zebble.Device
 {
+    using Olive;
     using System;
     using System.ComponentModel;
     using System.IO;
     using System.Threading.Tasks;
-    using Olive;
 
     public static partial class Screen
     {
@@ -142,11 +142,12 @@ namespace Zebble.Device
             UpdateLayout();
         }
 
+        static bool isRendered;
         internal static void UpdateLayout()
         {
             var newWidth = WidthProvider();
             var newHeight = HeightProvider();
-            if (Width.AlmostEquals(newWidth) && Height.AlmostEquals(newHeight)) return;
+            if (Width.AlmostEquals(newWidth) && Height.AlmostEquals(newHeight) && isRendered) return;
 
             Width = newWidth;
             Height = newHeight;
@@ -157,7 +158,7 @@ namespace Zebble.Device
 #endif
 
             if (View.Root?.IsRendered() != true) return;
-
+            isRendered = true;
             View.Root.Size(Width, Height);
             Nav.DisposeCache();
             View.Root.ApplyCssToBranch().RunInParallel();

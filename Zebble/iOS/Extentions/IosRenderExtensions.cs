@@ -86,7 +86,7 @@ namespace System
 
         public static bool AlmostEquals(this nfloat @this, nfloat that) => ((float)@this).AlmostEquals((float)that);
 
-        public static NSNumber ToNs(this nfloat value) => ((float)value).ToNs();
+        public static NSNumber ToNs(this nfloat value) => ((float)(nfloat.IsNaN(value) ? 0.0 : value)).ToNs();
 
         public static NSNumber ToNs(this float value) => new(value);
 

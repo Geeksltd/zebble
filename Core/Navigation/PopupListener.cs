@@ -10,12 +10,13 @@
 
         static PopupListener() => Task.Factory.StartNew(() => ProcessInstructions());
 
-        static Task ProcessInstructions()
+        static async Task ProcessInstructions()
         {
             while (true)
             {
                 if (ShowHideInstructions.TryDequeue(out var nextInstruction))
                     nextInstruction.Process();
+                else await Task.Delay(50);
             }
         }
 

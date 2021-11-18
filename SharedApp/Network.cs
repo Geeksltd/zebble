@@ -48,27 +48,12 @@ namespace Zebble.Device
             if (hostName.ContainsAny(new[] { "/", ":" })) throw new Exception($"Invalid host name format: {hostName}");
             return Clients.GetOrAdd(
                 $"{scheme}:{hostName}:{port}|{timeout.TotalMilliseconds}",
-                _ =>
+                _ => new HttpClient
                 {
-                    var client = HttpClient();
-                    client.BaseAddress = new Uri($"{scheme}://{hostName}:{port}");
-                    client.Timeout = timeout;
-                    return client;
+                    BaseAddress = new Uri($"{scheme}://{hostName}:{port}"),
+                    Timeout = timeout
                 }
             );
-        }
-
-        public static HttpClient HttpClient() => new(CreateHttpHandler());
-
-        static HttpMessageHandler CreateHttpHandler()
-        {
-#if ANDROID
-            return new Xamarin.Android.Net.AndroidClientHandler();
-#elif IOS
-            return new NSUrlSessionHandler();
-#else
-            return new HttpClientHandler();
-#endif
         }
 
         /// <summary>

@@ -2,6 +2,7 @@ namespace Zebble
 {
     using System;
     using System.Reflection;
+    using Microsoft.Extensions.DependencyInjection;
     using Microsoft.Extensions.Hosting;
     using Microsoft.Extensions.Logging;
     using Olive;
@@ -35,6 +36,7 @@ namespace Zebble
 
             var builder = XamarinHost.CreateDefaultBuilder<TAnyAppType>()
                         .ConfigureHostConfiguration(x => x.AddZebbleConfiguration())
+                        .ConfigureServices(x => x.AddHttpClient())
                         .ConfigureLogging(x => x.ClearProviders().AddZebbleLogging());
 
 #if IOS || ANDROID

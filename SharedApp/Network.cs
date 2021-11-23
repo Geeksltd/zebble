@@ -2,7 +2,6 @@
 namespace Zebble.Device
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -13,22 +12,16 @@ namespace Zebble.Device
 
     public static partial class Network
     {
-        static ConcurrentDictionary<string, HttpClient> Clients = new ConcurrentDictionary<string, HttpClient>();
         const int DEFAULT_TIME_OUT = 5000;
-        public static readonly AsyncEvent<bool> ConnectivityChanged = new AsyncEvent<bool>(ConcurrentEventRaisePolicy.Queue);
-
-        // static SemaphoreSlim DownloadThrottler;
-        static List<Task> AllDownloads;
-        // static int THROTTLING_LIMIT => Config.Get("Max.Concurrent.Download.Per.Domain", 5);
+        public static readonly AsyncEvent<bool> ConnectivityChanged = new(ConcurrentEventRaisePolicy.Queue);
+        static readonly List<Task> AllDownloads = new();
 
         static Network()
         {
 #if ANDROID || IOS
-            System.Net.ServicePointManager.ServerCertificateValidationCallback += (o, certificate, chain, errors) => true;
+            ServicePointManager.ServerCertificateValidationCallback += (_, _, _, _) => true;
 #endif
             Init();
-            // DownloadThrottler = new SemaphoreSlim(THROTTLING_LIMIT);
-            AllDownloads = new List<Task>();
         }
 
         public static HttpClient HttpClient(string domainIpOrUrl, TimeSpan timeout)
@@ -46,14 +39,13 @@ namespace Zebble.Device
         static HttpClient CreateHttpClient(string hostName, TimeSpan timeout, string scheme = "http", int port = 80)
         {
             if (hostName.ContainsAny(new[] { "/", ":" })) throw new Exception($"Invalid host name format: {hostName}");
-            return Clients.GetOrAdd(
-                $"{scheme}:{hostName}:{port}|{timeout.TotalMilliseconds}",
-                _ => new HttpClient
-                {
-                    BaseAddress = new Uri($"{scheme}://{hostName}:{port}"),
-                    Timeout = timeout
-                }
-            );
+
+            var client = Context.Current.GetService<IHttpClientFactory>().CreateClient();
+
+            client.BaseAddress = new Uri($"{scheme}://{hostName}:{port}");
+            client.Timeout = timeout;
+
+            return client;
         }
 
         /// <summary>
@@ -80,7 +72,7 @@ namespace Zebble.Device
                     }
                     else
                     {
-                        var data = d.Result;
+                        var data = d.GetAlreadyCompletedResult();
                         if (data == null) result.TrySetResult(result: true);
                         else file.WriteAllBytesAsync(data).ContinueWith(v => result.TrySetResult(result: true));
                     }
@@ -131,7 +123,8 @@ namespace Zebble.Device
 
                     try
                     {
-                        var fetchTask = HttpClient(url, timeoutPerAttempt.Seconds()).GetAsync(url);
+                        using var client = HttpClient(url, timeoutPerAttempt.Seconds());
+                        var fetchTask = client.GetAsync(url);
 
                         if (await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask) != fetchTask || fetchTask.IsCanceled)
                         {

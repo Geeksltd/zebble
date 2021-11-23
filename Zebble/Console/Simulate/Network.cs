@@ -18,8 +18,9 @@ namespace Zebble.Device
             {
                 try
                 {
-                    using (var stream = await HttpClient(host, timeout.Milliseconds()).GetStreamAsync(protocol + host))
-                        if (stream.CanRead) return true;
+                    using var client = HttpClient(host, timeout.Milliseconds());
+                    using var stream = await client.GetStreamAsync(protocol + host);
+                    if (stream.CanRead) return true;
                 }
                 catch
                 {

@@ -231,7 +231,7 @@ namespace Zebble
             if (nativeChild.Parent != null)
             {
                 if (nativeChild.Parent != nativeParent)
-                    Log.For(this).Error("The native view already has a parent: " + view.GetFullPath());
+                    Log.For(this).Error($"The native view already has a parent: {view.GetFullPath()}");
 
                 return;
             }
@@ -240,9 +240,10 @@ namespace Zebble
             {
                 if (nativeParent is controls.Panel panel) NativeContainer = panel.Children;
                 else if (nativeParent is controls.ScrollViewer scroller) NativeContainer = (scroller.Content as controls.Panel)?.Children;
-                else throw new Exception(nativeParent.GetType().Name + " is not a supported container for rendering.");
+                else throw new Exception($"{nativeParent.GetType().Name} is not a supported container for rendering.");
 
-                NativeContainer?.Add(nativeChild);
+                if (NativeContainer?.None(x => x == nativeChild) == true)
+                    NativeContainer?.Add(nativeChild);
             }
             catch (System.Runtime.InteropServices.COMException)
             {

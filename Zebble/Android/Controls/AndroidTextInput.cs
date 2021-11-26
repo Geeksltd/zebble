@@ -1,7 +1,5 @@
 namespace Zebble.AndroidOS
 {
-    using System;
-    using System.Threading.Tasks;
     using Android.Graphics;
     using Android.Runtime;
     using Android.Util;
@@ -9,20 +7,23 @@ namespace Zebble.AndroidOS
     using Android.Views.InputMethods;
     using Android.Widget;
     using Java.Lang;
-    using Zebble.Device;
     using Olive;
+    using System;
+    using System.Threading.Tasks;
+    using Zebble.Device;
 
     public class AndroidTextInput : EditText, IPaddableControl
     {
         static AndroidTextInput CurrentlyFocused;
         TextInput View;
         bool IsApiChangingText;
-
+        ScrollView parentScrollView = null;
         public AndroidTextInput(TextInput view) : base(Renderer.Context)
         {
             View = view;
             CreateTextInput(view);
             HandleEvents(view);
+            TryFindParentScroll();
         }
 
         [Preserve]
@@ -163,7 +164,11 @@ namespace Zebble.AndroidOS
 
             view.Focused.SetByInput(gainFocus);
 
-            if (gainFocus) Keyboard.Show(view);
+            if (gainFocus)
+            {
+                Keyboard.Show(view);
+                DoSetFocus(true);
+            }
             else HideKeyboardIfMine();
         }
 
@@ -191,6 +196,7 @@ namespace Zebble.AndroidOS
             if (focused)
             {
                 RequestFocus();
+                FocusScroll();
             }
             else
             {
@@ -203,8 +209,8 @@ namespace Zebble.AndroidOS
         {
             Zebble.Thread.UI.Post(async () =>
             {
-               await Task.Delay(100);
-               if (CurrentlyFocused is null) Keyboard.Hide();
+                await Task.Delay(100);
+                if (CurrentlyFocused is null) Keyboard.Hide();
             });
         }
 
@@ -222,6 +228,73 @@ namespace Zebble.AndroidOS
             AfterTextChanged -= AndroidTextInput_AfterTextChanged;
             View = null;
             base.Dispose(disposing);
+        }
+
+        void TryFindParentScroll()
+        {
+            ScrollView scrollView = null;
+            IViewParent parent = this.Parent;
+            while (true)
+            {
+                if (parent == null)
+                    break;
+                else if (parent is ScrollView scroll)
+                {
+                    scrollView = scroll;
+                    break;
+                }
+                parent = parent.Parent;
+            }
+
+            parentScrollView = scrollView;
+        }
+
+        void FocusScroll()
+        {
+            if (parentScrollView == null)
+                TryFindParentScroll();
+            if (parentScrollView != null)
+            {
+                ScrollToView(parentScrollView, this);
+            }
+        }
+
+        /**
+         * Used to scroll to the given view.
+         *
+         * @param scrollViewParent Parent ScrollView
+         * @param view View to which we need to scroll.
+         */
+        private void ScrollToView(ScrollView scrollViewParent, View view)
+        {
+            // Get deepChild Offset
+            Point childOffset = new Point();
+            GetDeepChildOffset(scrollViewParent, view.Parent, view, childOffset);
+            // Scroll to child.
+            scrollViewParent.SmoothScrollTo(0, childOffset.Y);
+        }
+
+        /**
+         * Used to get deep child offset.
+         * <p/>
+         * 1. We need to scroll to child in scrollview, but the child may not the direct child to scrollview.
+         * 2. So to get correct child position to scroll, we need to iterate through all of its parent views till the main parent.
+         *
+         * @param mainParent        Main Top parent.
+         * @param parent            Parent.
+         * @param child             Child.
+         * @param accumulatedOffset Accumulated Offset.
+         */
+        private void GetDeepChildOffset(ViewGroup mainParent, IViewParent parent, View child, Point accumulatedOffset)
+        {
+            ViewGroup parentGroup = (ViewGroup)parent;
+            accumulatedOffset.X += child.Left;
+            accumulatedOffset.Y += child.Top;
+            if (parentGroup.Equals(mainParent))
+            {
+                return;
+            }
+            GetDeepChildOffset(mainParent, parentGroup.Parent, parentGroup, accumulatedOffset);
         }
 
         class OnKeyListener : Java.Lang.Object, IOnKeyListener

@@ -1,7 +1,5 @@
 namespace Zebble.AndroidOS
 {
-    using System;
-    using System.Threading.Tasks;
     using Android.Graphics;
     using Android.Runtime;
     using Android.Util;
@@ -9,24 +7,30 @@ namespace Zebble.AndroidOS
     using Android.Views.InputMethods;
     using Android.Widget;
     using Java.Lang;
-    using Zebble.Device;
     using Olive;
+    using System;
+    using System.Threading.Tasks;
+    using Zebble.Device;
 
     public class AndroidTextInput : EditText, IPaddableControl
     {
         static AndroidTextInput CurrentlyFocused;
         TextInput View;
         bool IsApiChangingText;
-
+        AutoScrollUtility autoScrollUtility = null;
         public AndroidTextInput(TextInput view) : base(Renderer.Context)
         {
             View = view;
             CreateTextInput(view);
             HandleEvents(view);
+            autoScrollUtility = new AutoScrollUtility(this);
         }
 
         [Preserve]
-        public AndroidTextInput(IntPtr ptr, JniHandleOwnership handle) : base(ptr, handle) { }
+        public AndroidTextInput(IntPtr ptr, JniHandleOwnership handle) : base(ptr, handle)
+        {
+            autoScrollUtility = new AutoScrollUtility(this);
+        }
 
         void CreateTextInput(TextInput view)
         {
@@ -114,6 +118,8 @@ namespace Zebble.AndroidOS
         {
             view = View;
             if (view?.IsDisposing == true) view = null;
+            if (view is null && autoScrollUtility != null)
+                autoScrollUtility.Dispose();
             return view is null;
         }
 
@@ -163,7 +169,11 @@ namespace Zebble.AndroidOS
 
             view.Focused.SetByInput(gainFocus);
 
-            if (gainFocus) Keyboard.Show(view);
+            if (gainFocus)
+            {
+                Keyboard.Show(view);
+                DoSetFocus(true);
+            }
             else HideKeyboardIfMine();
         }
 
@@ -203,8 +213,8 @@ namespace Zebble.AndroidOS
         {
             Zebble.Thread.UI.Post(async () =>
             {
-               await Task.Delay(100);
-               if (CurrentlyFocused is null) Keyboard.Hide();
+                await Task.Delay(100);
+                if (CurrentlyFocused is null) Keyboard.Hide();
             });
         }
 

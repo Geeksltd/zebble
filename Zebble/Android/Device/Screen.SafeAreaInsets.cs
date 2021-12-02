@@ -14,8 +14,8 @@
 
                 if (insets == null) return;
 
-                Top = Scale.ToZebble(insets.SystemWindowInsetTop);
-                Bottom = Scale.ToZebble(insets.SystemWindowInsetBottom);
+                Top = 0;
+                Bottom = 0;
                 Left = Scale.ToZebble(insets.SystemWindowInsetLeft);
                 Right = Scale.ToZebble(insets.SystemWindowInsetRight);
 

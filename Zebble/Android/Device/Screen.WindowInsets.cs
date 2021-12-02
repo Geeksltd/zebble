@@ -1,7 +1,6 @@
 ﻿using AndroidX.Core.View;
-using Olive;
 using System;
-using System.Linq;
+using System.Threading.Tasks;
 
 namespace Zebble.Device
 {
@@ -10,7 +9,9 @@ namespace Zebble.Device
         static Android.Views.View CurrentView;
 
         static WindowInsetsCompat CurrentInsets;
-        static int KeyboardHeight;
+        static int _KeyboardHeight;
+        internal static Action<int> OnKeyboardHeightChanged { get; set; }
+        internal static int KeyboardHeight;
 
         class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
         {
@@ -24,6 +25,12 @@ namespace Zebble.Device
                 HeightProvider = OnHeightProvider;
                 UpdateLayout();
 
+                //On some devices not working so wee need to delay a frame to fix the problem
+                Thread.UI.Post(() => Thread.Pool.Run(async () =>
+                {
+                    await Task.Delay(Animation.OneFrame);
+                    OnKeyboardHeightChanged?.Invoke(KeyboardHeight);
+                }));
                 return windowInsetsCompat;
             }
 
@@ -55,7 +62,7 @@ namespace Zebble.Device
 
                 //Android.Util.Log.Error("Palaver", DisplaySetting.ToString());
 
-                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom);
+                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom) - StatusBar.Height;
             }
 
             WindowInsetsCompat UpdateLayoutInsets()

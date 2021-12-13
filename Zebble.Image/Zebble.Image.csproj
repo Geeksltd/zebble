@@ -15,7 +15,7 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.0.10.0</Version>
+    <Version>1.0.11.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-image</RepositoryUrl>
     <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
   </PropertyGroup>
@@ -36,9 +36,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.11.3" />
-    <PackageReference Include="Olive" Version="2.1.250" />
-    <PackageReference Include="SkiaSharp" Version="2.80.3-preview.40" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+    <PackageReference Include="Olive" Version="2.1.291" />
+    <PackageReference Include="SkiaSharp" Version="2.80.3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon.png" Pack="true" PackagePath="" />

@@ -4,7 +4,7 @@ namespace Zebble
 
     partial class Stack
     {
-        object ArrangeLock = new object();
+        readonly object ArrangeLock = new();
         View LastManagedChild;
 
         void PlaceNewVerticalChild(View child, int index)
@@ -40,7 +40,9 @@ namespace Zebble
             {
                 LastManagedChild = newLastChild;
                 Height.UpdateOn(newLastChild.Height.Changed, newLastChild.Margin.Bottom.Changed, newLastChild.Y.Changed);
-                newLastChild.IgnoredChanged.Handle(BindHeightToLastManagedChild);
+
+                if (IsShown)
+                    Height.Update();
             }
         }
 

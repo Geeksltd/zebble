@@ -121,7 +121,7 @@
                     Point childOffset = new Point();
                     GetDeepChildOffset(_parentScrollView, _view.Parent, _view, childOffset);
                     childOffset.Y += (_view.Height * 2);
-
+                    // Scroll to child.
                     scrollViewParent.SmoothScrollTo(0, childOffset.Y);
                 }
                 catch (ObjectDisposedException)

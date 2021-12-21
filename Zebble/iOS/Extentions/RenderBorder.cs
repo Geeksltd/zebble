@@ -64,8 +64,8 @@ namespace Zebble
                 {
                     DrawTopBorderLine(border);
                     DrawRightBorderLine(border);
-                    DrawLeftBorderLine(border);
                     DrawBottomBorderLine(border);
+                    DrawLeftBorderLine(border);
                 }
             }
         }
@@ -90,7 +90,7 @@ namespace Zebble
                 if (right > 0)
                     path.AddArc(new CGPoint(Result.Bounds.Width - right, right), right, 270f.ToRadians(), 0, clockWise: true);
 
-                CreateLine(ref TopBorderLayer, border.Color, border.Top, path.CGPath);
+                AddToLayer(ref TopBorderLayer, border.Color, border.Top, path.CGPath);
             }
         }
 
@@ -113,7 +113,7 @@ namespace Zebble
                 if (bottom > 0)
                     path.AddArc(new CGPoint(Result.Bounds.Width - bottom, Result.Bounds.Height - bottom), bottom, 0, 90f.ToRadians(), clockWise: true);
 
-                CreateLine(ref RightBorderLayer, border.Color, border.Right, path.CGPath);
+                AddToLayer(ref RightBorderLayer, border.Color, border.Right, path.CGPath);
             }
         }
 
@@ -130,8 +130,8 @@ namespace Zebble
 
             using (var path = new UIBezierPath())
             {
-                var left = border.RadiusTopLeft;
-                var right = border.RadiusTopRight;
+                var left = border.RadiusBottomLeft;
+                var right = border.RadiusBottomRight;
 
                 if (left > 0) path.AddArc(new CGPoint(left, height - left), left, 90f.ToRadians(), 180f.ToRadians(), clockWise: true);
 
@@ -143,7 +143,7 @@ namespace Zebble
                     path.AddArc(new CGPoint(width - right, height - right), right, 0, 90f.ToRadians(), clockWise: true);
                 }
 
-                CreateLine(ref BottomBorderLayer, border.Color, border.Bottom, path.CGPath);
+                AddToLayer(ref BottomBorderLayer, border.Color, border.Bottom, path.CGPath);
             }
         }
 
@@ -170,11 +170,11 @@ namespace Zebble
                     path.AddArc(new CGPoint(bottom, Result.Bounds.Height - bottom), bottom, 90f.ToRadians(), 180f.ToRadians(), clockWise: true);
                 }
 
-                CreateLine(ref LeftBorderLayer, border.Color, border.Left, path.CGPath);
+                AddToLayer(ref LeftBorderLayer, border.Color, border.Left, path.CGPath);
             }
         }
 
-        void CreateLine(ref CAShapeLayer layer, Color color, float width, CGPath path)
+        void AddToLayer(ref CAShapeLayer layer, Color color, float width, CGPath path)
         {
             if (layer == null)
                 Layer.AddSublayer(layer = new CAShapeLayer());

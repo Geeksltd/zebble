@@ -4,6 +4,7 @@
     using Android.Views;
     using Android.Widget;
     using System;
+    using System.Threading.Tasks;
     using Zebble.Device;
 
     /// <summary>
@@ -24,7 +25,7 @@
         private void FocusChange(object sender, View.FocusChangeEventArgs e)
         {
             isFocused = e.HasFocus;
-            //FocusScroll();
+            FocusScroll();
         }
 
         void TryFindParentScroll()
@@ -76,7 +77,7 @@
             scrollViewParent.GetDrawingRect(scrollBounds);
 
             float top = pointOfView.Y;
-            float bottom = top + _view.Height;
+            float bottom = top + (_view.Height * 2);
             var scrollBottom = scrollBounds.Bottom - _keyboardHeight;
             if (scrollBounds.Top <= top && scrollBottom >= bottom)
             {
@@ -105,23 +106,29 @@
          */
         private void ScrollToView(ScrollView scrollViewParent)
         {
-            try
+            // Thread.UI.Post Fixed in Motorola_Moto_G8 some times not working as good scrolling
+            Thread.UI.Post(() => Thread.Pool.Run(async () =>
             {
-                // Any portion of the imageView, even a single pixel, is within the visible window
-                if (IsViewFullyVisible(scrollViewParent))
+                try
                 {
-                    return;
-                }
+                    await Task.Delay(Animation.OneFrame * 3);
+                    // Any portion of the imageView, even a single pixel, is within the visible window
+                    if (IsViewFullyVisible(scrollViewParent))
+                    {
+                        return;
+                    }
 
-                Point childOffset = new Point();
-                GetDeepChildOffset(_parentScrollView, _view.Parent, _view, childOffset);
-                // Scroll to child.
-                scrollViewParent.SmoothScrollTo(0, childOffset.Y);
-            }
-            catch (ObjectDisposedException)
-            {
-                Dispose();
-            }
+                    Point childOffset = new Point();
+                    GetDeepChildOffset(_parentScrollView, _view.Parent, _view, childOffset);
+                    childOffset.Y += (_view.Height * 2);
+                    // Scroll to child.
+                    scrollViewParent.SmoothScrollTo(0, childOffset.Y);
+                }
+                catch (ObjectDisposedException)
+                {
+                    Dispose();
+                }
+            }));
         }
 
         /**

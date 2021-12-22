@@ -12,26 +12,28 @@
     /// </summary>
     public class AutoScrollUtility : IDisposable
     {
-        readonly View _view;
-        ScrollView _parentScrollView;
+        readonly View View;
+        ScrollView ParentScrollView;
+        int KeyboardHeight;
+        bool IsFocused = false;
+
         public AutoScrollUtility(View view)
         {
-            _view = view;
-            _view.FocusChange += FocusChange;
+            View = view;
+            View.FocusChange += FocusChange;
             Screen.OnKeyboardHeightChanged += OnKeyboardHeightChanged;
         }
 
-        bool isFocused = false;
-        private void FocusChange(object sender, View.FocusChangeEventArgs e)
+        void FocusChange(object sender, View.FocusChangeEventArgs e)
         {
-            isFocused = e.HasFocus;
+            IsFocused = e.HasFocus;
             FocusScroll();
         }
 
         void TryFindParentScroll()
         {
             ScrollView scrollView = null;
-            var parent = _view.Parent;
+            var parent = View.Parent;
             while (true)
             {
                 if (parent == null)
@@ -44,41 +46,36 @@
                 parent = parent.Parent;
             }
 
-            _parentScrollView = scrollView;
+            ParentScrollView = scrollView;
         }
 
         void FocusScroll()
         {
-            if (!isFocused)
+            if (!IsFocused)
                 return;
-            if (_parentScrollView == null)
+            if (ParentScrollView == null)
                 TryFindParentScroll();
-            if (_parentScrollView != null)
+            if (ParentScrollView != null)
             {
-                ScrollToView(_parentScrollView);
+                ScrollToView(ParentScrollView);
             }
         }
 
-        int _keyboardHeight;
-
         public void OnKeyboardHeightChanged(int keyboardHeight)
         {
-            //ShowText($"OnKeyboardHeightChanged {keyboardHeight}");
-
-            _keyboardHeight = keyboardHeight;
+            KeyboardHeight = keyboardHeight;
             FocusScroll();
         }
 
-        private bool IsViewFullyVisible(ScrollView scrollViewParent)
+        bool IsViewFullyVisible(ScrollView scrollViewParent)
         {
-            Point pointOfView = new Point();
-            GetDeepChildRealPosition(_parentScrollView, _view.Parent, _view, pointOfView);
-            Rect scrollBounds = new Rect();
+            var pointOfView = GetDeepChildRealPosition(ParentScrollView, View.Parent, View);
+            Rect scrollBounds = new();
             scrollViewParent.GetDrawingRect(scrollBounds);
 
             float top = pointOfView.Y;
-            float bottom = top + (_view.Height * 2);
-            var scrollBottom = scrollBounds.Bottom - _keyboardHeight;
+            float bottom = top + (View.Height * 2);
+            var scrollBottom = scrollBounds.Bottom - KeyboardHeight;
             if (scrollBounds.Top <= top && scrollBottom >= bottom)
             {
                 return true;
@@ -89,22 +86,13 @@
             }
         }
 
-
-        private bool IsPartOfViewVisible(ScrollView scrollViewParent, View view)
-        {
-            Rect scrollBounds = new Rect();
-            scrollViewParent.GetHitRect(scrollBounds);
-            // Any portion of the imageView, even a single pixel, is within the visible window
-            return view.GetLocalVisibleRect(scrollBounds);
-        }
-
         /**
          * Used to scroll to the given view.
          *
          * @param scrollViewParent Parent ScrollView
          * @param view View to which we need to scroll.
          */
-        private void ScrollToView(ScrollView scrollViewParent)
+        void ScrollToView(ScrollView scrollViewParent)
         {
             // Thread.UI.Post Fixed in Motorola_Moto_G8 some times not working as good scrolling
             Thread.UI.Post(() => Thread.Pool.Run(async () =>
@@ -118,9 +106,8 @@
                         return;
                     }
 
-                    Point childOffset = new Point();
-                    GetDeepChildOffset(_parentScrollView, _view.Parent, _view, childOffset);
-                    childOffset.Y += (_view.Height * 2);
+                    var childOffset = GetDeepChildOffset(ParentScrollView, View.Parent, View);
+                    childOffset.Y += View.Height * 2;
                     // Scroll to child.
                     scrollViewParent.SmoothScrollTo(0, childOffset.Y);
                 }
@@ -142,16 +129,18 @@
          * @param child             Child.
          * @param accumulatedOffset Accumulated Offset.
          */
-        private void GetDeepChildOffset(ViewGroup mainParent, IViewParent parent, View child, Point accumulatedOffset)
+        Point GetDeepChildOffset(ViewGroup mainParent, IViewParent parent, View child, Point accumulatedOffset = null)
         {
-            ViewGroup parentGroup = (ViewGroup)parent;
+            if (accumulatedOffset == null)
+                accumulatedOffset = new Point();
+
+            var parentGroup = (ViewGroup)parent;
             accumulatedOffset.X += child.Left;
             accumulatedOffset.Y += child.Top;
-            if (parentGroup.Equals(mainParent))
-            {
-                return;
-            }
-            GetDeepChildOffset(mainParent, parentGroup.Parent, parentGroup, accumulatedOffset);
+
+            if (parentGroup.Equals(mainParent)) return accumulatedOffset;
+
+            return GetDeepChildOffset(mainParent, parentGroup.Parent, parentGroup, accumulatedOffset);
         }
 
         /**
@@ -165,22 +154,24 @@
          * @param child             Child.
          * @param accumulatedOffset Accumulated Offset.
          */
-        private void GetDeepChildRealPosition(ViewGroup mainParent, IViewParent parent, View child, Point accumulatedOffset)
+        Point GetDeepChildRealPosition(ViewGroup mainParent, IViewParent parent, View child, Point accumulatedOffset = null)
         {
-            ViewGroup parentGroup = (ViewGroup)parent;
+            if (accumulatedOffset == null)
+                accumulatedOffset = new Point();
+
+            var parentGroup = (ViewGroup)parent;
             accumulatedOffset.X += (int)child.GetX();
             accumulatedOffset.Y += (int)child.GetY();
-            if (parentGroup.Equals(mainParent))
-            {
-                return;
-            }
-            GetDeepChildRealPosition(mainParent, parentGroup.Parent, parentGroup, accumulatedOffset);
+
+            if (parentGroup.Equals(mainParent)) return accumulatedOffset;
+
+            return GetDeepChildRealPosition(mainParent, parentGroup.Parent, parentGroup, accumulatedOffset);
         }
 
         public void Dispose()
         {
             Screen.OnKeyboardHeightChanged -= OnKeyboardHeightChanged;
-            _view.FocusChange -= FocusChange;
+            View.FocusChange -= FocusChange;
         }
     }
 }

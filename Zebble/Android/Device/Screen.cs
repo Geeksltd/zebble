@@ -1,15 +1,15 @@
 ﻿namespace Zebble.Device
 {
-    using System.IO;
-    using System.Threading.Tasks;
     using Android.Content.Res;
     using Android.OS;
+    using Android.Util;
     using Android.Views;
+    using AndroidX.Core.View;
+    using Olive;
+    using System.IO;
+    using System.Threading.Tasks;
     using Zebble;
     using static Android.Graphics.Bitmap;
-    using Olive;
-    using Android.Util;
-    using AndroidX.Core.View;
 
     partial class Screen
     {
@@ -58,7 +58,8 @@
                     var size = new Android.Graphics.Point();
                     Display.GetRealSize(size);
 
-                    return Scale.ToZebble(size.Y) - StatusBar.Height  - NavigationBarHeight;
+                    // TODO: Shouldn't we remove NavigationBarHeight??!!
+                    return Scale.ToZebble(size.Y);// - NavigationBarHeight;
                 }
             );
 

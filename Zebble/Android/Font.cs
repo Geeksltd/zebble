@@ -29,10 +29,16 @@ namespace Zebble
             SamplePaint.FakeBoldText = Bold;
             SamplePaint.SetTypeface(Render());
 
+            var fontMetrics = SamplePaint.GetFontMetrics();
+            var actualHeight = SamplePaint.FontSpacing - Math.Abs(((fontMetrics.Bottom - fontMetrics.Top - EffectiveSize) - SamplePaint.FontSpacing) / 2);
+
             using (var layout = new StaticLayout(text, SamplePaint, Scale.ToDevice(width),
                 Layout.Alignment.AlignNormal, 1, 0, includepad: false))
             {
-                return Scale.ToZebble(layout.Height/* - GetUnwantedExtraTopPadding() / 2*/);
+                var linePadding = GetUnwantedExtraTopPadding();
+                var lineCount = layout.Height / actualHeight;
+                var layoutHeight = Scale.ToZebble(layout.Height);
+                return layoutHeight + linePadding * lineCount;
             }
         }
 
@@ -50,7 +56,6 @@ namespace Zebble
 
                 paint.SetTypeface(Typeface.Create(Name, typeFace));
                 paint.SetStyle(Paint.Style.Fill);
-
                 return paint.Descent() - paint.Ascent() - EffectiveSize;
             }
         }

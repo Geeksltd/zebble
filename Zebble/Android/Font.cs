@@ -1,12 +1,11 @@
 namespace Zebble
 {
-    using System;
-    using System.Collections.Generic;
     using Android.Graphics;
     using Android.Text;
     using Android.Util;
-    using Zebble.Device;
     using Olive;
+    using System.Collections.Generic;
+    using Zebble.Device;
 
     partial interface IFont { Typeface Render(); }
 
@@ -25,14 +24,20 @@ namespace Zebble
         {
             if (text.IsEmpty()) text = "Tag";
 
-            SamplePaint.TextSize = Scale.ToDevice(EffectiveSize);
+            SamplePaint.TextSize = EffectiveSize * Screen.Density;
             SamplePaint.FakeBoldText = Bold;
             SamplePaint.SetTypeface(Render());
 
+            Paint.FontMetrics fm = SamplePaint.GetFontMetrics();
+            float actualHeight = SamplePaint.FontSpacing - System.Math.Abs(((fm.Bottom - fm.Top - EffectiveSize) - SamplePaint.FontSpacing) / 2);
+            //var lineHeight2 = height2 / Screen.Density;
             using (var layout = new StaticLayout(text, SamplePaint, Scale.ToDevice(width),
                 Layout.Alignment.AlignNormal, 1, 0, includepad: false))
             {
-                return Scale.ToZebble(layout.Height/* - GetUnwantedExtraTopPadding() / 2*/);
+                var linePadding = GetUnwantedExtraTopPadding();
+                var lineCount = layout.Height / actualHeight;
+                var zebble = layout.Height / Screen.Density;
+                return zebble + (linePadding * lineCount);
             }
         }
 
@@ -50,7 +55,6 @@ namespace Zebble
 
                 paint.SetTypeface(Typeface.Create(Name, typeFace));
                 paint.SetStyle(Paint.Style.Fill);
-
                 return paint.Descent() - paint.Ascent() - EffectiveSize;
             }
         }

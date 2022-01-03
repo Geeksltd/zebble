@@ -30,7 +30,7 @@ namespace Zebble
             SamplePaint.SetTypeface(Render());
 
             var fontMetrics = SamplePaint.GetFontMetrics();
-            var actualHeight = SamplePaint.FontSpacing - Math.Abs((fontMetrics.Bottom - fontMetrics.Top - EffectiveSize - SamplePaint.FontSpacing) / 2);
+            var actualHeight = SamplePaint.FontSpacing - Math.Abs((fontMetrics.Bottom - fontMetrics.Top - EffectiveSize - SamplePaint.FontSpacing) / 2.25f);
 
             using (var layout = new StaticLayout(text, SamplePaint, Scale.ToDevice(width),
                 Layout.Alignment.AlignNormal, 1, 0, includepad: false))

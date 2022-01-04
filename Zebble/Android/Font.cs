@@ -30,14 +30,13 @@ namespace Zebble
             SamplePaint.SetTypeface(Render());
 
             var fontMetrics = SamplePaint.GetFontMetrics();
-            var actualHeight = SamplePaint.FontSpacing - Math.Abs((fontMetrics.Bottom - fontMetrics.Top - EffectiveSize - SamplePaint.FontSpacing) / 2.25f);
+            var actualHeight = SamplePaint.FontSpacing - Math.Abs((fontMetrics.Bottom - fontMetrics.Top - EffectiveSize - SamplePaint.FontSpacing) / 4f);
 
-            using (var layout = new StaticLayout(text, SamplePaint, Scale.ToDevice(width),
-                Layout.Alignment.AlignNormal, 1, 0, includepad: false))
+            using (var layout = StaticLayout.Builder.Obtain(text, 0, text.Length, SamplePaint, Scale.ToDevice(width)).Build())
             {
                 var linePadding = GetUnwantedExtraTopPadding();
                 var lineCount = layout.Height / actualHeight;
-                return Scale.ToZebble(layout.Height + linePadding * lineCount);
+                return Scale.ToZebble(layout.Height + Math.Abs(layout.BottomPadding) + Math.Abs(layout.TopPadding) + linePadding * lineCount);
             }
         }
 

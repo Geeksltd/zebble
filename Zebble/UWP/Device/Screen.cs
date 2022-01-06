@@ -43,7 +43,12 @@ namespace Zebble.Device
                     if (titleBar != null)
                     {
                         if (backColor != null)
+                        {
+                            titleBar.ButtonBackgroundColor = backColor;
                             titleBar.BackgroundColor = backColor;
+                            titleBar.InactiveBackgroundColor = backColor;
+                            titleBar.ButtonInactiveBackgroundColor = backColor;
+                        }
                     }
                 }
 
@@ -81,7 +86,12 @@ namespace Zebble.Device
                     if (titleBar != null)
                     {
                         if (foreColor != null)
+                        {
                             titleBar.ForegroundColor = foreColor;
+                            titleBar.ButtonForegroundColor = foreColor;
+                            titleBar.InactiveForegroundColor = foreColor;
+                            titleBar.ButtonInactiveForegroundColor = foreColor;
+                        }
                     }
                 }
 

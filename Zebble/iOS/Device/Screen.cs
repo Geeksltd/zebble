@@ -14,9 +14,15 @@ namespace Zebble.Device
         {
             public static void DoUpdateValues()
             {
-                if (OS.IsAtLeastiOS(11))
+                if(OS.IsAtLeastiOS(11))
                 {
+                    //it's deprecated in iOS 13
                     var nativeInsets = UIApplication.SharedApplication.KeyWindow.SafeAreaInsets;
+                    if (OS.IsAtLeastiOS(13))
+                    {
+                        nativeInsets = UIApplication.SharedApplication.Delegate.GetWindow().SafeAreaInsets;
+                    }
+
                     Top = (float)nativeInsets.Top;
                     Right = (float)nativeInsets.Right;
                     Bottom = (float)nativeInsets.Bottom;

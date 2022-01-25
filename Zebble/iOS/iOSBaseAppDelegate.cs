@@ -67,12 +67,14 @@ namespace Zebble.IOS
         [Export("application:didReceiveRemoteNotification:fetchCompletionHandler:")]
         public virtual async void DidReceiveRemoteNotification(UIApplication application, NSDictionary userInfo, Action<UIBackgroundFetchResult> completionHandler)
         {
+            if (UIRuntime.DidReceiveRemoteNotification == null) return;
+
             var receivedNewData = await UIRuntime.DidReceiveRemoteNotification.Invoke(userInfo);
             completionHandler(receivedNewData ? UIBackgroundFetchResult.NewData : UIBackgroundFetchResult.NoData);
         }
 
         [Export("application:didFailToRegisterForRemoteNotificationsWithError:")]
-        public async void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
+        public virtual async void FailedToRegisterForRemoteNotifications(UIApplication application, NSError error)
         {
             await UIRuntime.FailedToRegisterForRemoteNotifications.Raise(error);
         }
@@ -86,7 +88,7 @@ namespace Zebble.IOS
         [Export("application:didReceiveRemoteNotification:")]
         public virtual async void ReceivedRemoteNotification(UIApplication application, NSDictionary userInfo)
         {
-            await UIRuntime.DidReceiveRemoteNotification.Invoke(userInfo);
+            await UIRuntime.DidReceiveRemoteNotification?.Invoke(userInfo);
         }
 
         [Export("application:didReceiveLocalNotification:")]

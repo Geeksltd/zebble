@@ -16,17 +16,15 @@ namespace Zebble.Device
             {
                 if(OS.IsAtLeastiOS(11))
                 {
-                    //it's deprecated in iOS 13
-                    var nativeInsets = UIApplication.SharedApplication.KeyWindow.SafeAreaInsets;
-                    if (OS.IsAtLeastiOS(13))
-                    {
-                        nativeInsets = UIApplication.SharedApplication.Delegate.GetWindow().SafeAreaInsets;
-                    }
+                    var nativeInsets = UIApplication.SharedApplication?.KeyWindow?.SafeAreaInsets;
+                    var insets = nativeInsets == null ? UIApplication.SharedApplication?.Delegate?.GetWindow()?.SafeAreaInsets : nativeInsets;
 
-                    Top = (float)nativeInsets.Top;
-                    Right = (float)nativeInsets.Right;
-                    Bottom = (float)nativeInsets.Bottom;
-                    Left = (float)nativeInsets.Left;
+                    if (insets == null) return;
+
+                    Top = (float)insets.Value.Top;
+                    Right = (float)insets.Value.Right;
+                    Bottom = (float)insets.Value.Bottom;
+                    Left = (float)insets.Value.Left;
                 }
             }
         }

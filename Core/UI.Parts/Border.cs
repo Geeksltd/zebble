@@ -25,7 +25,7 @@ namespace Zebble
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static float[] GetEffectiveRadiusCorners(this IBorder @this, View view)
         {
-            var max = (view.ActualWidth + view.ActualHeight) / 2;
+            var max = (view.ActualWidth + view.ActualHeight) / 4;
             return @this.GetRadiusCorners().Select(x => x.LimitMax(max)).ToArray();
         }
 

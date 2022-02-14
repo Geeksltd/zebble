@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
   <PropertyGroup>
     <TargetFrameworks>Xamarin.iOS10;MonoAndroid90;netcoreapp3.1</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362;uap10.0.17763</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
     <AssemblyName>Zebble</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>

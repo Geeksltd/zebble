@@ -23,10 +23,14 @@ namespace Zebble
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasRoundedCorners(this IBorder @this)
+        public static float[] GetEffectiveRadiusCorners(this IBorder @this, View view)
         {
-            return @this.RadiusTopLeft > 0 || @this.RadiusTopRight > 0 || @this.RadiusBottomLeft > 0 || @this.RadiusBottomRight > 0;
+            var max = (view.ActualWidth + view.ActualHeight) / 2;
+            return @this.GetRadiusCorners().Select(x => x.LimitMax(max)).ToArray();
         }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static bool HasRoundedCorners(this IBorder @this) => @this.GetRadiusCorners().Any(x => x != default);
     }
 
     public interface IBorder

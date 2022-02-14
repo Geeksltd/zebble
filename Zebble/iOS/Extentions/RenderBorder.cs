@@ -1,7 +1,6 @@
 namespace Zebble
 {
     using System;
-    using System.Linq;
     using CoreAnimation;
     using CoreGraphics;
     using UIKit;
@@ -22,14 +21,16 @@ namespace Zebble
 
         void ApplyCornerRadius(IBorder border)
         {
-            if (border.GetRadiusCorners().All(v => v == 0)) Layer.Mask = null;
+            if (IsDead(out View view)) return;
+
+            if (!border.HasRoundedCorners()) Layer.Mask = null;
             else Layer.Mask = new CAShapeLayer
             {
                 Frame = Result.Bounds,
                 BackgroundColor = UIColor.Clear.CGColor,
                 MasksToBounds = false,
                 FillColor = Colors.Black.ToCG(),
-                Path = Result.Bounds.ToCGPath(border.GetRadiusCorners())
+                Path = Result.Bounds.ToCGPath(border.GetEffectiveRadiusCorners(view))
             };
         }
 

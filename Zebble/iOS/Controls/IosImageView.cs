@@ -121,7 +121,7 @@ namespace Zebble.IOS
             if (frameWidth == 0 || frameHeight == 0)
                 return image;
 
-            (var newWidth, var newHeight) = CalculateNewDimensions(imageWidth, imageHeight, frameWidth, frameHeight);
+            (var newWidth, var newHeight) = FindTheSuitableSize(imageWidth, imageHeight, frameWidth, frameHeight);
 
             (var x, var y) = GetRelativePosition(alignment, newWidth, newHeight, frameWidth, frameHeight);
 
@@ -161,124 +161,17 @@ namespace Zebble.IOS
             }
         }
 
-        /*
-         * Do not try to refactor or simplify this method
-         * this amount of conditions make it much easier
-         * for debugging
-         */
-        (float width, float height) CalculateNewDimensions(float imageWidth, float imageHeight, float frameWidth, float frameHeight)
+        (float width, float height) FindTheSuitableSize(float imageWidth, float imageHeight, float maxWidth, float maxHeight)
         {
-            //Zebble.Device.Log.Warning($"{View.Id}- imageHeight: {imageHeight} - frameHeight: {frameHeight} - imageWidth: {imageWidth} - frameWidth: {frameWidth}");
-            if (imageHeight <= 0 || frameHeight <= 0) return (0, 0); // to avoid DevideByZero
+            if (imageWidth <= 0 || imageHeight <= 0) return (0, 0); // to avoid DevideByZero
 
-            float width = 0.0f, height = 0.0f;
+            var ratioW = maxWidth / imageWidth;
+            var ratioH = maxHeight / imageHeight;
+            var ratio = Math.Min(ratioW, ratioH);
+            var suitableWidth = imageWidth * ratio;
+            var suitableHeight = imageHeight * ratio;
 
-            var imageAspectRatio = imageWidth / imageHeight;
-            var frameAspectRatio = frameWidth / frameHeight;
-
-            if (imageWidth < frameWidth && imageHeight < frameHeight)
-            {
-                if (imageAspectRatio < frameAspectRatio)
-                {
-                    if (frameHeight < frameWidth)
-                    {
-                        height = frameHeight;
-                        width = frameHeight * imageAspectRatio;
-                    }
-                    else
-                    {
-                        width = frameWidth;
-                        height = frameWidth * imageAspectRatio;
-                    }
-                }
-                else
-                {
-                    width = frameWidth;
-                    height = imageHeight * (width / imageWidth);
-                }
-            }
-
-            else if (imageWidth > frameWidth && imageHeight > frameHeight)
-            {
-                if (imageAspectRatio < frameAspectRatio)
-                {
-                    height = frameHeight;
-                    width = frameHeight * imageAspectRatio;
-                }
-                else
-                {
-                    width = frameWidth;
-                    height = frameWidth * imageAspectRatio;
-                }
-            }
-
-            else if (imageWidth < frameWidth && imageHeight > frameHeight)
-            {
-                if (imageAspectRatio <= frameAspectRatio)
-                {
-                    height = frameHeight;
-                    width = imageWidth * (frameHeight / imageHeight);
-                }
-                else
-                {
-                    // Should not happen
-                    Log.For(this).Error($"1 -> ({imageWidth},{imageHeight}),({frameWidth},{frameHeight}) has IAR {imageAspectRatio} and FAR {frameAspectRatio}");
-                }
-            }
-
-            else if (imageWidth > frameWidth && imageHeight < frameHeight)
-            {
-                if (imageAspectRatio >= frameAspectRatio)
-                {
-                    height = frameHeight;
-                    width = imageWidth * (height / imageHeight);
-                }
-                else
-                {
-                    // Should not happen
-                    Log.For(this).Error($"2({imageWidth},{imageHeight}),({frameWidth},{frameHeight}) has IAR {imageAspectRatio} and FAR {frameAspectRatio}");
-                }
-            }
-            else if (imageWidth == frameWidth)
-            {
-                if (imageHeight <= frameHeight)
-                {
-                    width = frameWidth;
-                    height = imageHeight;
-                }
-                else
-                {
-                    height = frameHeight;
-                    width = imageWidth * (height / imageHeight);
-                }
-            }
-            else if (imageHeight == frameHeight)
-            {
-                if (imageWidth <= frameWidth)
-                {
-                    if (frameHeight < frameWidth)
-                    {
-                        height = frameHeight;
-                        width = frameHeight * imageAspectRatio;
-                    }
-                    else
-                    {
-                        width = frameWidth;
-                        height = frameWidth * imageAspectRatio;
-                    }
-                }
-                else
-                {
-                    width = frameWidth;
-                    height = imageHeight * (width / imageWidth);
-                }
-            }
-            else
-            {
-                Log.For(this).Error("The conditions do not cover all possibilities? Should not happen");
-            }
-
-            return (width, height);
+            return (suitableWidth, suitableHeight);
         }
 
         (int x, int y) GetRelativePosition(Alignment alignment, float newWidth, float newHeight, float frameWidth, float frameHeight)

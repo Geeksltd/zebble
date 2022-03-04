@@ -67,7 +67,7 @@ namespace Zebble
 
             if (view.Opacity != 1) Result.Alpha = view.Opacity;
 
-            RenderBorders();
+            RenderBorder();
             if (view is ImageView) Layer.MasksToBounds = true;
 
             SetBackgroundColor(new UIChangedEventArgs<Color>(View, View.BackgroundColor) { Animation = null });
@@ -128,7 +128,8 @@ namespace Zebble
             if (IsDead(out View view)) return;
 
             view.BackgroundImageChanged.HandleOnUI(SetBackgroundImage);
-            view.BorderChanged.HandleOnUI(RenderBorders);
+            view.BorderChanged.HandleOnUI(RenderBorder);
+            view.BorderRadiusChanged.HandleOnUI(RenderBorder);
         }
 
         void OnBoundsChanged(BoundsChangedEventArgs args)
@@ -190,7 +191,7 @@ namespace Zebble
             // As gradient color is a sublayer, sync its size.
             // Layer.SyncBackgroundFrame(Result.Frame);
 
-            RenderBorders();
+            RenderBorder();
         }
 
         void OnOpacityChanged(UIChangedEventArgs<float> args)
@@ -219,7 +220,7 @@ namespace Zebble
             }
             Layer.Transform = args.Render();
 
-            RenderBorders();
+            RenderBorder();
         }
 
         void OnVisibilityChanged()

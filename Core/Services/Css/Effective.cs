@@ -33,16 +33,16 @@ namespace Zebble
         public float BorderRight() => View.Style.border?.right ?? View.Css.border?.right ?? 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float BorderRadiusTopLeft() => View.Style.border?.RadiusTopLeft ?? View.Css.border?.RadiusTopLeft ?? 0;
+        public float BorderRadiusTopLeft() => View.Style.borderRadius?.TopLeft ?? View.Css.borderRadius?.TopLeft ?? 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float BorderRadiusTopRight() => View.Style.border?.RadiusTopRight ?? View.Css.border?.RadiusTopRight ?? 0;
+        public float BorderRadiusTopRight() => View.Style.borderRadius?.TopRight ?? View.Css.borderRadius?.TopRight ?? 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float BorderRadiusBottomLeft() => View.Style.border?.RadiusBottomLeft ?? View.Css.border?.RadiusBottomLeft ?? 0;
+        public float BorderRadiusBottomLeft() => View.Style.borderRadius?.BottomLeft ?? View.Css.borderRadius?.BottomLeft ?? 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public float BorderRadiusBottomRight() => View.Style.border?.RadiusBottomRight ?? View.Css.border?.RadiusBottomRight ?? 0;
+        public float BorderRadiusBottomRight() => View.Style.borderRadius?.BottomRight ?? View.Css.borderRadius?.BottomRight ?? 0;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public float BorderTotalHorizontal() => BorderLeft() + BorderRight();
@@ -53,8 +53,13 @@ namespace Zebble
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool HasBorder()
         {
-            return BorderLeft() > 0 || BorderRight() > 0 || BorderBottom() > 0 || BorderTop() > 0 ||
-                GetBorderRadiusCorners().Any(v => v > 0);
+            return BorderLeft() > 0 || BorderRight() > 0 || BorderBottom() > 0 || BorderTop() > 0;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool HasBorderRadius()
+        {
+            return GetBorderRadiusCorners().Any(v => v > 0);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -79,11 +84,21 @@ namespace Zebble
                     right = View.Style.border?.right ?? View.Css.border?.right ?? 0,
                     top = View.Style.border?.top ?? View.Css.border?.top ?? 0,
                     bottom = View.Style.border?.bottom ?? View.Css.border?.bottom ?? 0,
-                    radiusTopLeft = View.Style.border?.radiusTopLeft ?? View.Css.border?.radiusTopLeft ?? 0,
-                    radiusTopRight = View.Style.border?.radiusTopRight ?? View.Css.border?.radiusTopRight ?? 0,
-                    radiusBottomLeft = View.Style.border?.radiusBottomLeft ?? View.Css.border?.radiusBottomLeft ?? 0,
-                    radiusBottomRight = View.Style.border?.radiusBottomRight ?? View.Css.border?.radiusBottomRight ?? 0,
                     color = View.Style.border?.color ?? View.Css.border?.color ?? Colors.Black
+                };
+            }
+        }
+
+        public IBorderRadius BorderRadius
+        {
+            get
+            {
+                return new BorderRadius
+                {
+                    TopLeft = View.Style.borderRadius?.TopLeft ?? View.Css.borderRadius?.TopLeft ?? 0,
+                    TopRight = View.Style.borderRadius?.TopRight ?? View.Css.borderRadius?.TopRight ?? 0,
+                    BottomLeft = View.Style.borderRadius?.BottomLeft ?? View.Css.borderRadius?.BottomLeft ?? 0,
+                    BottomRight = View.Style.borderRadius?.BottomRight ?? View.Css.borderRadius?.BottomRight ?? 0,
                 };
             }
         }

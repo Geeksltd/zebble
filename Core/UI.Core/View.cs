@@ -44,6 +44,7 @@ namespace Zebble
         public readonly AsyncEvent VisibilityChanged = new AsyncEvent();
         public readonly AsyncEvent ZIndexChanged = new AsyncEvent();
         public readonly AsyncEvent BorderChanged = new AsyncEvent();
+        public readonly AsyncEvent BorderRadiusChanged = new AsyncEvent();
         /// <summary>
         /// Fired when the view has a new ViewModel applied as items are being rearranged within a CollectionView.
         /// </summary>
@@ -137,6 +138,8 @@ namespace Zebble
         }
 
         internal void RaiseBorderChanged() => BorderChanged.Raise();
+
+        internal void RaiseBorderRadiusChanged() => BorderRadiusChanged.Raise();
 
         internal void RaiseHorizontalBorderSizeChanged() => HorizontalBorderSizeChanged.Raise();
 
@@ -317,6 +320,8 @@ namespace Zebble
         }
 
         public virtual IBorder Border { get => Effective.Border; set => Style.Border = (Border)value; }
+
+        public virtual IBorderRadius BorderRadius { get => Effective.BorderRadius; set => Style.BorderRadius = (BorderRadius)value; }
 
         [PropertyGroup("Visibility")]
         public int ZIndex { get => zIndex; set => Style.ZIndex = value; }

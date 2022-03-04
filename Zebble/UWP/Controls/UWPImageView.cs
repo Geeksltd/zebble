@@ -21,20 +21,20 @@ namespace Zebble.UWP
             View.BackgroundImageChanged.HandleOnUI(LoadImageAsync);
             View.BackgroundImageParametersChanged.HandleOnUI(LoadImageAsync);
             View.PaddingChanged.HandleOnUI(PaddingChanged);
-            View.BorderChanged.HandleOnUI(BorderChanged);
+            View.BorderRadiusChanged.HandleOnUI(BorderRadiusChanged);
 
             if (Services.ImageService.ShouldMemoryCache(View.Path)) LoadImageAsync();
             else Result.Loading += Result_Loading;
 
             PaddingChanged();
-            BorderChanged();
+            BorderRadiusChanged();
 
             return Result;
         }
 
         void Result_Loading(xaml.FrameworkElement _, object __) => LoadImageAsync();
 
-        void BorderChanged()
+        void BorderRadiusChanged()
         {
             if (!IsDisposing())
                 Result.CornerRadius = View.Effective.RenderCornerRadius();

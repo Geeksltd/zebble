@@ -174,8 +174,8 @@ namespace Zebble
                 ProcessBorder();
 
             if (CssKey.StartsWith("border-") && CssKey.EndsWith("-radius"))
-                CssKey = "Border.Radius" + CssKey.TrimStart("border").TrimEnd("radius").Trim('-')
-                    .Replace("-", " ").ToPascalCaseId();
+                CssKey = "BorderRadius" + CssKey.TrimStart("border").TrimEnd("radius").Trim('-')
+                    .Replace("-", " ").ToPascalCaseId().WithPrefix(".");
 
             if (CssKey == "white-space")
             {

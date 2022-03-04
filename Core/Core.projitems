@@ -94,6 +94,7 @@
     <Compile Include="$(MSBuildThisFileDirectory)UI.Core\ViewPropertySetterExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\CacheViewAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Navigation\Nav.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)UI.Parts\BorderRadius.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI.Parts\Border.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI.Parts\Enums.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)UI.Parts\Events\RevisitingEventArgs.cs" />

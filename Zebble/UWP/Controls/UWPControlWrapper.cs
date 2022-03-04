@@ -24,6 +24,7 @@ namespace Zebble.UWP
             Native = new controls.Border { Child = renderer.NativeElement };
             HandleEvents();
             BorderChanged();
+            BorderRadiusChanged();
         }
 
         public Task<UWPControlWrapper> Render()
@@ -38,6 +39,7 @@ namespace Zebble.UWP
         {
             View.BackgroundImageChanged.HandleOnUI(BackgroundChanged);
             View.BorderChanged.HandleOnUI(BorderChanged);
+            View.BorderRadiusChanged.HandleOnUI(BorderRadiusChanged);
             View.BackgroundImageParametersChanged.HandleOnUI(BackgroundImageParametersChanged);
         }
 
@@ -136,6 +138,10 @@ namespace Zebble.UWP
         {
             Native.BorderBrush = View.Effective.BorderColor().RenderBrush();
             Native.BorderThickness = View.Border.RenderThickness();
+        }
+
+        public void BorderRadiusChanged()
+        {
             Native.CornerRadius = View.Effective.RenderCornerRadius();
         }
 

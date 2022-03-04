@@ -8,7 +8,7 @@ namespace Zebble
     internal class ZebbleCssSetting
     {
         public string Key, CSharpValue, StringValue, CastType;
-        static readonly string[] CssProperties = "width,height,x,y,font,backgroundcolor,backgroundImagePath,backgroundImageData,backgroundImageStretch,backgroundImageAlignment,border,Opacity,padding,margin,TextColor,Visible,TextAlignment,BackgroundImage,Ignored,Absolute,WrapText,left,top,TextTransform,Zindex,ScaleX,ScaleY,Rotation,RotationX,RotationY"
+        static readonly string[] CssProperties = "width,height,x,y,font,backgroundcolor,backgroundImagePath,backgroundImageData,backgroundImageStretch,backgroundImageAlignment,border,BorderRadius,Opacity,padding,margin,TextColor,Visible,TextAlignment,BackgroundImage,Ignored,Absolute,WrapText,left,top,TextTransform,Zindex,ScaleX,ScaleY,Rotation,RotationX,RotationY"
             .ToLower().Split(',').Trim().ToArray();
 
         internal string ToCode(string variable, string property)

@@ -37,12 +37,12 @@ namespace Zebble.AndroidOS
 
         void SetBorderRadius()
         {
-            var border = View.Effective.Border;
-            var corners = border.GetEffectiveRadiusCorners(View);
+            var borderRadius = View.Effective.BorderRadius;
+            var corners = borderRadius.GetEffectiveRadiusCorners(View);
 
-            if (border.IsRadiusUniform()) // Uniform.
+            if (borderRadius.IsUniform()) // Uniform.
             {
-                if (!border.HasRoundedCorners()) return;
+                if (!borderRadius.HasValue()) return;
                 SetCornerRadius(Scale.ToDevice(corners[0]));
             }
             else

@@ -17,6 +17,7 @@ namespace Zebble
         internal bool? wrapText, absolute, visible, ignored;
         internal Color backgroundColor, textColor;
         internal Border border;
+        internal BorderRadius borderRadius;
         internal Font font;
         internal Alignment? textAlignment, backgroundImageAlignment;
         internal float? opacity, scaleX, scaleY, rotation, rotationX, rotationY;
@@ -315,6 +316,28 @@ namespace Zebble
                 border.Changed += () => Owner.RaiseBorderChanged();
                 border.HorizontalSizeChanged += () => Owner.RaiseHorizontalBorderSizeChanged();
                 border.VerticalSizeChanged += () => Owner.RaiseVerticalBorderSizeChanged();
+            }
+        }
+
+        public virtual BorderRadius BorderRadius
+        {
+            get
+            {
+                if (borderRadius is null)
+                {
+                    borderRadius = new BorderRadius();
+                    borderRadius.Changed += () => Owner.RaiseBorderRadiusChanged();
+                }
+
+                return borderRadius;
+            }
+            set
+            {
+                if (borderRadius == value) return;
+
+                borderRadius = value ?? new BorderRadius();
+                Owner.RaiseBorderRadiusChanged();
+                borderRadius.Changed += () => Owner.RaiseBorderChanged();
             }
         }
 

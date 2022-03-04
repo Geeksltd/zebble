@@ -10,27 +10,29 @@ namespace Zebble
     {
         CAShapeLayer TopBorderLayer, RightBorderLayer, BottomBorderLayer, LeftBorderLayer;
 
-        void RenderBorders()
+        void RenderBorder()
         {
             if (IsDead(out View view)) return;
+
+            var borderRadius = View.Effective.BorderRadius;
+            ApplyCornerRadius(borderRadius);
 
             var border = View.Effective.Border;
-            ApplyCornerRadius(border);
-            ApplyBorderLines(border);
+            ApplyBorderLines(border, borderRadius);
         }
 
-        void ApplyCornerRadius(IBorder border)
+        void ApplyCornerRadius(IBorderRadius borderRadius)
         {
             if (IsDead(out View view)) return;
 
-            if (!border.HasRoundedCorners()) Layer.Mask = null;
+            if (!borderRadius.HasValue()) Layer.Mask = null;
             else Layer.Mask = new CAShapeLayer
             {
                 Frame = Result.Bounds,
                 BackgroundColor = UIColor.Clear.CGColor,
                 MasksToBounds = false,
                 FillColor = Colors.Black.ToCG(),
-                Path = Result.Bounds.ToCGPath(border.GetEffectiveRadiusCorners(view))
+                Path = Result.Bounds.ToCGPath(borderRadius.GetEffectiveRadiusCorners(view))
             };
         }
 
@@ -42,9 +44,9 @@ namespace Zebble
             RemoveSideBorder(ref RightBorderLayer);
         }
 
-        void ApplyBorderLines(IBorder border)
+        void ApplyBorderLines(IBorder border, IBorderRadius borderRadius)
         {
-            if (border.IsUniform() && !border.HasRoundedCorners())
+            if (border.IsUniform() && !border.HasValue())
             {
                 // Same line all over (or no line)
                 RemoveSideBorders();
@@ -63,15 +65,15 @@ namespace Zebble
                 }
                 else
                 {
-                    DrawTopBorderLine(border);
-                    DrawRightBorderLine(border);
-                    DrawBottomBorderLine(border);
-                    DrawLeftBorderLine(border);
+                    DrawTopBorderLine(border, borderRadius);
+                    DrawRightBorderLine(border, borderRadius);
+                    DrawBottomBorderLine(border, borderRadius);
+                    DrawLeftBorderLine(border, borderRadius);
                 }
             }
         }
 
-        void DrawTopBorderLine(IBorder border)
+        void DrawTopBorderLine(IBorder border, IBorderRadius borderRadius)
         {
             if (border.Top == 0)
             {
@@ -81,8 +83,8 @@ namespace Zebble
 
             using (var path = new UIBezierPath())
             {
-                var left = border.RadiusTopLeft;
-                var right = border.RadiusTopRight;
+                var left = borderRadius.TopLeft;
+                var right = borderRadius.TopRight;
 
                 if (left > 0) path.AddArc(new CGPoint(left, left), left, 180f.ToRadians(), 270f.ToRadians(), clockWise: true);
 
@@ -95,7 +97,7 @@ namespace Zebble
             }
         }
 
-        void DrawRightBorderLine(IBorder border)
+        void DrawRightBorderLine(IBorder border, IBorderRadius borderRadius)
         {
             if (border.Right == 0)
             {
@@ -105,8 +107,8 @@ namespace Zebble
 
             using (var path = new UIBezierPath())
             {
-                var top = border.RadiusTopRight;
-                var bottom = border.RadiusBottomRight;
+                var top = borderRadius.TopRight;
+                var bottom = borderRadius.BottomRight;
                 if (top > 0) path.AddArc(new CGPoint(Result.Bounds.Width - top, top), top, 270f.ToRadians(), 0, clockWise: true);
 
                 path.AddLine(Result.Bounds.Width, top, Result.Bounds.Width, Result.Bounds.Height - bottom);
@@ -118,7 +120,7 @@ namespace Zebble
             }
         }
 
-        void DrawBottomBorderLine(IBorder border)
+        void DrawBottomBorderLine(IBorder border, IBorderRadius borderRadius)
         {
             if (border.Bottom == 0)
             {
@@ -131,8 +133,8 @@ namespace Zebble
 
             using (var path = new UIBezierPath())
             {
-                var left = border.RadiusBottomLeft;
-                var right = border.RadiusBottomRight;
+                var left = borderRadius.BottomLeft;
+                var right = borderRadius.BottomRight;
 
                 if (left > 0) path.AddArc(new CGPoint(left, height - left), left, 90f.ToRadians(), 180f.ToRadians(), clockWise: true);
 
@@ -148,7 +150,7 @@ namespace Zebble
             }
         }
 
-        void DrawLeftBorderLine(IBorder border)
+        void DrawLeftBorderLine(IBorder border, IBorderRadius borderRadius)
         {
             if (border.Left == 0)
             {
@@ -158,8 +160,8 @@ namespace Zebble
 
             using (var path = new UIBezierPath())
             {
-                var top = border.RadiusTopLeft;
-                var bottom = border.RadiusBottomLeft;
+                var top = borderRadius.TopLeft;
+                var bottom = borderRadius.BottomLeft;
 
                 if (top > 0) path.AddArc(new CGPoint(top, top), top, 180f.ToRadians(), 270f.ToRadians(), clockWise: true);
 

@@ -12,25 +12,6 @@ namespace Zebble
         {
             return new[] { @this.Left, @this.Right, @this.Top, @this.Bottom }.Distinct().IsSingle();
         }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool IsRadiusUniform(this IBorder @this) => @this.GetRadiusCorners().Distinct().IsSingle();
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float[] GetRadiusCorners(this IBorder @this)
-        {
-            return new[] { @this.RadiusTopLeft, @this.RadiusTopRight, @this.RadiusBottomRight, @this.RadiusBottomLeft };
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static float[] GetEffectiveRadiusCorners(this IBorder @this, View view)
-        {
-            var max = (view.ActualWidth + view.ActualHeight) / 4;
-            return @this.GetRadiusCorners().Select(x => x.LimitMax(max)).ToArray();
-        }
-
-        [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static bool HasRoundedCorners(this IBorder @this) => @this.GetRadiusCorners().Any(x => x != default);
     }
 
     public interface IBorder
@@ -39,10 +20,6 @@ namespace Zebble
         float Right { get; }
         float Top { get; }
         float Bottom { get; }
-        float RadiusTopLeft { get; }
-        float RadiusTopRight { get; }
-        float RadiusBottomLeft { get; }
-        float RadiusBottomRight { get; }
 
         Color Color { get; }
         bool HasValue();
@@ -57,7 +34,6 @@ namespace Zebble
         internal float? right;
         internal float? top;
         internal float? bottom;
-        internal float? radiusTopLeft, radiusTopRight, radiusBottomLeft, radiusBottomRight;
         internal Color color;
         internal event Action Changed, HorizontalSizeChanged, VerticalSizeChanged;
 
@@ -81,15 +57,6 @@ namespace Zebble
                 Changed?.Invoke();
                 HorizontalSizeChanged?.Invoke();
                 VerticalSizeChanged?.Invoke();
-            }
-        }
-
-        public float Radius
-        {
-            set
-            {
-                radiusBottomLeft = radiusTopRight = radiusTopLeft = radiusBottomRight = value;
-                Changed?.Invoke();
             }
         }
 
@@ -141,36 +108,11 @@ namespace Zebble
             }
         }
 
-        public float RadiusTopLeft
-        {
-            get => radiusTopLeft ?? 0;
-            set { if (radiusTopLeft == value) return; radiusTopLeft = value; Changed?.Invoke(); }
-        }
-
-        public float RadiusTopRight
-        {
-            get => radiusTopRight ?? 0;
-            set { if (radiusTopRight == value) return; radiusTopRight = value; Changed?.Invoke(); }
-        }
-
-        public float RadiusBottomLeft
-        {
-            get => radiusBottomLeft ?? 0;
-            set { if (radiusBottomLeft == value) return; radiusBottomLeft = value; Changed?.Invoke(); }
-        }
-
-        public float RadiusBottomRight
-        {
-            get => radiusBottomRight ?? 0;
-            set { if (radiusBottomRight == value) return; radiusBottomRight = value; Changed?.Invoke(); }
-        }
-
         public static implicit operator Border(int value) => new Border { Width = value };
 
         public bool HasValue()
         {
-            return Left > 0 || Right > 0 || Bottom > 0 || Top > 0 ||
-     radiusBottomLeft > 0 || radiusBottomRight > 0 || radiusTopLeft > 0 || radiusTopRight > 0;
+            return Left > 0 || Right > 0 || Bottom > 0 || Top > 0;
         }
 
         public override string ToString()
@@ -225,10 +167,6 @@ namespace Zebble
             if (bottom != another.bottom) return false;
             if (left != another.left) return false;
             if (right != another.right) return false;
-            if (radiusTopLeft != another.radiusTopLeft) return false;
-            if (radiusTopRight != another.radiusTopRight) return false;
-            if (radiusBottomLeft != another.radiusBottomLeft) return false;
-            if (radiusBottomRight != another.radiusBottomRight) return false;
             if (color != another.color) return false;
 
             return true;

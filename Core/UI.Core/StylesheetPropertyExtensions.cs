@@ -113,7 +113,7 @@ namespace Zebble
             return sheet;
         }
 
-        public static Stylesheet Border(this Stylesheet sheet, float? all = null, float? top = null, float? right = null, float? bottom = null, float? left = null, float? radius = null, Color color = null)
+        public static Stylesheet Border(this Stylesheet sheet, float? all = null, float? top = null, float? right = null, float? bottom = null, float? left = null, Color color = null)
         {
             if (all.HasValue) sheet.Border.Width = all.Value;
 
@@ -121,10 +121,21 @@ namespace Zebble
             if (left.HasValue) sheet.Border.Left = left.Value;
             if (bottom.HasValue) sheet.Border.Bottom = bottom.Value;
             if (right.HasValue) sheet.Border.Right = right.Value;
-            if (radius.HasValue) sheet.Border.Radius = radius.Value;
 
             if (color != null) sheet.Border.Color = color;
 
+            return sheet;
+        }
+
+        public static Stylesheet BorderRadius(this Stylesheet sheet, float? all = null, float? topLeft = null, float? topRight = null, float? bottomRight = null, float? bottomLeft = null)
+        {
+            if (all.HasValue) sheet.borderRadius = all.Value;
+
+            if (topLeft.HasValue) sheet.BorderRadius.TopLeft = topLeft.Value;
+            if (topRight.HasValue) sheet.BorderRadius.TopRight = topRight.Value;
+            if (bottomRight.HasValue) sheet.BorderRadius.BottomRight = bottomRight.Value;
+            if (bottomLeft.HasValue) sheet.BorderRadius.BottomLeft = bottomLeft.Value;
+            
             return sheet;
         }
 

@@ -209,7 +209,7 @@ namespace Zebble
             if (left.HasValue) view.Style.Border.Left = left.Value;
             if (bottom.HasValue) view.Style.Border.Bottom = bottom.Value;
             if (right.HasValue) view.Style.Border.Right = right.Value;
-            if (radius.HasValue) view.Style.Border.Radius = radius.Value;
+            if (radius.HasValue) view.Style.BorderRadius = radius.Value;
 
             if (color != null) view.Style.Border.Color = color;
 
@@ -218,18 +218,18 @@ namespace Zebble
 
         public static TView BorderRadius<TView>(this TView view, float? all = null, float? top = null, float? left = null, float? right = null, float? bottom = null, float? topLeft = null, float? topRight = null, float? bottomRight = null, float? bottomLeft = null) where TView : View
         {
-            if (all.HasValue) view.Style.Border.Radius = all.Value;
+            if (all.HasValue) view.Style.BorderRadius = all.Value;
 
-            if (top.HasValue) view.Style.border.RadiusTopLeft = view.Style.border.RadiusTopRight = top.Value;
-            if (left.HasValue) view.Style.border.RadiusTopLeft = view.Style.border.RadiusBottomLeft = left.Value;
-            if (right.HasValue) view.Style.border.RadiusTopRight = view.Style.border.RadiusBottomRight = right.Value;
-            if (bottom.HasValue) view.Style.border.RadiusBottomLeft = view.Style.border.RadiusBottomRight = bottom.Value;
+            if (top.HasValue) view.Style.BorderRadius.TopLeft = view.Style.borderRadius.TopRight = top.Value;
+            if (left.HasValue) view.Style.BorderRadius.TopLeft = view.Style.borderRadius.BottomLeft = left.Value;
+            if (right.HasValue) view.Style.BorderRadius.TopRight = view.Style.borderRadius.BottomRight = right.Value;
+            if (bottom.HasValue) view.Style.BorderRadius.BottomLeft = view.Style.borderRadius.BottomRight = bottom.Value;
 
-            if (topLeft.HasValue) view.Style.Border.RadiusTopLeft = topLeft.Value;
-            if (topRight.HasValue) view.Style.Border.RadiusTopRight = topRight.Value;
+            if (topLeft.HasValue) view.Style.BorderRadius.TopLeft = topLeft.Value;
+            if (topRight.HasValue) view.Style.BorderRadius.TopRight = topRight.Value;
 
-            if (bottomLeft.HasValue) view.Style.Border.RadiusBottomLeft = bottomLeft.Value;
-            if (bottomRight.HasValue) view.Style.Border.RadiusBottomRight = bottomRight.Value;
+            if (bottomLeft.HasValue) view.Style.BorderRadius.BottomLeft = bottomLeft.Value;
+            if (bottomRight.HasValue) view.Style.BorderRadius.BottomRight = bottomRight.Value;
 
             return view;
         }

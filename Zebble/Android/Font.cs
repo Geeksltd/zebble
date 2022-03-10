@@ -32,9 +32,17 @@ namespace Zebble
             var fontMetrics = SamplePaint.GetFontMetrics();
             var actualHeight = SamplePaint.FontSpacing - Math.Abs((fontMetrics.Bottom - fontMetrics.Top - EffectiveSize - SamplePaint.FontSpacing) / 4f);
 
-            using (var layout = StaticLayout.Builder.Obtain(text, 0, text.Length, SamplePaint, Scale.ToDevice(width)).Build())
+            var linePadding = GetUnwantedExtraTopPadding();
+
+            StaticLayout layout;
+
+            if (OS.IsAtLeast(Android.OS.BuildVersionCodes.M))
+                layout = StaticLayout.Builder.Obtain(text, 0, text.Length, SamplePaint, Scale.ToDevice(width)).Build();
+            else
+                layout = new StaticLayout(text, 0, text.Length, SamplePaint, Scale.ToDevice(width), Layout.Alignment.AlignNormal, 1, 0, false);
+
+            using (layout)
             {
-                var linePadding = GetUnwantedExtraTopPadding();
                 var lineCount = layout.Height / actualHeight;
                 return Scale.ToZebble(layout.Height + Math.Abs(layout.BottomPadding) + Math.Abs(layout.TopPadding) + linePadding * lineCount);
             }

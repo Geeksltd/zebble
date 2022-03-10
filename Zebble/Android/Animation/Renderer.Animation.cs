@@ -43,6 +43,9 @@
             {
                 try
                 {
+                    if (IsDead(out var vi)) return;
+                    if (ani.RepeatCount == -1 && vi.Opacity == 0) return;
+
                     if (isUpdate) frameAction(value);
                     else if (completeAction != null) completeAction(value);
                     else frameAction(value);
@@ -61,8 +64,6 @@
 
             ani.Update += (arg, e) =>
             {
-                if (IsDead(out var vi)) return;
-                if (ani.RepeatCount == -1 && vi.Opacity == 0) return;
                 applyFrame(e.Animation.AnimatedValue.ToString().To<TValue>());
             };
 

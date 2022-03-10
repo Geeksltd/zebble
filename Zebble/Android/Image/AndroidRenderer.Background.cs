@@ -19,11 +19,12 @@
 
             var hasGradient = view.BackgroundColor is GradientColor;
             var hasBorder = view.Effective.HasBorder();
+            var hasBorderRadius = view.Effective.HasBorderRadius();
             var hasComplexBorders = View.Effective.ShouldRenderBorderLines() && !View.Border.IsUniform();
 
             Drawable colorLayer;
 
-            if (hasGradient || hasBorder)
+            if (hasGradient || hasBorder || hasBorderRadius)
                 colorLayer = new BorderGradientDrawable(view);
             else colorLayer = new ColorDrawable(view.BackgroundColor.Render());
 

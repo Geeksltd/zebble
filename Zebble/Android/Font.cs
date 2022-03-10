@@ -39,7 +39,7 @@ namespace Zebble
             if (OS.IsAtLeast(Android.OS.BuildVersionCodes.M))
                 layout = StaticLayout.Builder.Obtain(text, 0, text.Length, SamplePaint, Scale.ToDevice(width)).Build();
             else
-                layout = new StaticLayout(text, 0, text.Length, SamplePaint, Scale.ToDevice(width), Layout.Alignment.AlignNormal, 1, 0, false);
+                layout = new StaticLayout(text, 0, text.Length, SamplePaint, Scale.ToDevice(width), null, 1, 0, false);
 
             using (layout)
             {

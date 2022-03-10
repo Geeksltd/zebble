@@ -12,12 +12,13 @@ namespace Zebble
         void OnBoundsChanged(BoundsChangedEventArgs args)
         {
             if (IsDead(out var view)) return;
+            if (Result is null) return;
 
             var newLeft = Scale.ToDevice(args.X);
             var newTop = Scale.ToDevice(args.Y);
             var newFrame = new Size(args.Width, args.Height).ToDevice().ToLayoutParams(view);
 
-            var currentFrame = Result?.LayoutParameters;
+            var currentFrame = Result.LayoutParameters;
 
             if (currentFrame != null)
             {

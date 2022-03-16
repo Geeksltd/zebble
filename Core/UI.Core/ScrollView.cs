@@ -134,8 +134,6 @@ namespace Zebble
             })));
         }
 
-        public bool ShowScroll { get; set; }
-
         public Size CalculateContentSize()
         {
             if (Direction == RepeatDirection.Horizontal)

@@ -40,7 +40,8 @@ namespace Zebble.IOS
             SetPaging();
             DelaysContentTouches = true;
             CanCancelContentTouches = true;
-            ShowsVerticalScrollIndicator = ShowsHorizontalScrollIndicator = View.ShowScroll;
+            ShowsVerticalScrollIndicator = View.ShowVerticalScrollBars;
+            ShowsHorizontalScrollIndicator = View.ShowHorizontalScrollBars;
             AlwaysBounceVertical = View.Direction == RepeatDirection.Horizontal;
             UserInteractionEnabled = true;
 

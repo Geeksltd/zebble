@@ -48,6 +48,13 @@ namespace Zebble.Mvvm
             new ViewModelNavigation(target, transition).Forward();
         }
 
+        public static void Replace(FullScreen target, PageTransition transition = PageTransition.SlideForward)
+        {
+            if (Stack.None()) throw new Exception("There is no previous page in the stack to be peeked out.");
+            Page = (FullScreen)Stack.Peek();
+            new ViewModelNavigation(target, transition).Replace();
+        }
+
         public static void ShowPopUp(ModalScreen target, PageTransition transition = PageTransition.DropUp)
         {
             if (Modal != null) HidePopUp();
@@ -65,6 +72,12 @@ namespace Zebble.Mvvm
            where TDestination : FullScreen
         {
             Forward(The<TDestination>(), transition);
+        }
+
+        public static void Replace<TDestination>(PageTransition transition = PageTransition.SlideForward)
+           where TDestination : FullScreen
+        {
+            Replace(The<TDestination>(), transition);
         }
 
         public static void ShowPopUp<TDestination>(PageTransition transition = PageTransition.DropUp) where TDestination : ModalScreen

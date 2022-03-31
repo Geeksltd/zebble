@@ -341,6 +341,28 @@ namespace Zebble
             return Forward(temp.Item1, navParams, transition, temp.Item2);
         }
 
+        /// <summary>The same as Forward() but it replaces the current page with the new page in the Stack.</summary>
+        public static Task Replace<TPage>(PageTransition transition) where TPage : Page => Replace(typeof(TPage), null, transition);
+
+        /// <summary>The same as Go() but it also adds the page to the Stack to enable «going back».</summary>
+        public static Task Replace(Type pageType, PageTransition transition) => Replace(pageType, null, transition);
+
+        /// <summary>The same as Forward() but it replaces the current page with the new page in the Stack.</summary>
+        /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
+        public static Task Replace<TPage>(object navParams = null, PageTransition transition = PageTransition.SlideForward)
+            where TPage : Page
+        {
+            return Replace(typeof(TPage), navParams, transition);
+        }
+
+        /// <summary>The same as Forward() but it replaces the current page with the new page in the Stack.</summary>
+        /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
+        public static Task Replace(Type pageType, object navParams = null, PageTransition transition = PageTransition.SlideForward)
+        {
+            var temp = GetOrCreateTargetPage(pageType);
+            return Replace(temp.Item1, navParams, transition, temp.Item2);
+        }
+
         /// <summary>
         /// It tries to load the page from cache.<para/>
         /// The Item1 of the result is the required page and the Item2 shows that whether it is a cached page or not.
@@ -367,6 +389,21 @@ namespace Zebble
 
             lock (TransitionStack)
                 CurrentPage?.Perform(x => { Stack.Push(x); TransitionStack.Push(transition); });
+
+            await Go(page, navParams, transition, clearStack: false, revisiting: revisiting);
+        }
+
+        /// <summary>The same as Forward() but it replaces the current page with the new page in the Stack.</summary>
+        /// <param name="navParams">Provide either an IDictionary[string, object] or an anonymous object.</param>
+        public static Task Replace(Page page, object navParams = null, PageTransition transition = PageTransition.SlideForward)
+            => Replace(page, navParams, transition, IsCachedPage(page));
+
+        static async Task Replace(Page page, object navParams, PageTransition transition, bool revisiting)
+        {
+            while (CurrentPage is PopUp) await HidePopUp();
+
+            lock (TransitionStack)
+                CurrentPage?.Perform(x => { TransitionStack.Pop(); TransitionStack.Push(transition); });
 
             await Go(page, navParams, transition, clearStack: false, revisiting: revisiting);
         }

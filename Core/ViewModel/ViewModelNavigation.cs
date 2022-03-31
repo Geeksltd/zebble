@@ -12,6 +12,7 @@
         {
             RealGo = () => Nav.Go(RealPage, Transition);
             RealForward = () => Nav.Forward(RealPage, Transition);
+            RealReplace = () => Nav.Replace(RealPage, Transition);
             RealBack = () => Nav.Back();
             RealHidePopup = () => Nav.HidePopUp();
             RealShowPopup = () => Nav.ShowPopUp(RealModal, Transition);

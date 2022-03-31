@@ -18,6 +18,13 @@
             Forward<TDestination>(transition);
         }
 
+        public static void Replace<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
+           where TDestination : FullScreen
+        {
+            configure?.Invoke(The<TDestination>());
+            Replace<TDestination>(transition);
+        }
+
         public static void ShowPopUp<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.DropUp)
             where TDestination : ModalScreen
         {

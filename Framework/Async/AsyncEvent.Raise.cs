@@ -91,8 +91,21 @@ namespace Zebble
                         else return Task.CompletedTask;
                     }));
                 }
-                else foreach (var h in handlers)
-                        if (!IsDisposing) await raiser(h);
+                else
+                    foreach (var h in handlers)
+                    {
+                        if (!IsDisposing)
+                        {
+                            try
+                            {
+                                await raiser(h);
+                            }
+                            catch (Exception ex)
+                            {
+                                Log.For(this).Error(ex, "Raising an event failed: " + this);
+                            }
+                        }
+                    }
             }
             catch (Exception ex)
             {

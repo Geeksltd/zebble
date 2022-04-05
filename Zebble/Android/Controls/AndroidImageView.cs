@@ -212,7 +212,7 @@ namespace Zebble.AndroidOS
                     squareBitmap = Bitmap.CreateBitmap(newSource, newSource.Width / 2 - newSource.Height / 2, 0, newSource.Height, newSource.Height);
                 else
                     squareBitmap = Bitmap.CreateBitmap(newSource, 0, newSource.Height / 2 - newSource.Width / 2, newSource.Width, newSource.Width);
-                
+
                 radius = squareBitmap.Width / 2;
                 newSource = squareBitmap;
             }
@@ -257,6 +257,8 @@ namespace Zebble.AndroidOS
             var finalHeight = maxHeight;
             if (ratioMax > 1) finalWidth = (int)(maxHeight * ratioBitmap);
             else finalHeight = (int)(maxWidth / ratioBitmap);
+
+            if (finalWidth <= 0 || finalHeight <= 0) return image;
 
             return Bitmap.CreateScaledBitmap(image, finalWidth, finalHeight, true);
         }

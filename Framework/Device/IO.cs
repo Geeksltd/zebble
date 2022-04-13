@@ -85,6 +85,7 @@ namespace Zebble.Device
         /// </summary>
         public static string AbsolutePath(string relative)
         {
+            if (Root == null) throw new Exception("Device.IO.Root is null!");
             var root = Root.FullName;
 
             if (relative.IsEmpty()) return root;

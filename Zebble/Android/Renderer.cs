@@ -10,8 +10,9 @@ namespace Zebble
     partial class Renderer
     {
         Android.Views.View Result;
+        internal static Context appContext;
 
-        public static Context Context => Android.App.Application.Context;
+        public static Context Context => appContext ?? Android.App.Application.Context;
 
         void AddToNativeParent()
         {

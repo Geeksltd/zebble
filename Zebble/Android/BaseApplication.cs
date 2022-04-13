@@ -12,6 +12,8 @@ namespace Zebble.AndroidOS
 
         public override void OnCreate()
         {
+            Renderer.appContext = ApplicationContext;
+
             AndroidEnvironment.UnhandledExceptionRaiser += (s, e) =>
             {
                 var stackTracep = e.Exception.StackTrace;

@@ -52,7 +52,7 @@ namespace Zebble
             if (IsTestMode())
                 IO.FilesVersion = "test-" + LocalTime.UtcNow.Ticks;
 
-            IO.Cache = new DirectoryInfo(GetIOTempRoot());
+            IO.Cache = new DirectoryInfo(GetIOTempRoot()).EnsureExists();
 
             var app = (ApplicationName + GetResourcesVersion()).Where(x => x.IsLetterOrDigit()).ToString("");
             var path = Path.Combine(GetIORoot(), app);

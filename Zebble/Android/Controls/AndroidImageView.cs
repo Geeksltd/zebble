@@ -209,21 +209,17 @@ namespace Zebble.AndroidOS
             {
                 newSource = DrawOnCenter(source);
 
-                int radius;
+                var radius = Scale.ToDevice(View.Effective.BorderRadiusBottomLeft());
                 //It's circle
-                if (View.Width.CurrentValue.AlmostEquals(View.Height.CurrentValue))
+                if (View.ActualWidth.AlmostEquals(View.ActualHeight))
                 {
-                    Bitmap squareBitmap;
                     if (newSource.Width >= newSource.Height)
-                        squareBitmap = Bitmap.CreateBitmap(newSource, newSource.Width / 2 - newSource.Height / 2, 0, newSource.Height, newSource.Height);
+                        newSource = Bitmap.CreateBitmap(newSource, newSource.Width / 2 - newSource.Height / 2, 0, newSource.Height, newSource.Height);
                     else
-                        squareBitmap = Bitmap.CreateBitmap(newSource, 0, newSource.Height / 2 - newSource.Width / 2, newSource.Width, newSource.Width);
-
-                    radius = squareBitmap.Width / 2;
-                    newSource = squareBitmap;
+                        newSource = Bitmap.CreateBitmap(newSource, 0, newSource.Height / 2 - newSource.Width / 2, newSource.Width, newSource.Width);
                 }
-                else
-                    radius = Scale.ToDevice(View.Effective.BorderRadiusBottomLeft());
+
+                radius *= (int)((newSource.Width + newSource.Height) / (View.ActualWidth + View.ActualHeight));
 
                 var result = Bitmap.CreateBitmap(newSource.Width, newSource.Height, Bitmap.Config.Argb8888);
                 var rect = new Rect(0, 0, newSource.Width, newSource.Height);
@@ -283,18 +279,21 @@ namespace Zebble.AndroidOS
             {
                 try
                 {
-                    width = source.Width > width ? source.Width : width;
-                    height = source.Height > height ? source.Height : height;
+                    width = source.Width.LimitMin(width);
+                    height = source.Height.LimitMin(height);
 
-                    var transparentXThershould = Math.Abs(width - source.Width) / 2;
-                    var transparentYThershould = Math.Abs(height - source.Height) / 2;
+                    var xThreshold = Math.Abs(width - source.Width) / 2;
+                    var yYThreshold = Math.Abs(height - source.Height) / 2;
 
                     var result = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
 
                     using (var paint = new Paint { AntiAlias = true })
                     using (var canvas = new Canvas(result))
-                        canvas.DrawBitmap(source, new Rect(0, 0, source.Width, source.Height),
-                            new RectF(transparentXThershould, transparentYThershould, transparentXThershould + source.Width, transparentYThershould + source.Height), paint);
+                        canvas.DrawBitmap(source,
+                            new Rect(0, 0, source.Width, source.Height),
+                            new RectF(xThreshold, yYThreshold, xThreshold + source.Width, yYThreshold + source.Height),
+                            paint
+                        );
 
                     result.PrepareToDraw();
 

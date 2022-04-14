@@ -126,6 +126,7 @@ namespace Zebble.AndroidOS
                 SetScaleType(View.RenderImageAlignment(image));
                 if (!BackgroundImageOnly && View.Effective.HasAnyBorderRadius()) image = RoundCorners(image);
                 SetImageBitmap(image);
+                RoundedBitmap = image;
             }
             catch (Exception ex)
             {
@@ -201,46 +202,52 @@ namespace Zebble.AndroidOS
         Bitmap RoundCorners(Bitmap source)
         {
             source = ResizeImage(source);
-            var newSource = DrawOnCenter(source);
 
-            int radius;
-            //It's circle
-            if (View.Width.CurrentValue.AlmostEquals(View.Height.CurrentValue))
+            Bitmap newSource = null;
+
+            try
             {
-                Bitmap squareBitmap;
-                if (newSource.Width >= newSource.Height)
-                    squareBitmap = Bitmap.CreateBitmap(newSource, newSource.Width / 2 - newSource.Height / 2, 0, newSource.Height, newSource.Height);
+                newSource = DrawOnCenter(source);
+
+                int radius;
+                //It's circle
+                if (View.Width.CurrentValue.AlmostEquals(View.Height.CurrentValue))
+                {
+                    Bitmap squareBitmap;
+                    if (newSource.Width >= newSource.Height)
+                        squareBitmap = Bitmap.CreateBitmap(newSource, newSource.Width / 2 - newSource.Height / 2, 0, newSource.Height, newSource.Height);
+                    else
+                        squareBitmap = Bitmap.CreateBitmap(newSource, 0, newSource.Height / 2 - newSource.Width / 2, newSource.Width, newSource.Width);
+
+                    radius = squareBitmap.Width / 2;
+                    newSource = squareBitmap;
+                }
                 else
-                    squareBitmap = Bitmap.CreateBitmap(newSource, 0, newSource.Height / 2 - newSource.Width / 2, newSource.Width, newSource.Width);
+                    radius = Scale.ToDevice(View.Effective.BorderRadiusBottomLeft());
 
-                radius = squareBitmap.Width / 2;
-                newSource = squareBitmap;
+                var result = Bitmap.CreateBitmap(newSource.Width, newSource.Height, Bitmap.Config.Argb8888);
+                var rect = new Rect(0, 0, newSource.Width, newSource.Height);
+                using (var shader = new BitmapShader(newSource, Shader.TileMode.Clamp, Shader.TileMode.Clamp))
+                using (var paint = new Paint { AntiAlias = true })
+                using (var canvas = new Canvas(result))
+                {
+                    paint.SetShader(shader);
+                    canvas.DrawRoundRect(new RectF(rect), radius, radius, paint);
+                    paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
+                    canvas.DrawBitmap(result, rect, rect, paint);
+                }
+
+                result.PrepareToDraw();
+
+                if (Source != null)
+                {
+                    Source?.UnregisterViewer();
+                    Source = null;
+                }
+
+                return result;
             }
-            else
-                radius = Scale.ToDevice(View.Effective.BorderRadiusBottomLeft());
-
-            var result = Bitmap.CreateBitmap(newSource.Width, newSource.Height, Bitmap.Config.Argb8888);
-            var rect = new Rect(0, 0, newSource.Width, newSource.Height);
-            using (var shader = new BitmapShader(newSource, Shader.TileMode.Clamp, Shader.TileMode.Clamp))
-            using (var paint = new Paint { AntiAlias = true })
-            using (var canvas = new Canvas(result))
-            {
-                paint.SetShader(shader);
-                canvas.DrawRoundRect(new RectF(rect), radius, radius, paint);
-                paint.SetXfermode(new PorterDuffXfermode(PorterDuff.Mode.SrcIn));
-                canvas.DrawBitmap(result, rect, rect, paint);
-            }
-
-            result.PrepareToDraw();
-
-            if (Source != null)
-            {
-                Source?.UnregisterViewer();
-                Source = null;
-            }
-
-            RoundedBitmap = result.Copy(Bitmap.Config.Argb8888, isMutable: true);
-            return result;
+            finally { newSource?.Dispose(); }
         }
 
         Bitmap ResizeImage(Bitmap image)
@@ -260,7 +267,11 @@ namespace Zebble.AndroidOS
 
             if (finalWidth <= 0 || finalHeight <= 0) return image;
 
-            return Bitmap.CreateScaledBitmap(image, finalWidth, finalHeight, true);
+            try
+            {
+                return Bitmap.CreateScaledBitmap(image, finalWidth, finalHeight, true);
+            }
+            finally { image.Dispose(); }
         }
 
         Bitmap DrawOnCenter(Bitmap source)
@@ -270,28 +281,32 @@ namespace Zebble.AndroidOS
 
             if (source.Width < width || source.Height < height)
             {
-                width = source.Width > width ? source.Width : width;
-                height = source.Height > height ? source.Height : height;
-
-                var transparentXThershould = Math.Abs(width - source.Width) / 2;
-                var transparentYThershould = Math.Abs(height - source.Height) / 2;
-
-                var result = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
-
-                using (var paint = new Paint { AntiAlias = true })
-                using (var canvas = new Canvas(result))
-                    canvas.DrawBitmap(source, new Rect(0, 0, source.Width, source.Height),
-                        new RectF(transparentXThershould, transparentYThershould, transparentXThershould + source.Width, transparentYThershould + source.Height), paint);
-
-                result.PrepareToDraw();
-
-                if (Source != null)
+                try
                 {
-                    Source?.UnregisterViewer();
-                    Source = null;
-                }
+                    width = source.Width > width ? source.Width : width;
+                    height = source.Height > height ? source.Height : height;
 
-                return result;
+                    var transparentXThershould = Math.Abs(width - source.Width) / 2;
+                    var transparentYThershould = Math.Abs(height - source.Height) / 2;
+
+                    var result = Bitmap.CreateBitmap(width, height, Bitmap.Config.Argb8888);
+
+                    using (var paint = new Paint { AntiAlias = true })
+                    using (var canvas = new Canvas(result))
+                        canvas.DrawBitmap(source, new Rect(0, 0, source.Width, source.Height),
+                            new RectF(transparentXThershould, transparentYThershould, transparentXThershould + source.Width, transparentYThershould + source.Height), paint);
+
+                    result.PrepareToDraw();
+
+                    if (Source != null)
+                    {
+                        Source?.UnregisterViewer();
+                        Source = null;
+                    }
+
+                    return result;
+                }
+                finally { source.Dispose(); }
             }
 
             return source;
@@ -368,7 +383,7 @@ namespace Zebble.AndroidOS
 
         RectF CalculateOtherStretchOptions(int viewWidth, int viewHeight, int drawableWidth, int drawableHeight)
         {
-            RectF result = null;
+            RectF result;
             var widthScaleFactor = (float)viewWidth / drawableWidth;
             var heightScaleFactor = (float)viewHeight / drawableHeight;
             var scaleFactor = Math.Max(widthScaleFactor, heightScaleFactor);

@@ -126,7 +126,6 @@ namespace Zebble.AndroidOS
                 SetScaleType(View.RenderImageAlignment(image));
                 if (!BackgroundImageOnly && View.Effective.HasAnyBorderRadius()) image = RoundCorners(image);
                 SetImageBitmap(image);
-                RoundedBitmap = image;
             }
             catch (Exception ex)
             {
@@ -240,6 +239,8 @@ namespace Zebble.AndroidOS
                     Source?.UnregisterViewer();
                     Source = null;
                 }
+
+                RoundedBitmap = result.Copy(Bitmap.Config.Argb8888, isMutable: true);
 
                 return result;
             }

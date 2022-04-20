@@ -90,7 +90,7 @@ namespace Zebble.AndroidOS
         {
             if (View == null || View.IsDisposing || !View.IsRendered() || !View.IsShown) return;
             if (Source is null) return; // Not rendered yet.
-
+            
             if (Source != ImageService.GetSource(View))
             {
                 LoadImage();
@@ -115,7 +115,7 @@ namespace Zebble.AndroidOS
         {
             if (!this.IsAlive()) return;
             DrawnImageKey = GetDrawingKey();
-
+            
             var image = imageObj as Bitmap;
 
             if (View?.IsDisposing != false) return;
@@ -138,7 +138,7 @@ namespace Zebble.AndroidOS
             if (bm != null) DisposeDrawable();
             base.SetImageBitmap(bm);
         }
-
+        
         void LoadImage()
         {
             EventHandlerDisposer.DisposeAll();
@@ -264,11 +264,7 @@ namespace Zebble.AndroidOS
 
             if (finalWidth <= 0 || finalHeight <= 0) return image;
 
-            try
-            {
-                return Bitmap.CreateScaledBitmap(image, finalWidth, finalHeight, true);
-            }
-            finally { image.Dispose(); }
+            return Bitmap.CreateScaledBitmap(image, finalWidth, finalHeight, true);
         }
 
         Bitmap DrawOnCenter(Bitmap source)

@@ -56,7 +56,7 @@ namespace Zebble.Services
                 {
                     try
                     {
-                        var succeeded = await Device.Network.Download(Url.AsUri(), File.FullName);
+                        var succeeded = await Device.Network.Download(Url.AsUri(), File.FullName, attempts: 3);
                         if (!succeeded) Log.For(this).Warning("Failed to download: " + Url);
                         item.TrySetResult(result: succeeded);
                         if (succeeded) ImageDownloaded.SignalRaiseOn(Thread.Pool, Url);

@@ -10,12 +10,12 @@
             var result = Renderer.Context.CacheDir?.ToString();
 
             if (result.IsEmpty())
-                result = Path.Combine(GetIOTempRoot(), "__cache");
+                result = Path.Combine(GetIORoot(), "__cache");
 
             return result;
         }
 
-        string GetIORoot()
+        static string GetIORoot()
             => System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData);
     }
 }

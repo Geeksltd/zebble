@@ -23,7 +23,7 @@ namespace Zebble.Device
                 var windowInsetsCompat = UpdateLayoutInsets();
 
                 HeightProvider = OnHeightProvider;
-                
+
                 //On some devices not working so wee need to delay a frame to fix the problem
                 Thread.UI.Post(() => Thread.Pool.Run(async () =>
                 {
@@ -38,21 +38,19 @@ namespace Zebble.Device
                     await Task.Delay(TimeSpan.FromMilliseconds(Animation.OneFrame.Milliseconds * 5));
                     UpdateLayout();
                 }));
+
                 return windowInsetsCompat;
             }
 
             float OnHeightProvider()
             {
-                var size = new Android.Graphics.Point();
-                Display.GetRealSize(size);
-
                 var navigationBar = CurrentInsets.GetInsets(WindowInsetsCompat.Type.NavigationBars()).Bottom;
                 var totalBottom = KeyboardHeight == 0 ? navigationBar : KeyboardHeight;
 
                 //In some cases the navigation bar height value is zero.
                 //So, by doing this we can ensure that contain a correct value.
                 if (totalBottom == 0)
-                    totalBottom = DisplaySetting.InWindowNavbarHeight > 0 ? DisplaySetting.InWindowNavbarHeight : NavigationBarHeight;
+                    totalBottom = DisplaySetting.InWindowNavbarHeight > 0 ? DisplaySetting.InWindowNavbarHeight : DisplaySetting.OutOfWindowNavbarHeight;
 
                 DisplaySetting.InWindowNavbarHeight = navigationBar;
 
@@ -67,9 +65,7 @@ namespace Zebble.Device
                     Keyboard.RaiseHidden();
                 }
 
-                //Android.Util.Log.Error("Palaver", DisplaySetting.ToString());
-
-                return Scale.ToZebble(size.Y) - Scale.ToZebble(totalBottom) - StatusBar.Height;
+                return Scale.ToZebble(DisplaySetting.RealHeight - totalBottom) - StatusBar.Height;
             }
 
             WindowInsetsCompat UpdateLayoutInsets()

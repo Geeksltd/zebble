@@ -11,12 +11,12 @@ namespace Zebble.Device
         public static int ToZebble(float scaledValue) => (int)(scaledValue / Screen.Density);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Point ToDevice(Point zebblePoint) => new Point(ToDevice(zebblePoint.X), ToDevice(zebblePoint.Y));
+        public static Point ToDevice(Point point) => new(ToDevice(point.X), ToDevice(point.Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Point ToZebble(Point devicePoint) => new Point(ToZebble(devicePoint.X), ToZebble(devicePoint.Y));
+        public static Point ToZebble(Point point) => new(ToZebble(point.X), ToZebble(point.Y));
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Size ToDevice(Size zebbleSize) => new Size(ToDevice(zebbleSize.Width), ToDevice(zebbleSize.Height));
+        public static Size ToDevice(Size size) => new(ToDevice(size.Width), ToDevice(size.Height));
     }
 }

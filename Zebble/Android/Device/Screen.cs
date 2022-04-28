@@ -2,7 +2,6 @@
 {
     using Android.Content.Res;
     using Android.OS;
-    using Android.Util;
     using Android.Views;
     using AndroidX.Core.View;
     using Olive;
@@ -15,9 +14,7 @@
     {
         static IWindowManager WindowManager => UIRuntime.CurrentActivity.WindowManager;
         static Display Display => WindowManager.DefaultDisplay;
-        static Resources SystemtResources;
-        public static int NavigationBarHeight;
-        public static bool UseSystemFontSetting { get; set; } = true;
+        static Resources Resources;
 
         /// <summary>
         /// Based on just the device's screen pixel density (ignoring the user's font preferences).
@@ -36,110 +33,61 @@
             rootScreen.SetFitsSystemWindows(true);
             ViewCompat.SetOnApplyWindowInsetsListener(rootScreen, new ApplyWindowInstetsListener());
 
-            SystemtResources = GetResources();
+            Resources = GetResources();
 
-            HardwareDensity = SystemtResources.DisplayMetrics.Density;
-            Density = SystemtResources.DisplayMetrics.ScaledDensity.LimitMax(1.25f * HardwareDensity);
+            HardwareDensity = Resources.DisplayMetrics.Density;
+            Density = Resources.DisplayMetrics.ScaledDensity;
 
-            DarkMode = (SystemtResources.Configuration.UiMode & UiMode.NightMask) == UiMode.NightYes;
+            DarkMode = (Resources.Configuration.UiMode & UiMode.NightMask) == UiMode.NightYes;
 
-            DetectStatusBarHeight();
-            DetectSoftNavigationBar();
-
-            ConfigureSize(
-                widthProvider: () =>
-                {
-                    var size = new Android.Graphics.Point();
-                    Display.GetRealSize(size);
-                    return Scale.ToZebble(size.X);
-                },
-                heightProvider: () =>
-                {
-                    var size = new Android.Graphics.Point();
-                    Display.GetRealSize(size);
-
-                    // TODO: Shouldn't we remove NavigationBarHeight??!!
-                    return Scale.ToZebble(size.Y);// - NavigationBarHeight;
-                }
-            );
-
-            //set display settings
-            var size = new Android.Graphics.Point();
             var realSize = new Android.Graphics.Point();
-            var screen = new DisplayMetrics();
-            Display.GetSize(size);
             Display.GetRealSize(realSize);
-            Display.GetMetrics(screen);
 
-            DisplaySetting.WindowWidth = size.X;
-            DisplaySetting.WindowHeight = size.Y;
+            DisplaySetting.WindowWidth = Resources.DisplayMetrics.WidthPixels;
+            DisplaySetting.WindowHeight = Resources.DisplayMetrics.HeightPixels;
 
-            DisplaySetting.HardwareWidth = screen.WidthPixels;
-            DisplaySetting.HardwareHeight = screen.HeightPixels;
+            DisplaySetting.HardwareWidth = realSize.X;
+            DisplaySetting.HardwareHeight = realSize.Y;
 
             DisplaySetting.RealWidth = realSize.X;
             DisplaySetting.RealHeight = realSize.Y;
 
-            DisplaySetting.OutOfWindowNavbarHeight = NavigationBarHeight;
-            DisplaySetting.OutOfWindowStatusBarHeight = (int)StatusBar.Height;
+            DisplaySetting.OutOfWindowNavbarHeight = GetNavigationBarHeight();
+            StatusBar.Height = DisplaySetting.OutOfWindowStatusBarHeight = GetStatusBarHeight();
+
+            ConfigureSize(
+                widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
+                heightProvider: () => Scale.ToZebble(DisplaySetting.WindowHeight)
+            );
         }
 
-        static Resources GetResources()
+        static Resources GetResources() => UIRuntime.CurrentActivity?.Resources ?? Resources.System;
+
+        static int GetStatusBarHeight()
         {
-            if (UseSystemFontSetting) return Resources.System;
+            if (!StatusBar.IsVisible) return 0;
 
-            var res = UIRuntime.CurrentActivity.Resources;
-            var config = new Configuration();
-            config.SetToDefaults();
-            res.UpdateConfiguration(config, res.DisplayMetrics);
-            return res;
+            var statusBarResourceId = Resources.GetIdentifier("status_bar_height", "dimen", "android");
+            if (statusBarResourceId == 0) return 0;
+
+            return Scale.ToZebble(Resources.GetDimensionPixelSize(statusBarResourceId));
         }
 
-        static void DetectStatusBarHeight()
-        {
-            if (!StatusBar.IsVisible) return;
-            var statusBarResourceId = SystemtResources.GetIdentifier("status_bar_height", "dimen", "android");
-            if (statusBarResourceId == 0) return;
-
-            StatusBar.Height = Scale.ToZebble(SystemtResources.GetDimensionPixelSize(statusBarResourceId));
-        }
-
-        static void DetectSoftNavigationBar()
+        static int GetNavigationBarHeight()
         {
             // This is intentional. Please don't change the code structure
-            var navBarResourceId = SystemtResources.GetIdentifier("navigation_bar_height", "dimen", "android");
-            if (navBarResourceId == 0) return;
+            var navBarResourceId = Resources.GetIdentifier("navigation_bar_height", "dimen", "android");
+            if (navBarResourceId == 0) return 0;
 
-            var hasNavigatioBarValue = Scale.ToZebble(SystemtResources.GetDimensionPixelSize(navBarResourceId));
+            if (HasSoftKeys()) return Scale.ToZebble(Resources.GetDimensionPixelSize(navBarResourceId));
 
-            var safeScreen = new Android.Graphics.Point();
-            Display.GetSize(safeScreen);
-
-            var noNavigatioBarValue = Scale.ToZebble(SystemtResources.DisplayMetrics.HeightPixels - safeScreen.Y).LimitMin(0);
-
-            var hasSoftKeys = HasSoftKeys();
-
-            NavigationBarHeight = hasSoftKeys ? hasNavigatioBarValue : noNavigatioBarValue;
+            return Scale.ToZebble(DisplaySetting.HardwareHeight - DisplaySetting.WindowHeight).LimitMin(0);
         }
 
         static bool HasSoftKeys()
         {
             if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1)
-            {
-                var realDisplayMetrics = new DisplayMetrics();
-                Display.GetRealMetrics(realDisplayMetrics);
-
-                int realHeight = realDisplayMetrics.HeightPixels;
-                int realWidth = realDisplayMetrics.WidthPixels;
-
-                var displayMetrics = new DisplayMetrics();
-                Display.GetMetrics(displayMetrics);
-
-                int displayHeight = displayMetrics.HeightPixels;
-                int displayWidth = displayMetrics.WidthPixels;
-
-                return (realWidth - displayWidth) > 0 || (realHeight - displayHeight) > 0;
-            }
+                return DisplaySetting.RealHeight != DisplaySetting.WindowHeight;
 
             var hasMenuKey = ViewConfiguration.Get(UIRuntime.CurrentActivity.ApplicationContext).HasPermanentMenuKey;
             var hasBackKey = KeyCharacterMap.DeviceHasKey(Keycode.Back);

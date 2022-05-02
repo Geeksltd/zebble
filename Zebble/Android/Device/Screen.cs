@@ -5,6 +5,7 @@
     using Android.Views;
     using AndroidX.Core.View;
     using Olive;
+    using System;
     using System.IO;
     using System.Threading.Tasks;
     using Zebble;
@@ -15,6 +16,8 @@
         static IWindowManager WindowManager => UIRuntime.CurrentActivity.WindowManager;
         static Display Display => WindowManager.DefaultDisplay;
         static Resources Resources;
+        static Android.Util.DisplayMetrics DisplayMetrics => Resources.DisplayMetrics;
+        public static int NavigationBarHeight;
 
         /// <summary>
         /// Based on just the device's screen pixel density (ignoring the user's font preferences).
@@ -35,16 +38,16 @@
 
             Resources = GetResources();
 
-            HardwareDensity = Resources.DisplayMetrics.Density;
-            Density = Resources.DisplayMetrics.ScaledDensity;
+            HardwareDensity = DisplayMetrics.Density;
+            Density = DisplayMetrics.ScaledDensity;
 
             DarkMode = (Resources.Configuration.UiMode & UiMode.NightMask) == UiMode.NightYes;
 
             var realSize = new Android.Graphics.Point();
             Display.GetRealSize(realSize);
 
-            DisplaySetting.WindowWidth = Resources.DisplayMetrics.WidthPixels;
-            DisplaySetting.WindowHeight = Resources.DisplayMetrics.HeightPixels;
+            DisplaySetting.WindowWidth = DisplayMetrics.WidthPixels;
+            DisplaySetting.WindowHeight = DisplayMetrics.HeightPixels;
 
             DisplaySetting.HardwareWidth = realSize.X;
             DisplaySetting.HardwareHeight = realSize.Y;
@@ -52,8 +55,11 @@
             DisplaySetting.RealWidth = realSize.X;
             DisplaySetting.RealHeight = realSize.Y;
 
+            DisplaySetting.OutOfWindowStatusBarHeight = GetStatusBarHeight();
+            StatusBar.Height = Scale.ToZebble(DisplaySetting.OutOfWindowStatusBarHeight);
+
             DisplaySetting.OutOfWindowNavbarHeight = GetNavigationBarHeight();
-            StatusBar.Height = DisplaySetting.OutOfWindowStatusBarHeight = GetStatusBarHeight();
+            NavigationBarHeight = Scale.ToZebble(DisplaySetting.OutOfWindowNavbarHeight);
 
             ConfigureSize(
                 widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
@@ -67,33 +73,25 @@
         {
             if (!StatusBar.IsVisible) return 0;
 
-            var statusBarResourceId = Resources.GetIdentifier("status_bar_height", "dimen", "android");
-            if (statusBarResourceId == 0) return 0;
-
-            return Scale.ToZebble(Resources.GetDimensionPixelSize(statusBarResourceId));
+            return GetResourceValue("status_bar_height", "dimen", "android");
         }
 
         static int GetNavigationBarHeight()
         {
-            // This is intentional. Please don't change the code structure
-            var navBarResourceId = Resources.GetIdentifier("navigation_bar_height", "dimen", "android");
-            if (navBarResourceId == 0) return 0;
+            if (HasHardKeys()) return 0;
 
-            if (HasSoftKeys()) return Scale.ToZebble(Resources.GetDimensionPixelSize(navBarResourceId));
-
-            return Scale.ToZebble(DisplaySetting.HardwareHeight - DisplaySetting.WindowHeight).LimitMin(0);
+            return GetResourceValue("navigation_bar_height", "dimen", "android");
         }
 
-        static bool HasSoftKeys()
+        static int GetResourceValue(string name, string defType, string defPackage)
         {
-            if (Build.VERSION.SdkInt >= BuildVersionCodes.JellyBeanMr1)
-                return DisplaySetting.RealHeight != DisplaySetting.WindowHeight;
+            var resourceId = Resources.GetIdentifier(name, defType, defPackage);
+            if (resourceId == 0) return 0;
 
-            var hasMenuKey = ViewConfiguration.Get(UIRuntime.CurrentActivity.ApplicationContext).HasPermanentMenuKey;
-            var hasBackKey = KeyCharacterMap.DeviceHasKey(Keycode.Back);
-
-            return !hasMenuKey && !hasBackKey;
+            return Resources.GetDimensionPixelSize(resourceId);
         }
+
+        static bool HasHardKeys() => ViewConfiguration.Get(UIRuntime.CurrentActivity.ApplicationContext).HasPermanentMenuKey;
 
         public static partial class StatusBar
         {
@@ -102,19 +100,9 @@
             static void DoSetBackgroundColor()
             {
                 if (Build.VERSION.SdkInt < BuildVersionCodes.Lollipop) return;
+                if (BackgroundColor == null) return;
 
-                if (BackgroundColor != null)
-                {
-                    var bgcolor = new Android.Graphics.Color
-                    {
-                        A = BackgroundColor.Alpha,
-                        R = BackgroundColor.Red,
-                        G = BackgroundColor.Green,
-                        B = BackgroundColor.Blue,
-                    };
-
-                    UIRuntime.CurrentActivity.Window.SetStatusBarColor(bgcolor);
-                }
+                UIRuntime.CurrentActivity.Window.SetStatusBarColor(BackgroundColor.Render());
             }
 
             static void DoSetForegroundColor() { }

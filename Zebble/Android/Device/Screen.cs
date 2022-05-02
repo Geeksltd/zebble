@@ -61,6 +61,9 @@
             DisplaySetting.OutOfWindowNavbarHeight = GetNavigationBarHeight();
             NavigationBarHeight = Scale.ToZebble(DisplaySetting.OutOfWindowNavbarHeight);
 
+            if (DisplaySetting.WindowHeight == DisplaySetting.RealHeight)
+                DisplaySetting.WindowHeight -= DisplaySetting.OutOfWindowStatusBarHeight;
+
             ConfigureSize(
                 widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
                 heightProvider: () => Scale.ToZebble(DisplaySetting.WindowHeight)

@@ -1,58 +1,33 @@
 ﻿using AndroidX.Core.View;
+using Olive;
 using System;
-using System.Threading.Tasks;
 
 namespace Zebble.Device
 {
     partial class Screen
     {
-        static Android.Views.View CurrentView;
-
-        static WindowInsetsCompat CurrentInsets;
-        static int _KeyboardHeight;
         internal static Action<int> OnKeyboardHeightChanged { get; set; }
         internal static int KeyboardHeight;
 
-        class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
+        internal class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
         {
             public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {
-                CurrentView = view;
-                CurrentInsets = insets;
+                SafeAreaInsets.UpdateValues();
 
-                var windowInsetsCompat = UpdateLayoutInsets();
+                UpdateKeyboardState(insets);
+                ReadDimensions();
+                UpdateLayout();
 
-                HeightProvider = OnHeightProvider;
-
-                //On some devices not working so wee need to delay a frame to fix the problem
-                Thread.UI.Post(() => Thread.Pool.Run(async () =>
-                {
-                    await Task.Delay(Animation.OneFrame);
-                    OnKeyboardHeightChanged?.Invoke(KeyboardHeight);
-                    UpdateLayout();
-                }));
-
-                //Fixed issue 145722 on Google_Pixel_3 and OnePlus_7T
-                Thread.UI.Post(() => Thread.Pool.Run(async () =>
-                {
-                    await Task.Delay(TimeSpan.FromMilliseconds(Animation.OneFrame.Milliseconds * 5));
-                    UpdateLayout();
-                }));
-
-                return windowInsetsCompat;
+                return WindowInsetsCompat.Consumed;
             }
 
-            float OnHeightProvider()
+            void UpdateKeyboardState(WindowInsetsCompat insets)
             {
-                var navigationBar = CurrentInsets.GetInsets(WindowInsetsCompat.Type.NavigationBars()).Bottom;
-                var totalBottom = KeyboardHeight == 0 ? navigationBar : KeyboardHeight;
+                var navigationBars = insets.GetInsets(WindowInsetsCompat.Type.NavigationBars()).Bottom;
+                var ime = insets.GetInsets(WindowInsetsCompat.Type.Ime()).Bottom;
 
-                //In some cases the navigation bar height value is zero.
-                //So, by doing this we can ensure that contain a correct value.
-                if (totalBottom == 0)
-                    totalBottom = DisplaySetting.InWindowNavbarHeight > 0 ? DisplaySetting.InWindowNavbarHeight : DisplaySetting.OutOfWindowNavbarHeight;
-
-                DisplaySetting.InWindowNavbarHeight = navigationBar;
+                KeyboardHeight = (ime - navigationBars).LimitMin(0);
 
                 if (KeyboardHeight > 0)
                 {
@@ -64,26 +39,6 @@ namespace Zebble.Device
                     Keyboard.SoftKeyboardHeight = 0;
                     Keyboard.RaiseHidden();
                 }
-
-                return Scale.ToZebble(DisplaySetting.RealHeight - totalBottom) - StatusBar.Height;
-            }
-
-            WindowInsetsCompat UpdateLayoutInsets()
-            {
-                var statusBar = CurrentInsets.GetInsets(WindowInsetsCompat.Type.StatusBars()).Top;
-                KeyboardHeight = CurrentInsets.GetInsets(WindowInsetsCompat.Type.Ime()).Bottom;
-
-                DisplaySetting.InWindowStatusBarHeight = statusBar;
-                DisplaySetting.Ime = KeyboardHeight;
-
-                var windowInsetsCompat = new WindowInsetsCompat.Builder()
-                    .SetInsets(WindowInsetsCompat.Type.SystemBars(), AndroidX.Core.Graphics.Insets.Of(0, statusBar, 0, KeyboardHeight))
-                    .Build();
-
-                Xamarin.Essentials.MainThread.BeginInvokeOnMainThread(() => ViewCompat.OnApplyWindowInsets(CurrentView, windowInsetsCompat));
-                SafeAreaInsets.UpdateValues();
-
-                return windowInsetsCompat;
             }
         }
     }

@@ -13,14 +13,16 @@
             public int OutOfWindowNavbarHeight { internal set; get; }
             public int InWindowNavbarHeight { internal set; get; }
             public int TopInset { internal set; get; }
+            public int RightInset { internal set; get; }
             public int BottomInset { internal set; get; }
+            public int LeftInset { internal set; get; }
             public int RealWidth { internal set; get; }
             public int RealHeight { internal set; get; }
             public int Ime { internal set; get; }
 
             public override string ToString()
             {
-                var result = $"HardwareWidth={HardwareWidth},HardwareHeight={HardwareHeight},WindowWidth={WindowWidth},WindowHeight={WindowHeight},RealWidth={RealWidth},RealHeight={RealHeight},OutOfWindowStatusBarHeight={OutOfWindowStatusBarHeight},OutOfWindowNavbarHeight={OutOfWindowNavbarHeight}InWindowStatusBarHeight={InWindowStatusBarHeight},InWindowNavbarHeight={InWindowNavbarHeight},TopInset={TopInset},BottomInset={BottomInset},Ime={Ime}";
+                var result = $"HardwareWidth={HardwareWidth},HardwareHeight={HardwareHeight},WindowWidth={WindowWidth},WindowHeight={WindowHeight},RealWidth={RealWidth},RealHeight={RealHeight},OutOfWindowStatusBarHeight={OutOfWindowStatusBarHeight},OutOfWindowNavbarHeight={OutOfWindowNavbarHeight}InWindowStatusBarHeight={InWindowStatusBarHeight},InWindowNavbarHeight={InWindowNavbarHeight},TopInset={RightInset},TopInset={RightInset},BottomInset={BottomInset},LeftInset={LeftInset},Ime={Ime}";
 
                 return result;
             }

@@ -3,7 +3,6 @@
     using Android.Content.Res;
     using Android.OS;
     using Android.Views;
-    using AndroidX.Core.View;
     using Olive;
     using System;
     using System.IO;
@@ -31,13 +30,18 @@
 
         public static readonly DisplaySettings DisplaySetting = new();
 
-        internal static void LoadConfiguration(ViewGroup rootScreen)
+        internal static void LoadConfiguration()
         {
-            rootScreen.SetFitsSystemWindows(true);
-            ViewCompat.SetOnApplyWindowInsetsListener(rootScreen, new ApplyWindowInstetsListener());
+            ReadDimensions();
+            ConfigureSize(
+                widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
+                heightProvider: () => Scale.ToZebble(DisplaySetting.WindowHeight)
+            );
+        }
 
+        internal static void ReadDimensions()
+        {
             Resources = GetResources();
-
             HardwareDensity = DisplayMetrics.Density;
             Density = DisplayMetrics.ScaledDensity;
 
@@ -46,8 +50,8 @@
             var realSize = new Android.Graphics.Point();
             Display.GetRealSize(realSize);
 
-            DisplaySetting.WindowWidth = DisplayMetrics.WidthPixels;
-            DisplaySetting.WindowHeight = DisplayMetrics.HeightPixels;
+            DisplaySetting.WindowWidth = realSize.X;
+            DisplaySetting.WindowHeight = realSize.Y - KeyboardHeight;
 
             DisplaySetting.HardwareWidth = realSize.X;
             DisplaySetting.HardwareHeight = realSize.Y;
@@ -55,46 +59,14 @@
             DisplaySetting.RealWidth = realSize.X;
             DisplaySetting.RealHeight = realSize.Y;
 
-            DisplaySetting.OutOfWindowStatusBarHeight = GetStatusBarHeight();
+            DisplaySetting.OutOfWindowStatusBarHeight = DisplaySetting.TopInset;
             StatusBar.Height = Scale.ToZebble(DisplaySetting.OutOfWindowStatusBarHeight);
 
-            DisplaySetting.OutOfWindowNavbarHeight = GetNavigationBarHeight();
+            DisplaySetting.OutOfWindowNavbarHeight = DisplaySetting.BottomInset;
             NavigationBarHeight = Scale.ToZebble(DisplaySetting.OutOfWindowNavbarHeight);
-
-            if (DisplaySetting.WindowHeight == DisplaySetting.RealHeight)
-                DisplaySetting.WindowHeight -= DisplaySetting.OutOfWindowStatusBarHeight;
-
-            ConfigureSize(
-                widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
-                heightProvider: () => Scale.ToZebble(DisplaySetting.WindowHeight)
-            );
         }
 
         static Resources GetResources() => UIRuntime.CurrentActivity?.Resources ?? Resources.System;
-
-        static int GetStatusBarHeight()
-        {
-            if (!StatusBar.IsVisible) return 0;
-
-            return GetResourceValue("status_bar_height", "dimen", "android");
-        }
-
-        static int GetNavigationBarHeight()
-        {
-            if (HasHardKeys()) return 0;
-
-            return GetResourceValue("navigation_bar_height", "dimen", "android");
-        }
-
-        static int GetResourceValue(string name, string defType, string defPackage)
-        {
-            var resourceId = Resources.GetIdentifier(name, defType, defPackage);
-            if (resourceId == 0) return 0;
-
-            return Resources.GetDimensionPixelSize(resourceId);
-        }
-
-        static bool HasHardKeys() => ViewConfiguration.Get(UIRuntime.CurrentActivity.ApplicationContext).HasPermanentMenuKey;
 
         public static partial class StatusBar
         {

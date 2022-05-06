@@ -2,6 +2,7 @@ namespace Zebble.AndroidOS
 {
     using System.Threading.Tasks;
     using Android.Views;
+    using AndroidX.Core.View;
     using Zebble;
 
     public class Setup
@@ -15,7 +16,11 @@ namespace Zebble.AndroidOS
 
             UIRuntime.NativeRootScreen = rootViewController;
 
-            Device.Screen.LoadConfiguration(rootScreen);
+            var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
+            ViewCompat.SetFitsSystemWindows(view, true);
+            ViewCompat.SetOnApplyWindowInsetsListener(view, new Device.Screen.ApplyWindowInstetsListener());
+
+            Device.Screen.LoadConfiguration();
 
             await AddRootView();
 

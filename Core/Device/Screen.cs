@@ -137,13 +137,13 @@ namespace Zebble.Device
             }
 #endif
             OrientationChanged.HandleOnUI(UpdateLayout);
-            App.CameToForeground += () => Thread.UI.Run(() => UpdateLayout());
+            App.CameToForeground += () => Thread.UI.Run(UpdateLayout);
 
             UpdateLayout();
         }
 
         static bool isRendered;
-        internal static void UpdateLayout()
+        static void UpdateLayout()
         {
             var newWidth = WidthProvider();
             var newHeight = HeightProvider();

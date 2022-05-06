@@ -59,11 +59,11 @@ namespace Zebble.UWP
             // Pre-load the screen density on the UI thread:
             Device.Screen.Density.ToString();
             Device.Screen.HardwareDensity.ToString();
+            Device.Screen.SafeAreaInsets.UpdateValues();
 
             await SetInitialWindowSize();
             await CompleteScreen();
 
-            Device.Screen.SafeAreaInsets.UpdateValues();
             IsLaunched = true;
             Window.SizeChanged += Window_SizeChanged;
         }

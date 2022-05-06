@@ -14,13 +14,15 @@
 
                 if (insets == null) return;
 
-                Top = 0;
-                Bottom = 0;
-                Left = Scale.ToZebble(insets.SystemWindowInsetLeft);
-                Right = Scale.ToZebble(insets.SystemWindowInsetRight);
-
                 DisplaySetting.TopInset = insets.SystemWindowInsetTop;
+                DisplaySetting.RightInset = insets.SystemWindowInsetRight;
                 DisplaySetting.BottomInset = insets.SystemWindowInsetBottom;
+                DisplaySetting.LeftInset = insets.SystemWindowInsetLeft;
+
+                Top = Scale.ToZebble(DisplaySetting.TopInset);
+                Right = Scale.ToZebble(DisplaySetting.RightInset);
+                Bottom = Scale.ToZebble(DisplaySetting.BottomInset);
+                Left = Scale.ToZebble(DisplaySetting.LeftInset);
             }
         }
     }

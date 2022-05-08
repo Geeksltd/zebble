@@ -30,23 +30,17 @@
 
         public static readonly DisplaySettings DisplaySetting = new();
 
-        internal static void LoadConfiguration()
-        {
-            ReadDimensions();
-            ConfigureSize(
-                widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
-                heightProvider: () => Scale.ToZebble(DisplaySetting.WindowHeight)
-            );
-        }
-
-        internal static void ReadDimensions()
+        internal static void PreLoadConfiguration()
         {
             Resources = GetResources();
             HardwareDensity = DisplayMetrics.Density;
             Density = DisplayMetrics.ScaledDensity;
 
             DarkMode = (Resources.Configuration.UiMode & UiMode.NightMask) == UiMode.NightYes;
+        }
 
+        internal static void PostLoadConfiguration()
+        {
             var realSize = new Android.Graphics.Point();
             Display.GetRealSize(realSize);
 
@@ -64,6 +58,11 @@
 
             DisplaySetting.OutOfWindowNavbarHeight = DisplaySetting.BottomInset;
             NavigationBarHeight = Scale.ToZebble(DisplaySetting.OutOfWindowNavbarHeight);
+
+            ConfigureSize(
+                widthProvider: () => Scale.ToZebble(DisplaySetting.WindowWidth),
+                heightProvider: () => Scale.ToZebble(DisplaySetting.WindowHeight)
+            );
         }
 
         static Resources GetResources() => UIRuntime.CurrentActivity?.Resources ?? Resources.System;

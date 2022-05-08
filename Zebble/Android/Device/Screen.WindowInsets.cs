@@ -1,6 +1,7 @@
 ﻿using AndroidX.Core.View;
 using Olive;
 using System;
+using System.Threading.Tasks;
 
 namespace Zebble.Device
 {
@@ -11,13 +12,14 @@ namespace Zebble.Device
 
         internal class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
         {
+            internal static readonly TaskCompletionSource<bool> OnInsetsConsumed = new();
+
             public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {
                 SafeAreaInsets.UpdateValues();
-
                 UpdateKeyboardState(insets);
-                ReadDimensions();
-                UpdateLayout();
+
+                OnInsetsConsumed.TrySetResult(true);
 
                 return WindowInsetsCompat.Consumed;
             }

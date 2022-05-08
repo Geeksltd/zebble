@@ -18,6 +18,7 @@ namespace Zebble.Device
             {
                 SafeAreaInsets.UpdateValues();
                 UpdateKeyboardState(insets);
+                PostLoadConfiguration();
 
                 OnInsetsConsumed.TrySetResult(true);
 

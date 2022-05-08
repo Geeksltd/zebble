@@ -24,8 +24,6 @@ namespace Zebble.AndroidOS
 
             await Device.Screen.ApplyWindowInstetsListener.OnInsetsConsumed.Task;
 
-            Device.Screen.PostLoadConfiguration();
-
             await AddRootView();
 
             rootScreen.AddView(RootView);

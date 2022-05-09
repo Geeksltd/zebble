@@ -8,8 +8,6 @@
         {
             public static void DoUpdateValues()
             {
-                if (!OS.IsAtLeast((Android.OS.BuildVersionCodes)28)) return;
-
                 var insets = UIRuntime.CurrentActivity?.Window?.DecorView?.RootWindowInsets;
 
                 if (insets == null) return;

@@ -23,18 +23,7 @@ namespace Zebble.Device
         {
             static void DoSetBackgroundColor()
             {
-                Windows.UI.Color backColor;
-
-                if (BackgroundColor != null)
-                {
-                    backColor = new Windows.UI.Color
-                    {
-                        A = BackgroundColor.Alpha,
-                        B = BackgroundColor.Blue,
-                        G = BackgroundColor.Green,
-                        R = BackgroundColor.Red
-                    };
-                }
+                var backgroundColor = BackgroundColor?.Render();
 
                 // PC customization
                 if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
@@ -42,12 +31,12 @@ namespace Zebble.Device
                     var titleBar = ApplicationView.GetForCurrentView().TitleBar;
                     if (titleBar != null)
                     {
-                        if (backColor != null)
+                        if (backgroundColor != null)
                         {
-                            titleBar.ButtonBackgroundColor = backColor;
-                            titleBar.BackgroundColor = backColor;
-                            titleBar.InactiveBackgroundColor = backColor;
-                            titleBar.ButtonInactiveBackgroundColor = backColor;
+                            titleBar.ButtonBackgroundColor = backgroundColor;
+                            titleBar.BackgroundColor = backgroundColor;
+                            titleBar.InactiveBackgroundColor = backgroundColor;
+                            titleBar.ButtonInactiveBackgroundColor = backgroundColor;
                         }
                     }
                 }
@@ -58,8 +47,8 @@ namespace Zebble.Device
                     var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
                     if (statusBar != null)
                     {
-                        if (backColor != null)
-                            statusBar.BackgroundColor = backColor;
+                        if (backgroundColor != null)
+                            statusBar.BackgroundColor = backgroundColor;
                     }
                 }
             }

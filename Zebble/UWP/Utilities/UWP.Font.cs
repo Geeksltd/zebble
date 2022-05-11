@@ -14,13 +14,12 @@
     {
         static TextBlock Sample;
         static foundation.Size NoLimit = new foundation.Size(double.PositiveInfinity, double.PositiveInfinity);
-        float AutoTextWidthErrorMargin => 5 + Size / 2;
-
+        
         public static string DefaultSystemFont => "Segoe UI";
 
         float CalculateTextHeight(float width, string text)
         {
-            width = (width - AutoTextWidthErrorMargin).LimitMin(0);
+            width = width.LimitMin(0);
 
             var tb = GetTextBlock(text.Or("Tag"));
             tb.TextWrapping = TextWrapping.WrapWholeWords;
@@ -73,7 +72,7 @@
         {
             var tb = GetTextBlock(text);
             tb.Measure(NoLimit);
-            return (float)tb.DesiredSize.Width + AutoTextWidthErrorMargin;
+            return (float)tb.DesiredSize.Width;
         }
 
         public FontFamily Render()

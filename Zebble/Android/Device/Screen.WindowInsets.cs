@@ -10,19 +10,36 @@ namespace Zebble.Device
         internal static Action<int> OnKeyboardHeightChanged { get; set; }
         internal static int KeyboardHeight;
 
-        internal class ApplyWindowInstetsListener : Java.Lang.Object, IOnApplyWindowInsetsListener
+        internal abstract class AwaitableListener : Java.Lang.Object
         {
-            internal static readonly TaskCompletionSource<bool> OnInsetsConsumed = new();
+            protected readonly TaskCompletionSource<bool> CompletionSource = new();
+        }
 
-            public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
+        internal class WindowInstetsConsumerListener : AwaitableListener, IOnApplyWindowInsetsListener
+        {
+            public virtual WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
+            {
+                CompletionSource.TrySetResult(true);
+
+                return WindowInsetsCompat.Consumed;
+            }
+
+            public async Task WaitForCompletion(Android.Views.View view)
+            {
+                ViewCompat.SetOnApplyWindowInsetsListener(view, this);
+                await CompletionSource.Task;
+            }
+        }
+
+        internal class WindowInstetsApplierListener : WindowInstetsConsumerListener
+        {
+            public override WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {
                 SafeAreaInsets.UpdateValues();
                 UpdateKeyboardState(insets);
                 PostLoadConfiguration();
 
-                OnInsetsConsumed.TrySetResult(true);
-
-                return WindowInsetsCompat.Consumed;
+                return base.OnApplyWindowInsets(view, insets);
             }
 
             void UpdateKeyboardState(WindowInsetsCompat insets)

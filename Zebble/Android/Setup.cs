@@ -20,9 +20,8 @@ namespace Zebble.AndroidOS
 
             var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
             ViewCompat.SetFitsSystemWindows(view, true);
-            ViewCompat.SetOnApplyWindowInsetsListener(view, new Device.Screen.ApplyWindowInstetsListener());
 
-            await Device.Screen.ApplyWindowInstetsListener.OnInsetsConsumed.Task;
+            await new Device.Screen.WindowInstetsApplierListener().WaitForCompletion(view);
 
             await AddRootView();
 
@@ -30,9 +29,13 @@ namespace Zebble.AndroidOS
             UIRuntime.CurrentActivity.Window.SetSoftInputMode(SoftInput.AdjustResize);
         }
 
-        public static void SwitchActivity(ViewGroup rootScreen, object rootViewController)
+        public static async Task SwitchActivity(ViewGroup rootScreen, object rootViewController)
         {
             UIRuntime.NativeRootScreen = rootViewController;
+
+            var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
+
+            await new Device.Screen.WindowInstetsConsumerListener().WaitForCompletion(view);
 
             (RootView.Parent as ViewGroup)?.RemoveView(RootView);
             rootScreen.AddView(RootView);

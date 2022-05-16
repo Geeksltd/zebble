@@ -69,7 +69,7 @@
 
             builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<ILoggerProvider, ZebbleLoggerProvider>());
 
-            LoggerProviderOptions.RegisterProviderOptions<ZebbleLoggerOptions, ZebbleLoggerOptions>(builder.Services);
+            LoggerProviderOptions.RegisterProviderOptions<ZebbleLoggerOptions, ZebbleLoggerProvider>(builder.Services);
 
             if (configure != null)
                 builder.Services.Configure(configure);

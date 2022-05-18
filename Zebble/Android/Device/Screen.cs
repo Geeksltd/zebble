@@ -34,7 +34,7 @@
         {
             Resources = GetResources();
             HardwareDensity = DisplayMetrics.Density;
-            Density = DisplayMetrics.ScaledDensity;
+            Density = DisplayMetrics.ScaledDensity.LimitWithin(HardwareDensity * .8f, HardwareDensity * 1.25f);
 
             DarkMode = (Resources.Configuration.UiMode & UiMode.NightMask) == UiMode.NightYes;
         }

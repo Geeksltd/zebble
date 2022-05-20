@@ -31,13 +31,21 @@ namespace Zebble
         public string Path
         {
             get => BackgroundImagePath;
-            set => Style.BackgroundImagePath = value;
+            set
+            {
+                Style.BackgroundImagePath = value;
+                if (IsRendered()) RaiseBackgroundImageChanged();
+            }
         }
 
         public byte[] ImageData
         {
             get => BackgroundImageData;
-            set => Style.BackgroundImageData = value;
+            set
+            {
+                Style.BackgroundImageData = value;
+                if (IsRendered()) RaiseBackgroundImageChanged();
+            }
         }
 
         public Alignment Alignment
@@ -49,7 +57,11 @@ namespace Zebble
         public Stretch Stretch
         {
             get => BackgroundImageStretch;
-            set => Style.BackgroundImageStretch = value;
+            set
+            {
+                Style.BackgroundImageStretch = value;
+                if (IsRendered()) RaiseBackgroundImageChanged();
+            }
         }
 
         public bool? IsLazyLoaded { get; set; }
@@ -57,17 +69,7 @@ namespace Zebble
         object FormField.IControl.Value
         {
             get => Path;
-            set => Style.BackgroundImagePath = value.ToStringOrEmpty();
-        }
-
-        bool CanDetermineDimensions()
-        {
-            if (Stretch == Stretch.Fill || Stretch == Stretch.AspectFill) return false;
-            if (Path.IsEmpty()) return false;
-
-            if (Path.IsUrl()) return false;
-
-            return true;
+            set => Path = value.ToStringOrEmpty();
         }
 
         #region AutoSizing

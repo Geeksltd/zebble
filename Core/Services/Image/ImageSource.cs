@@ -134,7 +134,6 @@ namespace Zebble.Services
                 }
                 catch (Exception ex)
                 {
-                    ex = new Exception($"Failed to load an image from disk: {GetPhysicalFileToLoad().FullName}{Environment.NewLine}{ex.Message}", ex);
                     Log.For(this).Error(ex);
                     Image = await GetSource(FailedPlaceholderImagePath, Size, Stretch).Result();
                 }
@@ -220,17 +219,17 @@ namespace Zebble.Services
                 try { Image = await DecodeImage(toLoad, Size, Stretch); }
                 catch (Exception ex)
                 {
-                    var wrappedEx = new Exception($"Failed to load the image: {toLoad.FullName}{Environment.NewLine}Error: {ex.Message}");
-                    Log.For(this).Error(wrappedEx);
-                    await RemoveImageFileIfText(toLoad);
+                    var wasText = await RemoveImageFileIfText(toLoad);
+                    var wrappedEx = new Exception(wasText ? "Image file content was error text." : "Failed to load an image from file.", ex);                    
+                    Log.For(this).Error(wrappedEx);                    
                     throw wrappedEx;
                 }
             }
 
-            static async Task RemoveImageFileIfText(FileInfo file)
+            static async Task<bool> RemoveImageFileIfText(FileInfo file)
             {
                 // Is this image file in fact text (error message)?
-                if (!file.Exists()) return;
+                if (!file.Exists()) return false;
 
                 try
                 {
@@ -239,13 +238,15 @@ namespace Zebble.Services
                     {
                         Log.For<ImageSource>().Warning("This file seems to be a text file (perhaps containing error messages). Attempting to delete it: " + file.FullName);
                         await file.DeleteAsync(false);
+                        return true;
                     }
+                    return false;
                 }
                 catch (Exception ex)
                 {
                     Log.For<ImageSource>().Error(ex, "Corrupted image file clean up error.");
                     // No logging needed
-                    return;
+                    return false;
                 }
             }
 

@@ -12,7 +12,7 @@ namespace Zebble.IOS
 
             Device.Screen.ConfigureSize(
                 () => (float)UIScreen.MainScreen.Bounds.Width,
-                () => (float)UIScreen.MainScreen.Bounds.Height
+                () => (float)UIScreen.MainScreen.Bounds.Height - Device.Keyboard.SoftKeyboardHeight
             );
 
             UIRuntime.RenderRoot = new Canvas

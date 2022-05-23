@@ -143,7 +143,7 @@ namespace Zebble.Device
         }
 
         static bool isRendered;
-        static void UpdateLayout()
+        internal static void UpdateLayout()
         {
             var newWidth = WidthProvider();
             var newHeight = HeightProvider();

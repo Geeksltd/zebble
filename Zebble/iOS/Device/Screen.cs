@@ -14,7 +14,7 @@ namespace Zebble.Device
         {
             public static void DoUpdateValues()
             {
-                if(OS.IsAtLeastiOS(11))
+                if (OS.IsAtLeastiOS(11))
                 {
                     var nativeInsets = UIApplication.SharedApplication?.KeyWindow?.SafeAreaInsets;
                     var insets = nativeInsets == null ? UIApplication.SharedApplication?.Delegate?.GetWindow()?.SafeAreaInsets : nativeInsets;
@@ -51,21 +51,14 @@ namespace Zebble.Device
 
             static void DoSetBackgroundColor()
             {
+                if (BackgroundColor is null) return;
+
                 var statusBar = UIApplication.SharedApplication.ValueForKey(new NSString("statusBar")) as UIView;
 
-                if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setTintColor:")))
-                    if (statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:")))
-                    {
-                        if (BackgroundColor != null)
-                        {
-                            statusBar.BackgroundColor = new UIColor(
-                                BackgroundColor.Red,
-                                BackgroundColor.Green,
-                                BackgroundColor.Blue,
-                                BackgroundColor.Alpha
-                            );
-                        }
-                    }
+                if (!statusBar.RespondsToSelector(new ObjCRuntime.Selector("setTintColor:"))) return;
+                if (!statusBar.RespondsToSelector(new ObjCRuntime.Selector("setBackgroundColor:"))) return;
+
+                statusBar.BackgroundColor = BackgroundColor.Render();
             }
 
             static void DoSetForegroundColor() { }

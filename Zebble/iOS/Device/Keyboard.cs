@@ -17,7 +17,7 @@ namespace Zebble.Device
         static Keyboard()
         {
             UIKeyboard.Notifications.ObserveWillShow(OnWillShow);
-            UIKeyboard.Notifications.ObserveWillHide(OnWillHide);
+            UIKeyboard.Notifications.ObserveDidHide(OnDidHide);
         }
 
         static async void OnWillShow(object _, UIKeyboardEventArgs args)
@@ -72,7 +72,7 @@ namespace Zebble.Device
             IsOpen = true;
         }
 
-        static void OnWillHide(object _, UIKeyboardEventArgs args)
+        static void OnDidHide(object _, UIKeyboardEventArgs args)
         {
             CollapseScrollerForKeyboard();
             RaiseHidden();
@@ -81,15 +81,16 @@ namespace Zebble.Device
 
         internal static void CollapseScrollerForKeyboard()
         {
+            SoftKeyboardHeight = 0;
+            IsOpen = false;
+
             if (ExpandedScrollView == null || OriginalRect is null) return;
 
             ExpandedScrollView.Frame = new CGRect(OriginalRect.Value.X, OriginalRect.Value.Y,
                 CurrentWindowRect.Width, OriginalRect.Value.Size.Height);
 
-            SoftKeyboardHeight = 0;
             ExpandedScrollView = null;
             OriginalRect = null;
-            IsOpen = false;
         }
     }
 }

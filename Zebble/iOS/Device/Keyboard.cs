@@ -25,7 +25,7 @@ namespace Zebble.Device
             SoftKeyboardHeight = (float)args.FrameEnd.Height;
             await ExpandScrollerForKeyboard();
             RaiseShown();
-            Screen.UpdateLayout();
+            Thread.UI.Post(Screen.UpdateLayout);
         }
 
         static async Task ExpandScrollerForKeyboard()
@@ -76,7 +76,7 @@ namespace Zebble.Device
         {
             CollapseScrollerForKeyboard();
             RaiseHidden();
-            Screen.UpdateLayout();
+            Thread.UI.Post(Screen.UpdateLayout);
         }
 
         internal static void CollapseScrollerForKeyboard()

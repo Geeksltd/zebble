@@ -8,14 +8,16 @@
         {
             public static void DoUpdateValues()
             {
-                if (OS.IsAtLeast(Android.OS.BuildVersionCodes.M)) ReadFromInsets();
-                else ReadFromResources();
+                if (OS.IsAtLeast(Android.OS.BuildVersionCodes.M))
+                    if (ReadFromInsets()) return;
+
+                ReadFromResources();
             }
 
-            static void ReadFromInsets()
+            static bool ReadFromInsets()
             {
                 var insets = UIRuntime.CurrentActivity?.Window?.DecorView?.RootWindowInsets;
-                if (insets == null) return;
+                if (insets == null) return false;
 
                 Apply(
                     top: insets.SystemWindowInsetTop,
@@ -23,6 +25,8 @@
                     bottom: insets.SystemWindowInsetBottom,
                     left: insets.SystemWindowInsetLeft
                 );
+
+                return true;
             }
 
             static void ReadFromResources()

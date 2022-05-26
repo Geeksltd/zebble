@@ -17,7 +17,7 @@ namespace Zebble.Device
         static Keyboard()
         {
             UIKeyboard.Notifications.ObserveWillShow(OnWillShow);
-            UIKeyboard.Notifications.ObserveDidHide(OnDidHide);
+            UIKeyboard.Notifications.ObserveWillHide(OnWillHide);
         }
 
         static async void OnWillShow(object _, UIKeyboardEventArgs args)
@@ -25,7 +25,7 @@ namespace Zebble.Device
             SoftKeyboardHeight = (float)args.FrameEnd.Height;
             await ExpandScrollerForKeyboard();
             RaiseShown();
-            Thread.UI.Post(Screen.UpdateLayout);
+            Screen.UpdateLayout();
         }
 
         static async Task ExpandScrollerForKeyboard()
@@ -72,11 +72,11 @@ namespace Zebble.Device
             IsOpen = true;
         }
 
-        static void OnDidHide(object _, UIKeyboardEventArgs args)
+        static void OnWillHide(object _, UIKeyboardEventArgs args)
         {
             CollapseScrollerForKeyboard();
             RaiseHidden();
-            Thread.UI.Post(Screen.UpdateLayout);
+            Screen.UpdateLayout();
         }
 
         internal static void CollapseScrollerForKeyboard()

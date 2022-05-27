@@ -35,7 +35,7 @@ namespace Zebble.Device
         {
             public override WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {
-                SafeAreaInsets.UpdateValues();
+                SafeAreaInsets.DoUpdateValues(insets);
                 UpdateKeyboardState(insets);
                 PostLoadConfiguration();
 

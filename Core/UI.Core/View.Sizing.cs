@@ -26,6 +26,16 @@ namespace Zebble
         /// </summary>
         public float CalculateTotalWidth() => ActualWidth + Math.Max(0, Margin.Left()) + Math.Max(0, Margin.Right());
 
+        /// <summary>
+        /// Returns the calculated height minus the total vertical padding.
+        /// </summary>
+        public float CalculateInnerHeight() => ActualHeight - Padding.Vertical();
+
+        /// <summary>
+        /// Returns the calculated width mins the total horizontal padding.
+        /// </summary>
+        public float CalculateInnerWidth() => ActualWidth + Padding.Horizontal();
+
         public float ActualBottom => ActualY + ActualHeight;
 
         public float ActualRight => ActualX + ActualWidth;

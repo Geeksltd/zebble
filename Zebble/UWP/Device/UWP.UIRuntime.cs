@@ -17,7 +17,7 @@ namespace Zebble
 
         public static readonly AsyncEvent<Dictionary<string, string>> OnParameterRecieved = new AsyncEvent<Dictionary<string, string>>();
 
-        public static bool? isDevMode;
+        private static bool? isDevMode;
 
         /// <summary>
         /// Determines if it's running on a Desktop and "Dev.Mode" config is true.
@@ -35,6 +35,10 @@ namespace Zebble
                 }
 
                 return isDevMode.Value;
+            }
+            set
+            {
+                isDevMode = value;
             }
         }
 

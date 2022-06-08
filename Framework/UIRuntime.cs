@@ -34,7 +34,7 @@ namespace Zebble
             StartUp.ApplicationName = appName;
             AppAssembly = typeof(TAnyAppType).Assembly;
 
-            var builder = XamarinHost.CreateDefaultBuilder<TAnyAppType>()
+            var builder = CreateHostBuilder<TAnyAppType>()
                         .ConfigureHostConfiguration(x => x.AddZebbleConfiguration())
                         .ConfigureServices(x => x.AddHttpClient())
                         .ConfigureLogging(x => x.ClearProviders().AddZebbleLogging());
@@ -49,5 +49,14 @@ namespace Zebble
             Context.Initialize(host.Services, scopeServiceProvider: null);
             Log.Init(Context.Current.GetService<ILoggerFactory>());
         }
+        static IHostBuilder CreateHostBuilder<T>() where T : class
+        {
+#if !UWP
+            return XamarinHost.CreateDefaultBuilder<T>();
+#else
+return Host.CreateDefaultBuilder();
+#endif
+        }
     }
+    
 }

@@ -12,7 +12,16 @@
         {
             static InheritanceDepth()
             {
-                AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
+                try
+                {
+                    AppDomain.CurrentDomain.AssemblyLoad += CurrentDomain_AssemblyLoad;
+                }
+                catch
+                {
+                    // Some platforms might fail the statement above
+                    Reload();
+                }
+
             }
 
             static void CurrentDomain_AssemblyLoad(object sender, AssemblyLoadEventArgs args)
@@ -35,8 +44,15 @@
 
             static void Reload()
             {
-                var assemblies = AppDomain.CurrentDomain.GetAssemblies()
+                var asses = AppDomain.CurrentDomain.GetAssemblies();
+                var assemblies = asses
+#if UWP
+                       //  .NET Native (UWP) and other forms of Native AOT compilers don't support GetReferencedAssemblies
+                       .Where(c => c.GetName().Name.Contains("Zebble"))
+#else
                        .Where(c => c.References(ZebbleAssembly) || c.GetName().Name.Contains("Zebble"))
+#endif
+
                        .ToArray();
 
                 All = assemblies.SelectMany(ExtractTypes).GroupBy(v => v.Name).ToDictionary(x => x.Key, x => x.Min(GetDepth));

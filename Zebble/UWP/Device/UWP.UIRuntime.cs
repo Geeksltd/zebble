@@ -17,7 +17,7 @@ namespace Zebble
 
         public static readonly AsyncEvent<Dictionary<string, string>> OnParameterRecieved = new AsyncEvent<Dictionary<string, string>>();
 
-        internal static bool? isDevMode;
+        public static bool? isDevMode;
 
         /// <summary>
         /// Determines if it's running on a Desktop and "Dev.Mode" config is true.
@@ -27,6 +27,7 @@ namespace Zebble
         {
             get
             {
+
                 if (isDevMode is null)
                 {
                     try { isDevMode = Device.App.IsDesktop() && Config.Get("Dev.Mode", defaultValue: false); }

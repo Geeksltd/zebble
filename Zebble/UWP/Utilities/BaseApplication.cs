@@ -129,8 +129,8 @@ namespace Zebble.UWP
                     await Nav.OnHardwareBack();
                 }
             };
-
-            await (StartUp.Current = CreateStartUp()).Run();
+            StartUp.Current = CreateStartUp();
+            await StartUp.Current.Run();
 
             if (UIRuntime.IsDevMode) LiveCssWatcher.Start().RunInParallel();
             Window.Activate();

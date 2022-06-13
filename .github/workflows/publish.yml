@@ -1,0 +1,54 @@
+name: Publishes a new package of Zebble or any of its CLIs to the nuget.org
+on:
+  push:
+    branches: [ main ]
+jobs:
+ build:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+    
+    - name: Publish a new Zebble package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble/Zebble.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
+    - name: Publish a new Zebble.Build package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble.Build/Zebble.Build.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
+    - name: Publish a new Zebble.CompileZbl package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble.CompileZbl/Zebble.CompileZbl.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
+    - name: Publish a new Zebble.Css package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble.Css/Zebble.Css.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
+    - name: Publish a new Zebble.FormatZbl package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble.FormatZbl/Zebble.FormatZbl.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
+    - name: Publish a new Zebble.Image package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble.Image/Zebble.Image.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    
+    - name: Publish a new Zebble.Schema package
+      uses: brandedoutcast/publish-nuget@v2
+      with:
+        PROJECT_FILE_PATH: Zebble.Schema/Zebble.Schema.csproj
+        NUGET_KEY: ${{secrets.NUGET_API_KEY}}

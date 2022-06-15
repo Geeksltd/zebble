@@ -136,14 +136,14 @@ namespace Zebble.Device
                 return;
             }
 #endif
-            OrientationChanged.HandleOnUI(UpdateLayout);
-            App.CameToForeground += () => Thread.UI.Run(UpdateLayout);
+            OrientationChanged.HandleOnUI(() => UpdateLayout());
+            App.CameToForeground += () => Thread.UI.Run(() => UpdateLayout());
 
             UpdateLayout();
         }
 
         static bool isRendered;
-        internal static void UpdateLayout()
+        internal static void UpdateLayout(bool disposeCache = true)
         {
             var newWidth = WidthProvider();
             var newHeight = HeightProvider();
@@ -160,7 +160,7 @@ namespace Zebble.Device
             if (View.Root?.IsRendered() != true) return;
             isRendered = true;
             View.Root.Size(Width, Height);
-            Nav.DisposeCache();
+            if (disposeCache) Nav.DisposeCache();
             View.Root.ApplyCssToBranch().RunInParallel();
         }
 

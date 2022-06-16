@@ -2,12 +2,15 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using Zebble.Tooling;
 
     class Program
     {
         static int Main(string[] args)
         {
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+
             Builder.ShouldLog = args.GetBoolOption("log");
 
             switch (args.GetCommand())

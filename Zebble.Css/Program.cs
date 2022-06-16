@@ -2,6 +2,7 @@
 {
     using System;
     using System.Diagnostics;
+    using System.Globalization;
     using System.Net;
     using Zebble.Tooling;
 
@@ -9,6 +10,8 @@
     {
         static void Main(string[] args)
         {
+            CultureInfo.CurrentCulture = CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+
             switch (args.GetCommand())
             {
                 case "generate":

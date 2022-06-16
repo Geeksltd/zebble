@@ -15,7 +15,7 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.1.45.0</Version>
+    <Version>1.1.46.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-css</RepositoryUrl>
     <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
   </PropertyGroup>

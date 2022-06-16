@@ -11,11 +11,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
-    - name: Publish a new Zebble package
-      uses: brandedoutcast/publish-nuget@v2
-      with:
-        PROJECT_FILE_PATH: Zebble/Zebble.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+    # - name: Publish a new Zebble package
+      # uses: brandedoutcast/publish-nuget@v2
+      # with:
+        # PROJECT_FILE_PATH: Zebble/Zebble.csproj
+        # NUGET_KEY: ${{secrets.NUGET_API_KEY}}
     
     - name: Publish a new Zebble.Build package
       uses: brandedoutcast/publish-nuget@v2

@@ -88,7 +88,7 @@
   <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />
   <Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
   <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Running)'=='local'">
     <Exec Command="update-local-nuget-cache $(TargetDir)" />
   </Target>
   <ItemGroup>

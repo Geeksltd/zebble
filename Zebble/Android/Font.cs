@@ -34,14 +34,7 @@ namespace Zebble
 
             var linePadding = GetUnwantedExtraTopPadding();
 
-            StaticLayout layout;
-
-            if (OS.IsAtLeast(Android.OS.BuildVersionCodes.M))
-                layout = StaticLayout.Builder.Obtain(text, 0, text.Length, SamplePaint, Scale.ToDevice(width)).Build();
-            else
-                layout = new StaticLayout(text, 0, text.Length, SamplePaint, Scale.ToDevice(width), null, 1, 0, false);
-
-            using (layout)
+            using (var layout = new StaticLayout(text, 0, text.Length, SamplePaint, Scale.ToDevice(width), null, 1, 0, false))
             {
                 var lineCount = layout.Height / actualHeight;
                 return Scale.ToZebble(layout.Height + Math.Abs(layout.BottomPadding) + Math.Abs(layout.TopPadding) + linePadding * lineCount);
@@ -78,8 +71,9 @@ namespace Zebble
 
         float CalculateTextWidth(string text)
         {
+            
             GetSample().Paint.GetTextBounds(text, 0, text.Length, SampleRectangle);
-            return Scale.ToZebble(SampleRectangle.Right + SampleRectangle.Left + TEXT_WIDTH_ERROR);
+            return Scale.ToZebble(SampleRectangle.Right + SampleRectangle.Left + Scale.ToDevice(TEXT_WIDTH_ERROR));
         }
 
         public Typeface Render()

@@ -3,6 +3,7 @@ namespace Zebble.IOS
     using System;
     using System.Threading.Tasks;
     using Foundation;
+    using ObjCRuntime;
     using UIKit;
     using UserNotifications;
 
@@ -93,17 +94,30 @@ namespace Zebble.IOS
         public override bool OpenUrl(UIApplication application, NSUrl url, string sourceApplication, NSObject annotation)
         {
             UIRuntime.OnOpenUrl?.Raise(url);
-            return base.OpenUrl(application, url, sourceApplication, annotation);
+            return true;
         }
-        
+
         public override bool OpenUrl(UIApplication app, NSUrl url, NSDictionary options)
-        {
-            return OpenUrl(app, url, sourceApplication: null, options);
-        }
+            => OpenUrl(app, url, sourceApplication: null, options);
 
         public bool OpenUrl(UIApplication app, NSUrl url, string sourceApplication, NSDictionary options)
         {
             UIRuntime.OnOpenUrlWithOptions?.Raise(new Tuple<UIApplication, NSUrl, string, NSDictionary>(app, url, sourceApplication, options));
+            return true;
+        }
+
+        public override bool WillContinueUserActivity(UIApplication application, string userActivityType) => true;
+
+        public override bool ContinueUserActivity(UIApplication application, NSUserActivity userActivity, UIApplicationRestorationHandler completionHandler)
+        {
+            if (userActivity?.WebPageUrl is not null)
+                UIRuntime.OnOpenUrl?.Raise(userActivity.WebPageUrl);
+            return true;
+        }
+
+        public override bool HandleOpenURL(UIApplication application, NSUrl url)
+        {
+            UIRuntime.OnOpenUrl?.Raise(url);
             return true;
         }
 

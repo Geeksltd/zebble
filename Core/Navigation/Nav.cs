@@ -14,7 +14,22 @@ namespace Zebble
         public static Stack<Page> Stack { get; } = new();
         public static Stack<PageTransition> TransitionStack = new();
         static readonly List<Page> CachedPages = new();
+
+        /// <summary>
+        /// It will return the most recent openned `Page` (or `PopUp`) instance
+        /// </summary>
         public static Page CurrentPage { get; set; }
+
+        /// <summary>
+        /// If `CurrentPage` is an instance of the `PopUp` it will return the `PopUp.HostPage` otherwise it will return null.
+        /// </summary>
+        public static Page CurrentHostPage => CurrentPage is PopUp popUp ? popUp.HostPage : null;
+
+        /// <summary>
+        /// It will return an array of `Page` instances. then first one will be the `CurrentPage` and the second one will be the `CurrentHostPage` (if it's not null)
+        /// </summary>
+        public static Page[] ActivePages => new[] { CurrentPage, CurrentHostPage }.ExceptNull().ToArray();
+
         public static bool IsNavigating { get; internal set; }
 
         public static readonly AsyncEvent FullRefreshed = new();
@@ -49,6 +64,7 @@ namespace Zebble
                 if (!item.IsDisposing && CurrentPage != item)
                 {
                     if (pageType != null && !item.GetType().IsA(pageType)) continue;
+                    if (CurrentHostPage != null && item == CurrentHostPage) continue;
                     try { item.Dispose(); }
                     catch (Exception ex) { Log.For<Nav>().Error(ex); }
                 }

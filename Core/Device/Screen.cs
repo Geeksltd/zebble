@@ -143,7 +143,7 @@ namespace Zebble.Device
         }
 
         static bool isRendered;
-        internal static void UpdateLayout(bool disposeCache = true)
+        internal static void UpdateLayout()
         {
             var newWidth = WidthProvider();
             var newHeight = HeightProvider();
@@ -160,7 +160,6 @@ namespace Zebble.Device
             if (View.Root?.IsRendered() != true) return;
             isRendered = true;
             View.Root.Size(Width, Height);
-            if (disposeCache) Nav.DisposeCache();
             View.Root.ApplyCssToBranch().RunInParallel();
         }
 

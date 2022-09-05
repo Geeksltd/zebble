@@ -38,6 +38,12 @@
             yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\Default-568h@2x.png", Width = 640, Height = 1136 };
             yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\Default-667h@2x.png", Width = 750, Height = 1334 };
 
+            yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\LaunchLogo@2x~ipad.png", Width = 1024, Height = 1024 };
+            yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\LaunchLogo@2x~iphone.png", Width = 374, Height = 374 };
+            yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\LaunchLogo@3x~iphone.png", Width = 621, Height = 621 };
+            yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\LaunchLogo~ipad.png", Width = 384, Height = 384 };
+            yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\LaunchLogo~iphone.png", Width = 320, Height = 320 };
+
             // Splash - iPad
             yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\Default~ipad.png", Width = 768, Height = 1004 };
             yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\Default768x1024.png", Width = 768, Height = 1024 };
@@ -53,25 +59,64 @@
             yield return new ScaledVersion { OutputPath = "Run\\iOS\\Resources\\Legacy-Icon-1024-768.png", Width = 1024, Height = 768 };
 
             // Splash - UWP
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Wide310x150Logo.scale-400.png", Width = 1240, Height = 600, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Splash.scale-400.png", Width = 2480, Height = 1200 };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Splash.scale-200.png", Width = 1240, Height = 600 };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Splash.scale-150.png", Width = 930, Height = 450 };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Splash.scale-125.png", Width = 775, Height = 375 };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Wide310x150Logo.scale-200.png", Width = 620, Height = 300, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Splash.scale-100.png", Width = 620, Height = 300 };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Wide310x150Logo.scale-150.png", Width = 465, Height = 225, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Wide310x150Logo.scale-125.png", Width = 388, Height = 188, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Wide310x150Logo.scale-100.png", Width = 310, Height = 150, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Square150x150Logo.scale-200.png", Width = 300, Height = 300, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Splash.scale-400.png", Width = 2480, Height = 1200 };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Splash.scale-200.png", Width = 1240, Height = 600 };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Splash.scale-150.png", Width = 930, Height = 450 };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Splash.scale-125.png", Width = 775, Height = 375 };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Splash.scale-100.png", Width = 620, Height = 300 };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Wide310x150Logo.scale-400.png", Width = 1240, Height = 600, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Wide310x150Logo.scale-200.png", Width = 620, Height = 300, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Wide310x150Logo.scale-150.png", Width = 465, Height = 225, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Wide310x150Logo.scale-125.png", Width = 388, Height = 188, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Wide310x150Logo.scale-100.png", Width = 310, Height = 150, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square150x150Logo.scale-200.png", Width = 300, Height = 300, ScaleToExactSize = true };
 
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Square44x44Logo.targetsize-24_altform-unplated.png", Width = 24, Height = 24, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\LockScreenLogo.scale-200.png", Width = 48, Height = 48, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\StoreLogo.png", Width = 50, Height = 50, ScaleToExactSize = true };
-            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Square44x44Logo.scale-200.png", Width = 88, Height = 88, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-24_altform-unplated.png", Width = 24, Height = 24, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.png", Width = 50, Height = 50, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.scale-200.png", Width = 88, Height = 88, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\LargeTile.scale-100.png", Width = 310, Height = 310, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\LargeTile.scale-125.png", Width = 388, Height = 388, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\LargeTile.scale-150.png", Width = 465, Height = 465, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\LargeTile.scale-200.png", Width = 620, Height = 620, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\LargeTile.scale-400.png", Width = 1240, Height = 1240, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\LockScreenLogo.scale-200.png", Width = 48, Height = 48, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\SmallTile.scale-100.png", Width = 71, Height = 71, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\SmallTile.scale-125.png", Width = 89, Height = 89, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\SmallTile.scale-150.png", Width = 107, Height = 107, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\SmallTile.scale-200.png", Width = 142, Height = 142, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\SmallTile.scale-400.png", Width = 284, Height = 284, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square150x150Logo.scale-100.png", Width = 150, Height = 150, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square150x150Logo.scale-125.png", Width = 188, Height = 188, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square150x150Logo.scale-150.png", Width = 225, Height = 225, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square150x150Logo.scale-200.png", Width = 300, Height = 300, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square150x150Logo.scale-400.png", Width = 600, Height = 600, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.altform-unplated_targetsize-16.png", Width = 16, Height = 16, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.altform-unplated_targetsize-24.png", Width = 24, Height = 24, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.altform-unplated_targetsize-256.png", Width = 256, Height = 256, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.altform-unplated_targetsize-32.png", Width = 32, Height = 32, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.altform-unplated_targetsize-48.png", Width = 48, Height = 48, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.scale-100.png", Width = 44, Height = 44, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.scale-125.png", Width = 55, Height = 55, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.scale-150.png", Width = 66, Height = 66, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.scale-200.png", Width = 88, Height = 88, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.scale-400.png", Width = 176, Height = 176, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-16.png", Width = 16, Height = 16, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-24.png", Width = 24, Height = 24, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-24_altform-unplated.png", Width = 24, Height = 24, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-256.png", Width = 256, Height = 256, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-32.png", Width = 32, Height = 32, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\Square44x44Logo.targetsize-48.png", Width = 48, Height = 48, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.png", Width = 1240, Height = 600, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.scale-100.png", Width = 50, Height = 50, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.scale-125.png", Width = 63, Height = 63, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.scale-150.png", Width = 75, Height = 75, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.scale-200.png", Width = 100, Height = 100, ScaleToExactSize = true };
+            yield return new ScaledVersion { OutputPath = "Run\\UWP\\Assets\\Tiles\\StoreLogo.scale-400.png", Width = 200, Height = 200, ScaleToExactSize = true };
+
 
             // Splash - Android
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable\\Splash.png", Width = 2000, Height = 2000 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable\\Splash_Lg.png", Width = 1000, Height = 1000 };
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-ldpi\\Splash.png", Width = 200, Height = 320 };
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-mdpi\\Splash.png", Width = 320, Height = 480 };
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-hdpi\\Splash.png", Width = 480, Height = 800 };
@@ -79,7 +124,16 @@
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-xxhdpi\\Splash.png", Width = 960, Height = 1600 };
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-xxxhdpi\\Splash.png", Width = 1280, Height = 1920 };
 
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable\\Splash.webp", Width = 2000, Height = 2000 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-ldpi\\Splash.webp", Width = 200, Height = 320 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-mdpi\\Splash.webp", Width = 320, Height = 480 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-hdpi\\Splash.webp", Width = 480, Height = 800 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-xhdpi\\Splash.webp", Width = 720, Height = 1280 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-xxhdpi\\Splash.webp", Width = 960, Height = 1600 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable-xxxhdpi\\Splash.webp", Width = 1280, Height = 1920 };
+
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable\\Icon.png", Width = 57 * 3, Height = 57 * 3 };
+            yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable\\Icon.webp", Width = 57 * 3, Height = 57 * 3 };
             yield return new ScaledVersion { OutputPath = "Run\\Android\\Resources\\drawable\\Featured_Graphic.png", Width = 1024, Height = 500 };
 
             // Icons for iOS:

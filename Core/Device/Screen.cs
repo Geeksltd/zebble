@@ -76,7 +76,6 @@ namespace Zebble.Device
                 get => hasLightContent ?? !DarkMode;
                 set
                 {
-                    if (hasLightContent == value) return;
                     hasLightContent = value;
                     DoSetHasLightContent();
                 }

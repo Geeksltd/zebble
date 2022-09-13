@@ -79,7 +79,14 @@
                 UIRuntime.CurrentActivity.Window.SetStatusBarColor(BackgroundColor.Render());
             }
 
-            static void DoSetForegroundColor() { }
+            static void DoSetForegroundColor()
+            {
+                if (Build.VERSION.SdkInt < BuildVersionCodes.Lollipop) return;
+                if (ForegroundColor == null) return;
+
+                UIRuntime.CurrentActivity.Window.SetTitleColor(ForegroundColor.Render());
+                UIRuntime.CurrentActivity.Window.SetNavigationBarColor(ForegroundColor.Render());
+            }
 
             static void DoSetTransparency()
             {
@@ -98,6 +105,12 @@
                     UIRuntime.CurrentActivity.Window.ClearFlags(WindowManagerFlags.Fullscreen);
                 else
                     UIRuntime.CurrentActivity.Window.AddFlags(WindowManagerFlags.Fullscreen);
+            }
+
+            static void DoSetHasLightContent()
+            {
+                if (Build.VERSION.SdkInt < BuildVersionCodes.M) return;
+                UIRuntime.CurrentActivity.Window.DecorView.SystemUiVisibility = HasLightContent ? (StatusBarVisibility)SystemUiFlags.LightStatusBar : 0;
             }
         }
 

@@ -46,10 +46,10 @@ namespace Zebble.Device
                 }
             }
 
-            static bool isTransparent;
+            static bool? isTransparent;
             public static bool IsTransparent
             {
-                get => isTransparent;
+                get => isTransparent ?? false;
                 set
                 {
                     if (isTransparent == value) return;
@@ -58,15 +58,27 @@ namespace Zebble.Device
                 }
             }
 
-            static bool isVisible;
+            static bool? isVisible;
             public static bool IsVisible
             {
-                get => isVisible;
+                get => isVisible ?? false;
                 set
                 {
                     if (isVisible == value) return;
                     isVisible = value;
                     SetVisibility();
+                }
+            }
+
+            static bool? hasLightContent = null;
+            public static bool HasLightContent
+            {
+                get => hasLightContent ?? !DarkMode;
+                set
+                {
+                    if (hasLightContent == value) return;
+                    hasLightContent = value;
+                    DoSetHasLightContent();
                 }
             }
 

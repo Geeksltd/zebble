@@ -31,24 +31,6 @@ namespace Zebble.Device
 
         public static partial class StatusBar
         {
-            static bool? hasLightContent = null;
-            public static bool HasLightContent
-            {
-                get => hasLightContent ?? !DarkMode;
-                set
-                {
-                    if (hasLightContent == value) return;
-
-                    hasLightContent = value;
-
-                    // This will make UIViewController.PreferredStatusBarStyle to be re-evaluated.
-                    CoreFoundation.DispatchQueue.MainQueue.DispatchAsync(
-                        () => UIApplication.SharedApplication?.KeyWindow?
-                                           .RootViewController?.SetNeedsStatusBarAppearanceUpdate()
-                    );
-                }
-            }
-
             static void DoSetBackgroundColor()
             {
                 if (BackgroundColor is null) return;
@@ -70,6 +52,15 @@ namespace Zebble.Device
             }
 
             static void DoSetVisibility() => UIApplication.SharedApplication.SetStatusBarHidden(hidden: !IsVisible, animated: true);
+
+            static void DoSetHasLightContent()
+            {
+                // This will make UIViewController.PreferredStatusBarStyle to be re-evaluated.
+                CoreFoundation.DispatchQueue.MainQueue.DispatchAsync(
+                    () => UIApplication.SharedApplication?.KeyWindow?
+                                       .RootViewController?.SetNeedsStatusBarAppearanceUpdate()
+                );
+            }
         }
 
         public static readonly float HardwareDensity = (float)UIScreen.MainScreen.Scale;

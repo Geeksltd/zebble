@@ -125,6 +125,8 @@ namespace Zebble.Device
                     }
                 }
             }
+
+            static void DoSetHasLightContent() { }
         }
 
         const int SAVE_IMAGE_DPI = 96;

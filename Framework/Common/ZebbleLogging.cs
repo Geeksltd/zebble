@@ -47,15 +47,13 @@
 
                 if (UIRuntime.IsDebuggerAttached) return;
 
-                if (exception != null)
-                    try { OnError?.Invoke(new ExceptionLog(exception, null, null, -1)); }
-                    catch
-                    {
-                        // No logging needed.
-                    }
+                exception ??= new Exception(message);
+
+                try { OnError?.Invoke(new ExceptionLog(exception, null, null, -1)); }
+                catch { /* No logging needed. */ }
             }
 
-            public bool IsEnabled(LogLevel logLevel) => UIRuntime.IsDebuggerAttached || logLevel >= LogLevel.Warning;
+            public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Warning;
 
             public IDisposable BeginScope<TState>(TState state) => default;
         }

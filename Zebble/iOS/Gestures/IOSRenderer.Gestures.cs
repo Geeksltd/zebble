@@ -159,11 +159,21 @@ namespace Zebble
                 var scrollViewNative = parentScrollView.Native();
 
                 if (scrollViewNative is null)
-                    parentScrollView.Rendered.Event += () => attachToScroller();
-                else attachToScroller();
+                    parentScrollView.Rendered.Event += () => attachToScroller(parentScrollView, panGestureRecognizer);
+                else attachToScroller(parentScrollView, panGestureRecognizer);
 
-                void attachToScroller()
+                
+            }
+            Result.AddGestureRecognizer(panGestureRecognizer);
+        }
+
+        void attachToScroller(ScrollView parentScrollView, UIPanGestureRecognizer panGestureRecognizer)
+        {
+            Thread.UI.Post(async () =>
+            {
+                try
                 {
+                    var scrollViewNative = parentScrollView.Native();
                     var recognizer = scrollViewNative?.GestureRecognizers.SingleOrDefault(gr => (gr as UIPanGestureRecognizer) != null);
                     if (recognizer != null)
                     {
@@ -171,8 +181,10 @@ namespace Zebble
                         panGestureRecognizer.Delegate = new GestureRecognizerDelegate(Result, parentScrollView, recognizer as UIPanGestureRecognizer);
                     }
                 }
-            }
-            Result.AddGestureRecognizer(panGestureRecognizer);
+                catch (Exception ex) { } // No logging is needed
+            });
+            
+            
         }
 
         void HandlePinching()

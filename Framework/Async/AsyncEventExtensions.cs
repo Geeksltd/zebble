@@ -58,12 +58,12 @@ namespace Zebble
         internal static TEvent DoRemoveHandler<TEvent>(this TEvent @event, Delegate handlerFunction)
             where TEvent : AbstractAsyncEvent
         {
-            if (handlerFunction is null || @event.handlers is null) return @event;
+            if (handlerFunction is null) return @event;
 
-            var itemsToRemove = @event.handlers?.Where(x => x.Handler == handlerFunction).ToArray();
+            var itemsToRemove = @event.handlers.Where(x => x.Handler == handlerFunction).ToArray();
             if (itemsToRemove.None()) return @event;
 
-            @event.handlers?.Remove(itemsToRemove);
+            @event.handlers.Remove(itemsToRemove);
 
             foreach (var handler in itemsToRemove)
                 handler.Dispose();

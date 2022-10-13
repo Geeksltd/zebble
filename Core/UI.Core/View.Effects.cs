@@ -32,7 +32,7 @@ namespace Zebble
         bool HasAnyHandlerExceptDoAutoFlash(AsyncEvent<TouchEventArgs> @event)
         {
             if (@event.IsHandled()) return true;
-            return @event.handlers?.Any(x => !ReferenceEquals(x.Handler, (Func<Task>)DoAutoFlash)) == true;
+            return @event.handlers.Any(x => !ReferenceEquals(x.Handler, (Func<Task>)DoAutoFlash)) == true;
         }
 
         void InitializeAutoFlash()
@@ -42,8 +42,8 @@ namespace Zebble
 
             if (!respondsToTap && !respondsToTouch) return;
 
-            var alreadyAdded = Touched.handlers.OrEmpty()
-                .Concat(Tapped.handlers.OrEmpty())
+            var alreadyAdded = Touched.handlers
+                .Concat(Tapped.handlers)
                 .Any(x => ReferenceEquals(x.Handler, (Func<Task>)DoAutoFlash));
             if (alreadyAdded) return;
 

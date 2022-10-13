@@ -25,7 +25,7 @@ namespace Zebble
         {
             RaiseDirectHandlers(null);
 
-            var handlers = this.handlers?.ToArray();
+            var handlers = this.handlers.ToArray();
             if (handlers.None()) return Task.CompletedTask;
 
             if (UIRuntime.IsDebuggerAttached)

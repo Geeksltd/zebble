@@ -18,7 +18,7 @@ namespace Zebble
         protected string DeclaringFile, EventName;
         protected bool IsDisposing;
 
-        internal ConcurrentList<AsyncEventHandler> handlers = new(2);
+        internal readonly ConcurrentList<AsyncEventHandler> handlers = new(2);
 
         protected AbstractAsyncEvent(string eventName, string declaringFile)
         {
@@ -32,13 +32,9 @@ namespace Zebble
         public string GetName() => EventName;
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public ConcurrentList<AsyncEventHandler> GetOrCreateHandlers()
-        {
-            if (handlers is null) handlers = new ConcurrentList<AsyncEventHandler>(2);
-            return handlers;
-        }
+        public ConcurrentList<AsyncEventHandler> GetOrCreateHandlers() => handlers;
 
-        public int HandlersCount => handlers?.Count ?? 0;
+        public int HandlersCount => handlers.Count;
 
         public virtual bool HasDirectHandler() => Event != null;
 
@@ -48,24 +44,17 @@ namespace Zebble
 
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal IAsyncEventHandler FindHandler(Delegate handlerFunction)
-        {
-            if (handlers is null) return null;
-            return handlers?.FirstOrDefault(x => handlerFunction == x.Handler) as IAsyncEventHandler;
-        }
+            => handlers.FirstOrDefault(x => handlerFunction == x.Handler) as IAsyncEventHandler;
 
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal bool HasHandler(Delegate handlerFunction)
-        {
-            if (handlers is null) return false;
-            return handlers?.Any(x => handlerFunction == x.Handler) == true;
-        }
+            => handlers.Any(x => handlerFunction == x.Handler);
 
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool IsHandled()
         {
             if (HasDirectHandler()) return true;
-            if (handlers is null) return false;
-            return handlers?.Any() == true;
+            return handlers.Any();
         }
 
         protected string DeclaringType => DeclaringFile.OrEmpty().Split(Path.DirectorySeparatorChar).LastOrDefault().TrimEnd(".cs", caseSensitive: false).Split('.').FirstOrDefault();
@@ -81,15 +70,12 @@ namespace Zebble
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
         internal void RemoveHandler<TActionFunction>(AsyncEventHandler handler)
         {
-            if (handlers is null) return;
-
-            lock (handlers)
-                try { handlers?.Remove(handler); }
-                catch (ArgumentOutOfRangeException)
-                {
-                    // No logging is needed.
-                    // Why does it happen on a single thread?!
-                }
+            try { handlers.Remove(handler); }
+            catch (ArgumentOutOfRangeException)
+            {
+                // No logging is needed.
+                // Why does it happen on a single thread?!
+            }
         }
 
         /// <summary>Removes all current handlers from this event.</summary>
@@ -97,8 +83,7 @@ namespace Zebble
         public virtual void ClearHandlers()
         {
             Event = null;
-            if (handlers is null) return;
-            lock (handlers) handlers.Clear();
+            handlers.Clear();
         }
 
         /// <summary>

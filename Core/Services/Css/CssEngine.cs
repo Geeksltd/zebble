@@ -1,9 +1,9 @@
 namespace Zebble.Services
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Reflection;
     using System.Text;
     using System.Threading.Tasks;
     using Olive;
@@ -12,16 +12,17 @@ namespace Zebble.Services
     {
         static DevicePlatform? platform;
 
-        internal static Dictionary<CssReference, CssRule[]> SelectorCache = new Dictionary<CssReference, CssRule[]>();
-        static readonly List<CssRule> Rules = new List<CssRule>();
-        static Dictionary<Type, string[]> TypeCssTagsCache = new Dictionary<Type, string[]>();
+        internal static ConcurrentDictionary<CssReference, CssRule[]> SelectorCache = new();
+        static readonly List<CssRule> Rules = new();
+        static readonly ConcurrentDictionary<Type, string[]> TypeCssTagsCache = new();
 
-        static Dictionary<string, List<CssRule>> ClassRules = new Dictionary<string, List<CssRule>>();
-        static Dictionary<string, List<CssRule>> TagRules = new Dictionary<string, List<CssRule>>();
-        static Dictionary<string, List<CssRule>> IdRules = new Dictionary<string, List<CssRule>>();
-        static List<CssRule> WildCardRules = new List<CssRule>();
+        static readonly ConcurrentDictionary<string, List<CssRule>> ClassRules = new();
+        static readonly ConcurrentDictionary<string, List<CssRule>> TagRules = new();
+        static readonly ConcurrentDictionary<string, List<CssRule>> IdRules = new();
+        static readonly List<CssRule> WildCardRules = new();
 
-        public static readonly List<CssRule> InspectionRules = new List<CssRule>();
+        public static readonly List<CssRule> InspectionRules = new();
+
         public static DevicePlatform Platform
         {
             get
@@ -31,7 +32,7 @@ namespace Zebble.Services
                     if (Device.OS.Platform == DevicePlatform.Windows)
                         platform = Config.Get("Dev.Css.Platform").TryParseAs<DevicePlatform>();
 
-                    platform = platform ?? Device.OS.Platform;
+                    platform ??= Device.OS.Platform;
                 }
 
                 return platform.Value;
@@ -59,25 +60,13 @@ namespace Zebble.Services
             if (!target.Classes.None())
             {
                 foreach (var cls in target.Classes)
-                {
-                    lock (ClassRules)
-                        if (ClassRules.TryGetValue(cls, out var existing)) existing.Add(rule);
-                        else ClassRules.Add(cls, new List<CssRule> { rule });
-                }
+                    ClassRules.GetOrAdd(cls, () => new List<CssRule>()).Add(rule);
             }
             else if (target.ID.HasValue())
-            {
-                lock (IdRules)
-                    if (IdRules.TryGetValue(target.ID, out var existing)) existing.Add(rule);
-                    else IdRules.Add(target.ID, new List<CssRule> { rule });
-            }
+                IdRules.GetOrAdd(target.ID, new List<CssRule>()).Add(rule);
             else if (target.IsWildCard) WildCardRules.Add(rule);
             else if (target.Tag.HasValue())
-            {
-                lock (TagRules)
-                    if (TagRules.TryGetValue(target.Tag, out var existing)) existing.Add(rule);
-                    else TagRules.Add(target.Tag, new List<CssRule> { rule });
-            }
+                TagRules.GetOrAdd(target.Tag, () => new List<CssRule>()).Add(rule);
         }
 
         internal static void ClearNonDynamics()
@@ -151,16 +140,7 @@ namespace Zebble.Services
         }
 
         static CssRule[] FindMatchedRules(View view)
-        {
-            if (!SelectorCache.TryGetValue(view.CssReference, out var result))
-            {
-                result = FindRules(view);
-                lock (SelectorCache)
-                    return SelectorCache[view.CssReference.CloneForCacheKey()] = result;
-            }
-
-            return result;
-        }
+            => SelectorCache.GetOrAdd(view.CssReference, () => FindRules(view));
 
         static CssRule[] FindRules(View view)
         {
@@ -185,38 +165,31 @@ namespace Zebble.Services
             List<CssRule> items;
 
             if (view.id.HasValue())
-                lock (IdRules)
-                    if (IdRules.TryGetValue(view.id, out items))
-                        result = result.Concat(items);
+                if (IdRules.TryGetValue(view.id, out items))
+                    result = result.Concat(items);
 
             if (view.CssClassParts != null)
-                lock (ClassRules)
-                    foreach (var cls in view.CssClassParts)
-                        if (ClassRules.TryGetValue(cls, out items)) result = result.Concat(items);
+                foreach (var cls in view.CssClassParts)
+                    if (ClassRules.TryGetValue(cls, out items)) result = result.Concat(items);
 
             foreach (var tag in GetCssTags(view.GetType()))
-                lock (TagRules)
-                    if (TagRules.TryGetValue(tag, out items))
-                        result = result.Concat(items);
+                if (TagRules.TryGetValue(tag, out items))
+                    result = result.Concat(items);
 
             return result.ToList();
         }
 
         public static string[] GetCssTags(Type type)
         {
-            lock (TypeCssTagsCache)
+            return TypeCssTagsCache.GetOrAdd(type, () =>
             {
-                if (TypeCssTagsCache.TryGetValue(type, out var result)) return result;
-
                 var resultList = new List<string>();
 
                 for (var t = type; t != typeof(View); t = t.BaseType)
                     resultList.Add(GetCssTag(t));
 
-                result = resultList.ToArray();
-
-                return TypeCssTagsCache[type] = result;
-            }
+                return resultList.ToArray();
+            });
         }
 
         static string GetCssTag(Type type)

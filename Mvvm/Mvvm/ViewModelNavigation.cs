@@ -7,10 +7,10 @@ namespace Zebble.Mvvm
     partial class ViewModelNavigation
     {
         protected PageTransition Transition;
-        FullScreen From;
+        readonly FullScreen From;
         Func<Task> RealGo, RealBack, RealForward, RealReplace, RealShowPopup;
         Func<Task> RealHidePopup = () => Task.CompletedTask;
-        ViewModel Target;
+        readonly ViewModel Target;
 
         public ViewModelNavigation(ViewModel target, PageTransition transition)
         {

@@ -9,8 +9,8 @@
     {
         static bool Initialized;
 
-        static readonly List<Type> DependencyTypes = new List<Type>();
-        static readonly Dictionary<Type, DependencyData> DependencyImplementations = new Dictionary<Type, DependencyData>();
+        static readonly List<Type> DependencyTypes = new();
+        static readonly Dictionary<Type, DependencyData> DependencyImplementations = new();
 
         public static T Get<T>(DependencyFetchTarget fetchTarget = DependencyFetchTarget.GlobalInstance) where T : class
         {

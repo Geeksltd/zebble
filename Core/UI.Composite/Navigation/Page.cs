@@ -15,28 +15,28 @@ namespace Zebble
             Css.Height = Root.ActualHeight;
         }
 
-        public readonly AsyncEvent PulledToRefresh = new AsyncEvent();
+        public readonly AsyncEvent PulledToRefresh = new();
 
         /// <summary>
         /// Will be called when redirecting to a previously loaded cached page.
         /// This can be used in order to update the page partially.
         /// </summary>
-        public readonly AsyncEvent<RevisitingEventArgs> OnRevisiting = new AsyncEvent<RevisitingEventArgs>();
+        public readonly AsyncEvent<RevisitingEventArgs> OnRevisiting = new();
 
         /// <summary>
         /// Will be called when redirecting to a previously loaded cached page finished.
         /// </summary>
-        public readonly AsyncEvent<RevisitingEventArgs> OnRevisited = new AsyncEvent<RevisitingEventArgs>();
+        public readonly AsyncEvent<RevisitingEventArgs> OnRevisited = new();
 
         /// <summary>
         /// Will be called when redirecting away from this page.
         /// </summary>
-        public readonly AsyncEvent<NavigationEventArgs> OnExiting = new AsyncEvent<NavigationEventArgs>();
+        public readonly AsyncEvent<NavigationEventArgs> OnExiting = new();
 
         /// <summary>
         /// Will be called when after redirected away from this page.
         /// </summary>
-        public readonly AsyncEvent<NavigationEventArgs> OnExited = new AsyncEvent<NavigationEventArgs>();
+        public readonly AsyncEvent<NavigationEventArgs> OnExited = new();
 
         public bool EnablePullToRefresh { get; set; }
 

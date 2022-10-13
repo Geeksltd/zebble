@@ -22,7 +22,7 @@
         class ZebbleLogger : ILogger<string>
         {
             readonly Action<ExceptionLog> OnError;
-            string Category;
+            readonly string Category;
 
             public ZebbleLogger(IOptions<ZebbleLoggerOptions> options, string category)
             {

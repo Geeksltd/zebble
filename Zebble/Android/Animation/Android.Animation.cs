@@ -10,7 +10,7 @@ namespace Zebble
 
     partial class Animation
     {
-        internal readonly List<Animator> SlowAnimators = new List<Animator>();
+        internal readonly List<Animator> SlowAnimators = new();
         internal ViewPropertyAnimator ViewPropertyAnimator;
         bool IsAlreadyCompleted;
 

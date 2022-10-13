@@ -7,7 +7,7 @@ namespace Zebble
 {
     public class FlowLayout : Canvas, IAutoContentHeightProvider
     {
-        readonly AsyncEvent HeightChanged = new AsyncEvent();
+        readonly AsyncEvent HeightChanged = new();
 
         AsyncEvent IAutoContentHeightProvider.Changed => HeightChanged;
         float IAutoContentHeightProvider.Calculate() => CurrentChildren.MaxOrDefault(x => x.ActualBottom) + Padding.Bottom();

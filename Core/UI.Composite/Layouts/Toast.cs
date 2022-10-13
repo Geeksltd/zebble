@@ -7,12 +7,12 @@ namespace Zebble
     public class Toast : Canvas
     {
         public readonly static AsyncEvent<string> ToastShown = new();
-        public readonly Stack MessageContainer = new Stack(RepeatDirection.Horizontal);
-        public readonly TextView Label = new TextView { Id = "Label" };
-        public readonly Button OKButton = new Button { Id = "OKButton", Text = "OK" };
+        public readonly Stack MessageContainer = new(RepeatDirection.Horizontal);
+        public readonly TextView Label = new() { Id = "Label" };
+        public readonly Button OKButton = new() { Id = "OKButton", Text = "OK" };
         const int DROP_RANGE = 30;
 
-        static ConcurrentList<string> CurrentToastMessages = new ConcurrentList<string>();
+        static readonly ConcurrentList<string> CurrentToastMessages = new();
 
         public Toast(string message) => Message = message;
 

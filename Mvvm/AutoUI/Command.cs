@@ -7,7 +7,7 @@ namespace Zebble.Mvvm.AutoUI
     partial class InvokeNode : Node
     {
         public int Index;
-        Action Action;
+        readonly Action Action;
 
         public string NaturalLabel => Label.ToLiteralFromPascalCase().CapitaliseFirstLetters();
 

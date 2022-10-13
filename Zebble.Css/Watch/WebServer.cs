@@ -9,7 +9,7 @@
 
     public class WebServer
     {
-        readonly HttpListener Listener = new HttpListener();
+        readonly HttpListener Listener = new();
         readonly Func<HttpListenerRequest, string> ResponderMethod;
 
         public WebServer(string[] prefixes, Func<HttpListenerRequest, string> method)

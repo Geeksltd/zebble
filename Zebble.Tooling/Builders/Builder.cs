@@ -14,7 +14,7 @@
         internal static bool ShouldLog;
 
         readonly DateTime _start = LocalTime.Now;
-        readonly Dictionary<string, Action> _steps = new Dictionary<string, Action>();
+        readonly Dictionary<string, Action> _steps = new();
 
         public virtual List<KeyValuePair<string, string>> LogMessages { get; } = new List<KeyValuePair<string, string>>();
 

@@ -6,7 +6,7 @@ namespace Zebble.Mvvm
 {
     partial class ViewModel
     {
-        static ConcurrentDictionary<Type, ViewModel> SingletonInstances = new ConcurrentDictionary<Type, ViewModel>();
+        static readonly ConcurrentDictionary<Type, ViewModel> SingletonInstances = new();
 
         /// <summary>
         /// Returns the current instance of the specified view model.

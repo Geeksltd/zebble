@@ -36,7 +36,7 @@ namespace Zebble
 
         internal AnimationEndedListener GetOrCreateListener(Animation animation)
         {
-            AnimatorListener = AnimatorListener ?? (AnimatorListener = new AnimationEndedListener());
+            AnimatorListener ??= (AnimatorListener = new AnimationEndedListener());
             AnimatorListener.Ended += () => Thread.UI.Post(() => { if (!IsDisposing) animation.RaiseCompleted(); });
 
             return AnimatorListener;

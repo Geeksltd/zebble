@@ -9,7 +9,7 @@ namespace Zebble
     public class Color
     {
         string toString;
-        static Dictionary<string, Color> ColorParseCache = new();
+        static readonly Dictionary<string, Color> ColorParseCache = new();
 
         const int COLOR_CHARACTERS = 6;
 

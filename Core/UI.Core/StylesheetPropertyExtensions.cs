@@ -4,11 +4,11 @@ namespace Zebble
 
     public static class StylesheetPropertyExtensions
     {
-        public static Length.PercentageLengthRequest Percent(this int value) => new Length.PercentageLengthRequest(value);
+        public static Length.PercentageLengthRequest Percent(this int value) => new(value);
 
-        public static Length.PercentageLengthRequest Percent(this float value) => new Length.PercentageLengthRequest(value);
+        public static Length.PercentageLengthRequest Percent(this float value) => new(value);
 
-        public static Length.PercentageLengthRequest Percent(this double value) => new Length.PercentageLengthRequest((float)value);
+        public static Length.PercentageLengthRequest Percent(this double value) => new((float)value);
 
         public static Stylesheet X(this Stylesheet sheet, Length.LengthRequest value) => sheet.Set(x => x.X = value);
 

@@ -9,8 +9,8 @@ namespace Zebble
     public partial class Stack : Canvas, IAutoContentHeightProvider, IAutoContentWidthProvider
     {
         RepeatDirection direction = RepeatDirection.Vertical;
-        readonly AsyncEvent AutoContentHeightChanged = new AsyncEvent();
-        readonly AsyncEvent AutoContentWidthChanged = new AsyncEvent();
+        readonly AsyncEvent AutoContentHeightChanged = new();
+        readonly AsyncEvent AutoContentWidthChanged = new();
 
         public Stack() : this(RepeatDirection.Vertical) { }
         public Stack(RepeatDirection direction) : base() => Direction = direction;

@@ -15,7 +15,7 @@ namespace Zebble.UWP
         where TResult : Control, new()
     {
         protected bool IsApiChangingText;
-        Renderer Renderer;
+        readonly Renderer Renderer;
         protected TextInput View;
         protected TResult Result;
 
@@ -252,7 +252,7 @@ namespace Zebble
 {
     partial class TextInput
     {
-        public readonly AsyncEvent<int> UserKeyUp = new AsyncEvent<int>();
-        public readonly AsyncEvent<int> UserKeyDown = new AsyncEvent<int>();
+        public readonly AsyncEvent<int> UserKeyUp = new();
+        public readonly AsyncEvent<int> UserKeyDown = new();
     }
 }

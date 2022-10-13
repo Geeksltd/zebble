@@ -13,9 +13,9 @@ namespace Zebble
     partial class Font
     {
         static Android.Widget.TextView Sample;
-        static Rect SampleRectangle = new Rect();
-        static TextPaint SamplePaint = new TextPaint();
-        static Dictionary<string, Typeface> FontCache = new Dictionary<string, Typeface>();
+        static readonly Rect SampleRectangle = new();
+        static readonly TextPaint SamplePaint = new();
+        static readonly Dictionary<string, Typeface> FontCache = new();
 
         const float TEXT_WIDTH_ERROR = 3;
 

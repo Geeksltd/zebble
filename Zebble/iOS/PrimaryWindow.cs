@@ -5,7 +5,7 @@ namespace Zebble.IOS
 
     public class PrimaryWindow : UIWindow
     {
-        UIViewController RootScreen;
+        readonly UIViewController RootScreen;
 
         public PrimaryWindow(UIViewController rootScreen) : base(UIScreen.MainScreen.Bounds)
         {

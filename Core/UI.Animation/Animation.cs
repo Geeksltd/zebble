@@ -20,8 +20,8 @@
         public static TimeSpan FlashDuration = 200.Milliseconds();
         public static TimeSpan OneFrame = (1000 / 60 /*FPS*/).Milliseconds();
 
-        public readonly AsyncLock StartedLock = new AsyncLock();
-        TaskCompletionSource<bool> TaskSource = new TaskCompletionSource<bool>();
+        public readonly AsyncLock StartedLock = new();
+        readonly TaskCompletionSource<bool> TaskSource = new();
 
         public TimeSpan Duration { get; set; } = DefaultDuration;
         public TimeSpan Delay { get; set; } = TimeSpan.Zero;
@@ -48,9 +48,9 @@
         public Task Task => TaskSource.Task;
 
         public bool IsStarted, IsCompleted;
-        readonly AsyncEvent NativeStarted = new AsyncEvent();
-        TaskCompletionSource<bool> NativeCompleted = new TaskCompletionSource<bool>();
-        public readonly AsyncEvent completed = new AsyncEvent();
+        readonly AsyncEvent NativeStarted = new();
+        readonly TaskCompletionSource<bool> NativeCompleted = new();
+        public readonly AsyncEvent completed = new();
 
         [Obsolete("Use OnCompleted() instead.")]
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -13,9 +13,9 @@ namespace Zebble
         /// <summary>
         /// This will be called whenever a new url opens in app
         /// </summary>
-        public static readonly AsyncEvent<Tuple<IActivatedEventArgs, Window>> OnActivated = new AsyncEvent<Tuple<IActivatedEventArgs, Window>>();
+        public static readonly AsyncEvent<Tuple<IActivatedEventArgs, Window>> OnActivated = new();
 
-        public static readonly AsyncEvent<Dictionary<string, string>> OnParameterRecieved = new AsyncEvent<Dictionary<string, string>>();
+        public static readonly AsyncEvent<Dictionary<string, string>> OnParameterRecieved = new();
 
         private static bool? isDevMode;
 

@@ -10,9 +10,9 @@ namespace Zebble
     {
         const int DEFAULT_FONT_SIZE = 14;
         protected string text;
-        protected readonly AsyncEvent AutoContentHeightChanged = new AsyncEvent();
-        public readonly AsyncEvent TextAlignmentChanged = new AsyncEvent();
-        public readonly AsyncEvent FontChanged = new AsyncEvent();
+        protected readonly AsyncEvent AutoContentHeightChanged = new();
+        public readonly AsyncEvent TextAlignmentChanged = new();
+        public readonly AsyncEvent FontChanged = new();
 
         protected TextControl() => Css.Font(DEFAULT_FONT_SIZE);
 

@@ -11,7 +11,7 @@ namespace Zebble
         IList<object> dataSource;
 
         /// <summary>The current items for selection on the UI.</summary>
-        public List<DataItem> Items = new List<DataItem>();
+        public List<DataItem> Items = new();
 
         /// <summary>The items currently selected on the UI.</summary>
         public IEnumerable<DataItem> SelectedItems => Items.Where(x => x.Selected);

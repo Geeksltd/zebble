@@ -10,9 +10,9 @@ namespace Zebble.UWP
 
     class UWPControlWrapper
     {
-        View View;
-        Renderer Renderer;
-        static controls.Border DefaultBorder = new controls.Border();
+        readonly View View;
+        readonly Renderer Renderer;
+        static readonly controls.Border DefaultBorder = new();
         internal controls.Border Native;
         controls.Grid BackgroundImageLayer;
         ImageView BackgroundImage;

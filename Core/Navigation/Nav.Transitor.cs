@@ -9,11 +9,10 @@ namespace Zebble
         {
             Animation EnterAnimation, ExitAnimation;
             TimeSpan Duration = Animation.DefaultDuration;
-
-            View ParentView, FromView, ToView;
-            PageTransition Transition;
-            TaskCompletionSource<bool> ExitAnimationCompleted = new TaskCompletionSource<bool>();
-            TaskCompletionSource<bool> EnterAnimationCompleted = new TaskCompletionSource<bool>();
+            readonly View ParentView, FromView, ToView;
+            readonly PageTransition Transition;
+            readonly TaskCompletionSource<bool> ExitAnimationCompleted = new();
+            readonly TaskCompletionSource<bool> EnterAnimationCompleted = new();
 
             public Transitor(View parentView, View fromView, View toView, PageTransition transition)
             {

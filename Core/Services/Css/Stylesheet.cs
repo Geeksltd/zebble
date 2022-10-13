@@ -8,7 +8,7 @@ namespace Zebble
     [EscapeGCop("X and Y are good names")]
     public partial class Stylesheet
     {
-        View Owner;
+        readonly View Owner;
         internal bool IsCss;
 
         internal string backgroundImagePath, transformOrigin;

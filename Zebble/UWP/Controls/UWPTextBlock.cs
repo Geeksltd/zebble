@@ -10,7 +10,7 @@ namespace Zebble.UWP
 
 	public class UWPTextBlock : controls.Grid, UIChangeCommand.IHandler, INativeRenderer
 	{
-		TextView View;
+        readonly TextView View;
 
 		protected controls.TextBlock Result;
 

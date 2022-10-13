@@ -11,11 +11,11 @@ namespace Zebble
 
     partial class Animation
     {
-        protected readonly static ConcurrentList<Animation> RunningAnimations = new ConcurrentList<Animation>();
+        protected readonly static ConcurrentList<Animation> RunningAnimations = new();
 
         internal Storyboard Storyboard;
         internal xaml.FrameworkElement Target;
-        internal readonly List<ZebblePropertyAnimator> Timelines = new List<ZebblePropertyAnimator>();
+        internal readonly List<ZebblePropertyAnimator> Timelines = new();
 
         internal void AddTimeline<TValue>(Func<TValue> fromProvider, Func<TValue> toProvider, xaml.FrameworkElement target, xaml.DependencyObject animatable, string propertyPath)
         {

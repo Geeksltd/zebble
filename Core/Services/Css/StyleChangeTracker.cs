@@ -13,7 +13,7 @@ namespace Zebble
 
     class StyleChangeTracker<T> : StyleChangeTracker
     {
-        T OriginalValue;
+        readonly T OriginalValue;
         internal T NewValue;
         internal Action Cascader;
         internal bool IsDone;
@@ -75,9 +75,9 @@ namespace Zebble
         /// </summary>
         public class State<T> : IDisposable
         {
-            T Style, Css;
-            View View;
-            PropertyInfo Property;
+            readonly T Style, Css;
+            readonly View View;
+            readonly PropertyInfo Property;
 
             internal State(View view, PropertyInfo property)
             {

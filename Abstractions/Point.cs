@@ -47,16 +47,16 @@ namespace Zebble
         /// <summary>
         /// Returns a new point with X = myX + another's X (and the same for Y).
         /// </summary>
-        public Point Add(Point another) => new Point(X + another.X, Y + another.Y);
+        public Point Add(Point another) => new(X + another.X, Y + another.Y);
 
         /// <summary>
         /// Returns a new point with X = myX - another's X (and the same for Y).
         /// </summary>
-        public Point Subtract(Point another) => new Point(X - another.X, Y - another.Y);
+        public Point Subtract(Point another) => new(X - another.X, Y - another.Y);
 
         /// <summary>
         /// Returns a new point with X and Y being the sum of mine and the specified additional value.
         /// </summary>
-        public Point Add(float addX, float addY) => new Point(X + addX, Y + addY);
+        public Point Add(float addX, float addY) => new(X + addX, Y + addY);
     }
 }

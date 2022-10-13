@@ -18,7 +18,7 @@ namespace Zebble
         public View parent;
         public View Parent => parent;
 
-        public readonly AsyncEvent ParentSet = new AsyncEvent();
+        public readonly AsyncEvent ParentSet = new();
 
         /// <summary>
         /// Returns the root container view on the screen. This is the same as UIRuntime.PageContainer.
@@ -28,7 +28,7 @@ namespace Zebble
         /// <summary>
         /// Gets all children whether or not they are ignored.
         /// </summary>
-        public readonly ConcurrentList<View> AllChildren = new ConcurrentList<View>();
+        public readonly ConcurrentList<View> AllChildren = new();
 
         /// <summary>Gets a copy of the children which are not ignored, so it's thread safe.</summary>
         public IEnumerable<View> CurrentChildren => AllChildren.Except(x => x.ignored);

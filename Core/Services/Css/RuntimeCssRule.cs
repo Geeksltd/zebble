@@ -9,7 +9,7 @@ namespace Zebble.Services
 
     class RuntimeCssRule : CssRule
     {
-        public Dictionary<string, string> Settings = new Dictionary<string, string>();
+        public Dictionary<string, string> Settings = new();
 
         public Action<Stylesheet> Setter;
 

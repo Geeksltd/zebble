@@ -10,10 +10,10 @@ namespace Zebble.Services
     public class Timer
     {
         Action Action;
-        Func<Task> AsyncAction;
-        TimeSpan Interval;
+        readonly Func<Task> AsyncAction;
+        readonly TimeSpan Interval;
         bool Stopped = true;
-        WaitingOption Option;
+        readonly WaitingOption Option;
         public OnError ErrorAction { get; set; } = OnError.Throw;
 
         public enum WaitingOption

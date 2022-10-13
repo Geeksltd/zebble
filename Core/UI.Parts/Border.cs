@@ -108,7 +108,7 @@ namespace Zebble
             }
         }
 
-        public static implicit operator Border(int value) => new Border { Width = value };
+        public static implicit operator Border(int value) => new() { Width = value };
 
         public bool HasValue()
         {

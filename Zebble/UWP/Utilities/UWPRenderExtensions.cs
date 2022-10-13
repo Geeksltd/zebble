@@ -21,7 +21,7 @@ namespace Zebble
 
 	public static class UWPRenderExtensions
 	{
-		static Dictionary<int, media.Brush> BrushesCache = new Dictionary<int, media.Brush>();
+		static readonly Dictionary<int, media.Brush> BrushesCache = new();
 
 		internal static void RespondToEvents(this controls.Canvas canvas)
 		{
@@ -259,7 +259,7 @@ namespace Zebble
 
 		public static double RenderPercentage(this float location) => location * 0.01f;
 
-		public static foundation.Point Render(this Point point) => new foundation.Point(point.X, point.Y);
+		public static foundation.Point Render(this Point point) => new(point.X, point.Y);
 
 		public static void RemoveFromSuperview(this xaml.UIElement view)
 		{

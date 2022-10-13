@@ -5,7 +5,7 @@ namespace Zebble
 
     internal sealed class AsyncWaitQueue<T>
     {
-        readonly AsyncLockDeque<TaskCompletionSource<T>> Queue = new AsyncLockDeque<TaskCompletionSource<T>>();
+        readonly AsyncLockDeque<TaskCompletionSource<T>> Queue = new();
 
         public int Count
         {

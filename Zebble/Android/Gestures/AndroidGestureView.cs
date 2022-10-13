@@ -25,7 +25,7 @@ namespace Zebble.AndroidOS
 
     public class AndroidGestureView<TLayout> : FrameLayout, IGestureView where TLayout : ViewGroup
     {
-        static ConcurrentDictionary<long, WeakReference<Zebble.View>> RecentHandlers = new();
+        static readonly ConcurrentDictionary<long, WeakReference<Zebble.View>> RecentHandlers = new();
 
         /// <summary>It's either the root view or a scroll view.</summary>
         Zebble.View Host;

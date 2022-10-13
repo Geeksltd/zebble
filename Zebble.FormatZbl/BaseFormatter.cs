@@ -7,7 +7,7 @@ namespace Zebble.FormatZbl
 {
     abstract class BaseFormatter
     {
-        public List<string> Errors = new List<string>();
+        public List<string> Errors = new();
         protected string Error(string error)
         {
             Errors.Add(error);

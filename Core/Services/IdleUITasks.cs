@@ -6,11 +6,11 @@ namespace Zebble.Services
 
     public class IdleUITasks
     {
-        static TimeSpan IDLE_TIME = 300.Milliseconds();
-        static TimeSpan INTERVALS = 300.Milliseconds();
-        static ConcurrentQueue<Tuple<string, Action>> OutstandingActions = new ConcurrentQueue<Tuple<string, Action>>();
+        static readonly TimeSpan IDLE_TIME = 300.Milliseconds();
+        static readonly TimeSpan INTERVALS = 300.Milliseconds();
+        static readonly ConcurrentQueue<Tuple<string, Action>> OutstandingActions = new();
         static DateTime LatestUIAction = DateTime.UtcNow;
-        static Timer ActionTimer;
+        static readonly Timer ActionTimer;
 
         public static DateTime LatestTouch { get; private set; }
 

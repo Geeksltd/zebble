@@ -8,7 +8,7 @@ namespace Zebble
         bool enableZooming;
         float minZoomScale = 1, maxZoomScale = 10;
 
-        internal readonly AsyncEvent ZoomSettingsChanged = new AsyncEvent();
+        internal readonly AsyncEvent ZoomSettingsChanged = new();
 
         public bool EnableZooming
         {

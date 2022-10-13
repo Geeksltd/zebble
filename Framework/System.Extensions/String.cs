@@ -8,7 +8,7 @@ namespace System
     [EscapeGCop("Hard coded values are acceptable here")]
     public static partial class ZebbleExtensions
     {
-        static ConcurrentDictionary<string, object> StringLocks = new();
+        static readonly ConcurrentDictionary<string, object> StringLocks = new();
 
         public static object GetLockReference(this string text) => StringLocks.GetOrAdd(text, x => new object());
     }

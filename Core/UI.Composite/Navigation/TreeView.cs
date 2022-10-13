@@ -10,7 +10,7 @@ namespace Zebble
     public class TreeView : Stack
     {
         public float IndentSpace = 20;
-        public readonly ConcurrentList<Node> RootNodes = new ConcurrentList<Node>();
+        public readonly ConcurrentList<Node> RootNodes = new();
 
         public IEnumerable<Node> AllNodes => RootNodes.SelectMany(r => r.WithAllChildren().Cast<Node>());
 
@@ -44,9 +44,9 @@ namespace Zebble
         {
             Stack Row;
             bool isExpanded;
-            public readonly ConcurrentList<Node> children = new ConcurrentList<Node>();
+            public readonly ConcurrentList<Node> children = new();
             public Func<Node, View> ViewGenerator = n => new TextView { AutoFlash = false }.CssClass("tree-node").Text(n.Text).Wrap(value: false);
-            public readonly AsyncEvent<TouchEventArgs> Tapped = new AsyncEvent<TouchEventArgs>();
+            public readonly AsyncEvent<TouchEventArgs> Tapped = new();
             public object Source { get; set; }
 
             public TextView ToggleIcon = new TextView().Hide().Text("▶").CssClass("toggle-icon");

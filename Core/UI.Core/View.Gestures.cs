@@ -12,37 +12,37 @@ namespace Zebble
         /// <summary>
         /// Raised as soon as the user touches this view.
         /// </summary>
-        public readonly AsyncEvent<TouchEventArgs> Touched = new AsyncEvent<TouchEventArgs>(ConcurrentEventRaisePolicy.Ignore);
+        public readonly AsyncEvent<TouchEventArgs> Touched = new(ConcurrentEventRaisePolicy.Ignore);
 
         /// <summary>
         /// Raised after the user lifts the touch, if it didn't move more than 6px and didn't take more than 200ms.
         /// </summary>
-        public readonly AsyncEvent<TouchEventArgs> Tapped = new AsyncEvent<TouchEventArgs>(ConcurrentEventRaisePolicy.Ignore);
+        public readonly AsyncEvent<TouchEventArgs> Tapped = new(ConcurrentEventRaisePolicy.Ignore);
 
         /// <summary>
         /// Raised when the user holds this view for one second or longer, without moving more than 6px.
         /// </summary>
-        public readonly AsyncEvent<TouchEventArgs> LongPressed = new AsyncEvent<TouchEventArgs>();
+        public readonly AsyncEvent<TouchEventArgs> LongPressed = new();
 
         /// <summary>
         /// Raised when the touch quickly pans to one side for at least 10px and a maximum of 500ms.
         /// Avoid this in most scenarios. Use a combination of Panning and PanFinished instead.
         /// </summary>
-        public readonly AsyncEvent<SwipedEventArgs> Swiped = new AsyncEvent<SwipedEventArgs>(ConcurrentEventRaisePolicy.Queue);
+        public readonly AsyncEvent<SwipedEventArgs> Swiped = new(ConcurrentEventRaisePolicy.Queue);
 
         /// <summary>
         /// Raised for every tiny movement (usually around a pixel) of the touch while panning.
         /// </summary>
-        public readonly AsyncEvent<PannedEventArgs> Panning = new AsyncEvent<PannedEventArgs>(ConcurrentEventRaisePolicy.Queue);
+        public readonly AsyncEvent<PannedEventArgs> Panning = new(ConcurrentEventRaisePolicy.Queue);
 
         /// <summary>
         /// Raised when after a whole process of panning, the touch device (e.g. mouse or finger) is released.
         /// </summary>
-        public readonly AsyncEvent<PannedEventArgs> PanFinished = new AsyncEvent<PannedEventArgs>();
+        public readonly AsyncEvent<PannedEventArgs> PanFinished = new();
 
-        public readonly AsyncEvent<PinchedEventArgs> Pinching = new AsyncEvent<PinchedEventArgs>(ConcurrentEventRaisePolicy.Queue);
+        public readonly AsyncEvent<PinchedEventArgs> Pinching = new(ConcurrentEventRaisePolicy.Queue);
 
-        public readonly AsyncEvent<UserRotatingEventArgs> UserRotating = new AsyncEvent<UserRotatingEventArgs>(ConcurrentEventRaisePolicy.Queue);
+        public readonly AsyncEvent<UserRotatingEventArgs> UserRotating = new(ConcurrentEventRaisePolicy.Queue);
 
         /// <summary>Will raise the tapped event with the location of 0,0.</summary>
         public virtual void RaiseTapped() => RaiseTapped(new TouchEventArgs(this, new Point(), 1));

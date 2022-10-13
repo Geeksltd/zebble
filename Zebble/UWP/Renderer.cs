@@ -14,7 +14,7 @@ namespace Zebble
         internal xaml.FrameworkElement NativeElement;
         UWPControlWrapper ResultWrapper;
         UWPGestureRecognizer GestureRecognizer;
-        object RotationSyncLock = new object();
+        readonly object RotationSyncLock = new();
 
         xaml.FrameworkElement NativeResult => ResultWrapper?.Native ?? NativeElement;
         controls.UIElementCollection NativeContainer;

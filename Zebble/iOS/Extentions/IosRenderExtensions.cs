@@ -23,9 +23,9 @@ namespace System
             }
         }
 
-        public static UIEdgeInsets Render(this Gap gap) => new UIEdgeInsets(gap.Top(), gap.Left(), gap.Bottom(), gap.Right());
+        public static UIEdgeInsets Render(this Gap gap) => new(gap.Top(), gap.Left(), gap.Bottom(), gap.Right());
 
-        public static Size ToZebble(this CGSize size) => new Size((float)size.Width, (float)size.Height);
+        public static Size ToZebble(this CGSize size) => new((float)size.Width, (float)size.Height);
 
         public static UITextSpellCheckingType RenderSpellChecking(this SpellCheckingType spell)
         {
@@ -98,7 +98,7 @@ namespace System
 
         public static NSObject ToNs(this CGImage value) => NSObject.FromObject(value);
 
-        internal static drawing.SizeF Render(this Size size) => new drawing.SizeF(size.Width, size.Height);
+        internal static drawing.SizeF Render(this Size size) => new(size.Width, size.Height);
 
         public static UIColor Render(this Color color)
         {
@@ -110,7 +110,7 @@ namespace System
 
         public static CGColor ToCG(this Color color) => color.Render().CGColor;
 
-        public static NSNumber RenderPercentage(this float percentage) => new NSNumber(percentage / 100);
+        public static NSNumber RenderPercentage(this float percentage) => new(percentage / 100);
 
         public static UITextAlignment Render(this Alignment alignment)
         {
@@ -198,7 +198,7 @@ namespace System
             }
         }
 
-        public static CGPoint Render(this Point point) => new CGPoint(point.X, point.Y);
+        public static CGPoint Render(this Point point) => new(point.X, point.Y);
 
         public static CALayer SyncBackgroundFrame(this CALayer parentLayer, CGRect newFrame)
         {

@@ -45,18 +45,18 @@ namespace Zebble
         /// <summary>
         /// Gets a new size with the same width and height as the specified value.
         /// </summary>
-        public static Size Square(float value) => new Size(value, value);
+        public static Size Square(float value) => new(value, value);
 
         /// <summary>
         /// Gets a new size with the width and height multiplied by the specified multiplier.
         /// </summary>
-        public Size Scale(float multiplier) => new Size(Width * multiplier, Height * multiplier);
+        public Size Scale(float multiplier) => new(Width * multiplier, Height * multiplier);
 
-        public Size Round(int digits = 0) => new Size(Width.Round(digits), Height.Round(digits));
+        public Size Round(int digits = 0) => new(Width.Round(digits), Height.Round(digits));
 
-        public Size RoundUp() => new Size((float)Math.Ceiling(Width), (float)Math.Ceiling(Height));
+        public Size RoundUp() => new((float)Math.Ceiling(Width), (float)Math.Ceiling(Height));
 
-        public Size RoundDown() => new Size((float)Math.Floor(Width), (float)Math.Floor(Height));
+        public Size RoundDown() => new((float)Math.Floor(Width), (float)Math.Floor(Height));
 
         /// <summary>
         /// Returns true if both width and height are larger than another specified size.

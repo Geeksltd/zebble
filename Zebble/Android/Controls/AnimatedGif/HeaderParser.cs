@@ -15,8 +15,8 @@ namespace Zebble.AndroidOS.Gif
         const int COMMENT = 0xfe;
         const int TERMINATOR = 0x3b;
 
-        static int MinFrameDelay = 2, DefaultFrameDelay = 10, MaxBlockSize = 256;
-        byte[] Block = new byte[MaxBlockSize];
+        static readonly int MinFrameDelay = 2, DefaultFrameDelay = 10, MaxBlockSize = 256;
+        readonly byte[] Block = new byte[MaxBlockSize];
         ByteBuffer RawData;
         Header Header;
         int BlockSize;

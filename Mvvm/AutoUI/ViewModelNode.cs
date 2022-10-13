@@ -12,7 +12,7 @@ namespace Zebble.Mvvm.AutoUI
 
         public ViewModelNode(string label, ViewModel vm, Node parent, List<ViewModel> crawled = null) : base(label, parent)
         {
-            crawled = crawled ?? new List<ViewModel>();
+            crawled ??= new List<ViewModel>();
             ViewModel = vm;
 
             Children.AddRange(

@@ -10,12 +10,12 @@ namespace Zebble.Services
     {
         public const int DEFAULT_JPEG_QUALITY = 90;
 
-        static Dictionary<string, ImageSource> Providers = new Dictionary<string, ImageSource>();
+        static readonly Dictionary<string, ImageSource> Providers = new();
         const string NOT_FOUND = "Images/Icons/not-found.png";
         static string FailedPlaceholderImagePath;
         static string[] MemoryCacheFolders = new string[0];
-        static readonly List<string> MemoryCacheFiles = new List<string>();
-        static object ProviderSyncLock = new object();
+        static readonly List<string> MemoryCacheFiles = new();
+        static readonly object ProviderSyncLock = new();
 
         static ImageService()
         {

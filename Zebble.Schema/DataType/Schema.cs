@@ -10,7 +10,7 @@
 
     public class Schema
     {
-        readonly XmlSchema Doc = new XmlSchema();
+        readonly XmlSchema Doc = new();
 
         public Schema() => AddConstantElements();
 
@@ -147,9 +147,9 @@
             AddEnumeration(enumeration);
         }
 
-        static XmlQualifiedName Type(string name) => new XmlQualifiedName(name);
+        static XmlQualifiedName Type(string name) => new(name);
 
-        static XmlQualifiedName Type(string name, string ns) => new XmlQualifiedName(name, ns);
+        static XmlQualifiedName Type(string name, string ns) => new(name, ns);
 
         void AddZbl()
         {
@@ -368,8 +368,8 @@
                 AddEnumeration(enumeration);
         }
 
-        public HashSet<string> baseTypesTobeImplement = new HashSet<string>();
-        public HashSet<string> baseTypesImplemented = new HashSet<string>();
+        public HashSet<string> baseTypesTobeImplement = new();
+        public HashSet<string> baseTypesImplemented = new();
 
         public void AddType(TypeInfo type)
         {

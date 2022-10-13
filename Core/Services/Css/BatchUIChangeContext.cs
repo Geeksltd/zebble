@@ -9,8 +9,8 @@ namespace Zebble
     {
         const int MAX_DEPENDENCY_NESTING = 50;
 
-        internal List<Length> CascadingLengths = new List<Length>();
-        internal ConcurrentList<StyleChangeTracker> ChangeTrackers = new ConcurrentList<StyleChangeTracker>();
+        internal List<Length> CascadingLengths = new();
+        internal ConcurrentList<StyleChangeTracker> ChangeTrackers = new();
 
         internal void ApplyChanges()
         {

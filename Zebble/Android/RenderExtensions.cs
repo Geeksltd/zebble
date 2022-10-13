@@ -18,7 +18,7 @@ namespace System
         public static Color Render(this Zebble.Color color) => Render(color, 1);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Zebble.Color ToZebble(this Color color) => new Zebble.Color(color.R, color.G, color.B, color.A);
+        public static Zebble.Color ToZebble(this Color color) => new(color.R, color.G, color.B, color.A);
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static Color Render(this Zebble.Color color, float alpha)
@@ -350,7 +350,7 @@ namespace System
 
         public class ZebbleBounceInterpolator : Android.Views.Animations.BounceInterpolator
         {
-            double Bounciness, Bounces;
+            readonly double Bounciness, Bounces;
 
             public ZebbleBounceInterpolator(double bounciness, double bounces)
             {
@@ -373,7 +373,7 @@ namespace System
 
         public class ZebbleAccelerateDecelerateInterpolator : Android.Views.Animations.AccelerateDecelerateInterpolator
         {
-            int Power;
+            readonly int Power;
             public ZebbleAccelerateDecelerateInterpolator(int power) => Power = power;
 
             public override float GetInterpolation(float time)

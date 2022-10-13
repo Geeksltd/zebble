@@ -4,7 +4,7 @@ namespace System.Collections.Concurrent
 {
     class EmptyEnumerator<T> : IEnumerator<T>
     {
-        public static EmptyEnumerator<T> Instance = new EmptyEnumerator<T>();
+        public static EmptyEnumerator<T> Instance = new();
 
         public T Current => default(T);
         object IEnumerator.Current => null;

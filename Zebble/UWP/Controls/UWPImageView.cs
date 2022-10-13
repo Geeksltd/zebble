@@ -10,7 +10,7 @@ namespace Zebble.UWP
     {
         ImageView View;
         controls.Border Result;
-        readonly EventHandlerDisposer EventHandlerDisposer = new EventHandlerDisposer();
+        readonly EventHandlerDisposer EventHandlerDisposer = new();
 
         public UWPImageView(ImageView view) => View = view;
 

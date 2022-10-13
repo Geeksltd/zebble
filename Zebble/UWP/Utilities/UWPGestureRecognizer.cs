@@ -13,14 +13,13 @@ namespace Zebble.UWP
     class UWPGestureRecognizer
     {
         const int MOUSE_WHEEL_DELTA_DEGREES = 8  /*slow it down: */ * 2;
-
-        WeakReference<UIElement> ElementRef;
-        WeakReference<View> ViewRef;
+        readonly WeakReference<UIElement> ElementRef;
+        readonly WeakReference<View> ViewRef;
         DateTime? RaisedTapped;
         bool WaitUntilPointerReleased;
-        readonly HashSet<uint> Pointers = new HashSet<uint>();
-        readonly Dictionary<uint, Point> Points = new Dictionary<uint, Point>();
-        List<Point> CirclePoints = new List<Point>();
+        readonly HashSet<uint> Pointers = new();
+        readonly Dictionary<uint, Point> Points = new();
+        readonly List<Point> CirclePoints = new();
 
         PannedEventArgs PreviousRefrence;
 

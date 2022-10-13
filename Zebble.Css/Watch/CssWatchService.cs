@@ -13,8 +13,8 @@
     class CssWatchService
     {
         static bool IsStarted, IsChanged;
-        static object SyncLock = new object();
-        List<FileSystemWatcher> Watchers = new List<FileSystemWatcher>();
+        static readonly object SyncLock = new();
+        readonly List<FileSystemWatcher> Watchers = new();
         WebServer Server;
 
         internal void Start()

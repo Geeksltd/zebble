@@ -19,21 +19,21 @@ namespace Zebble
         public bool OnePagePartialPagingEnabled { get; set; }
         public RepeatDirection Direction { get; set; } = RepeatDirection.Vertical;
 
-        public readonly AsyncEvent ScrollEnded = new AsyncEvent();
-        public readonly AsyncEvent UserScrolledHorizontally = new AsyncEvent();
-        public readonly AsyncEvent UserScrolledVertically = new AsyncEvent();
-        public readonly AsyncEvent EnableScrollingChanged = new AsyncEvent();
-        public readonly AsyncEvent ContentSizeChanged = new AsyncEvent();
-        public readonly AsyncEvent<int> ScrolledToNewPage = new AsyncEvent<int>();
-        public readonly AsyncEvent RefreshScrollContentSize = new AsyncEvent();
+        public readonly AsyncEvent ScrollEnded = new();
+        public readonly AsyncEvent UserScrolledHorizontally = new();
+        public readonly AsyncEvent UserScrolledVertically = new();
+        public readonly AsyncEvent EnableScrollingChanged = new();
+        public readonly AsyncEvent ContentSizeChanged = new();
+        public readonly AsyncEvent<int> ScrolledToNewPage = new();
+        public readonly AsyncEvent RefreshScrollContentSize = new();
 
-        internal readonly AsyncEvent ApiZoomChanged = new AsyncEvent();
-        public readonly AsyncEvent UserZoomChanged = new AsyncEvent(ConcurrentEventRaisePolicy.Queue);
+        internal readonly AsyncEvent ApiZoomChanged = new();
+        public readonly AsyncEvent UserZoomChanged = new(ConcurrentEventRaisePolicy.Queue);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public readonly AsyncEvent<ApiMoveToEventArgs> ApiScrolledTo = new AsyncEvent<ApiMoveToEventArgs>();
+        public readonly AsyncEvent<ApiMoveToEventArgs> ApiScrolledTo = new();
 
-        public readonly Refresher Refresh = new Refresher();
+        public readonly Refresher Refresh = new();
 
         public bool EnableScrolling
         {
@@ -228,7 +228,7 @@ namespace Zebble
         public class Refresher
         {
             public Canvas Indicator = new Canvas().Id("RefreshingIndicator");
-            public readonly AsyncEvent Requested = new AsyncEvent();
+            public readonly AsyncEvent Requested = new();
             public bool Enabled;
         }
 

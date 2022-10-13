@@ -24,10 +24,11 @@ namespace Zebble.AndroidOS
     public class AndroidImageView : ImageView, IZebbleAndroidControl, UIChangeCommand.IHandler
     {
         Zebble.View View;
-        bool IsDisposed, BackgroundImageOnly;
+        private bool IsDisposed;
+        private readonly bool BackgroundImageOnly;
         Bitmap RoundedBitmap;
         ImageService.ImageSource Source;
-        readonly EventHandlerDisposer EventHandlerDisposer = new EventHandlerDisposer();
+        readonly EventHandlerDisposer EventHandlerDisposer = new();
         string DrawnImageKey;
 
         public AndroidImageView(Zebble.View view, bool backgroundImageOnly = false) : base(UIRuntime.CurrentActivity)

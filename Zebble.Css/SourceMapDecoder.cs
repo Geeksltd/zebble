@@ -22,7 +22,7 @@ namespace Zebble.Css
                 var parser = new SourceMapParser();
                 SourceMap sourceMap;
 
-                using (FileStream stream = new FileStream(tempFile, FileMode.Open))
+                using (FileStream stream = new(tempFile, FileMode.Open))
                     sourceMap = parser.ParseSourceMap(new StreamReader(stream));
 
                 if (sourceMap != null)

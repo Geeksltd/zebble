@@ -11,7 +11,7 @@ namespace Zebble.Services
         /// <summary>
         /// Fired every time an image is downloaded from a remote URL.
         /// </summary>
-        public static AsyncEvent<string> ImageDownloaded = new AsyncEvent<string>();
+        public static AsyncEvent<string> ImageDownloaded = new();
 
         /// <summary>
         /// Determines a specified remote image has already been downloaded.
@@ -35,8 +35,8 @@ namespace Zebble.Services
 
         partial class ImageSource
         {
-            static ConcurrentDictionary<string, TaskCompletionSource<bool>> DownloadQueue =
-                new ConcurrentDictionary<string, TaskCompletionSource<bool>>();
+            static readonly ConcurrentDictionary<string, TaskCompletionSource<bool>> DownloadQueue =
+                new();
 
             async Task Download()
             {

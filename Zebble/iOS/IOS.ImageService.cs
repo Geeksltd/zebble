@@ -12,7 +12,7 @@ namespace Zebble.Services
 
     partial class ImageService
     {
-        static object ResizeLock = new object();
+        static readonly object ResizeLock = new();
 
         public static async Task<UIImage> DecodeImage(FileInfo file, Size? desiredSize = null, Stretch stretch = Stretch.Default)
         {

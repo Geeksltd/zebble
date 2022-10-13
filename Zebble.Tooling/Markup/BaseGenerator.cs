@@ -6,7 +6,7 @@ namespace Zebble.Tooling
 
     abstract class BaseGenerator
     {
-        public List<string> Errors = new List<string>();
+        public List<string> Errors = new();
 
         protected string Error(string error)
         {

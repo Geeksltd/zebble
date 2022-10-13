@@ -6,8 +6,8 @@ namespace Zebble.UWP
 
     public class UWPCanvas : controls.Canvas, IDisposable, UIChangeCommand.IHandler
     {
-        WeakReference<Renderer> RendererRef;
-        WeakReference<View> ViewRef;
+        readonly WeakReference<Renderer> RendererRef;
+        readonly WeakReference<View> ViewRef;
         View View => ViewRef?.GetTargetOrDefault();
 
         public UWPCanvas(Renderer renderer)

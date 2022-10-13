@@ -13,8 +13,7 @@
     class CssCompiler : BaseGenerator
     {
         const int COMMENT_LINE_LENGTH = 70;
-
-        List<string> Result = new List<string>();
+        readonly List<string> Result = new();
 
         protected override string GetFileName() => ".zebble-generated-css.cs";
 

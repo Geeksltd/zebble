@@ -7,9 +7,9 @@ namespace Zebble
 
     public class LazyLoader : Stack
     {
-        ConcurrentList<View> ChildrenToLoad = new ConcurrentList<View>();
-        AsyncLock ChildrenSyncLock = new AsyncLock();
-        public readonly AsyncEvent StartingContentLoad = new AsyncEvent();
+        readonly ConcurrentList<View> ChildrenToLoad = new();
+        readonly AsyncLock ChildrenSyncLock = new();
+        public readonly AsyncEvent StartingContentLoad = new();
         bool IsFirstTime = true;
         protected Func<Task> Loaded;
 

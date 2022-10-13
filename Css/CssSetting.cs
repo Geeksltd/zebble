@@ -8,7 +8,7 @@ namespace Zebble
     class CssSetting
     {
         public string CssKey, CssValue;
-        string[] BackgroundPositions = { "left", "center", "right", "top", "bottom" };
+        readonly string[] BackgroundPositions = { "left", "center", "right", "top", "bottom" };
 
         public CssSetting(string cssKey, string cssValue)
         {

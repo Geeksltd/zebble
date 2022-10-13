@@ -13,7 +13,7 @@ namespace Zebble.Device
     {
         internal static readonly AsyncEvent<PermissionRequestArgs> ReceivedRequestPermissionResult = new();
 
-        static Lazy<IList<string>> ManifestPermissions = new Lazy<IList<string>>(ReadManifestPermissions);
+        static readonly Lazy<IList<string>> ManifestPermissions = new(ReadManifestPermissions);
 
         public static Task<bool> ShouldShowDialog(Permission permission)
         {

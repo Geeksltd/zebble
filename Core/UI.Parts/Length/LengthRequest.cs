@@ -21,9 +21,9 @@ namespace Zebble
 
             internal override void Apply(Length on) => on.Set(Value);
 
-            public static implicit operator FixedLengthRequest(float value) => new FixedLengthRequest(value);
-            public static implicit operator FixedLengthRequest(int value) => new FixedLengthRequest(value);
-            public static implicit operator FixedLengthRequest(double value) => new FixedLengthRequest((float)value);
+            public static implicit operator FixedLengthRequest(float value) => new(value);
+            public static implicit operator FixedLengthRequest(int value) => new(value);
+            public static implicit operator FixedLengthRequest(double value) => new((float)value);
 
             public override string ToString() => Value + "px";
         }
@@ -43,7 +43,7 @@ namespace Zebble
             public AutoLengthRequest(AutoStrategy strategy) => Strategy = strategy;
             internal override void Apply(Length on) => on.Set(Strategy);
 
-            public static implicit operator AutoLengthRequest(AutoStrategy value) => new AutoLengthRequest(value);
+            public static implicit operator AutoLengthRequest(AutoStrategy value) => new(value);
 
             public override string ToString() => "Auto from " + Strategy;
         }

@@ -7,8 +7,8 @@ namespace Zebble
 
     class CssBodyProcessor
     {
-        List<CssSetting> CssSettings;
-        List<ZebbleCssSetting> AppSettings = new List<ZebbleCssSetting>();
+        readonly List<CssSetting> CssSettings;
+        readonly List<ZebbleCssSetting> AppSettings = new();
 
         public CssBodyProcessor(string cssBody)
         {

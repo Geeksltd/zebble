@@ -5,8 +5,8 @@ namespace System
     public class SuspendGC : IDisposable
     {
         static SuspendGC Current;
-        static object SyncLock = new object();
-        GCLatencyMode Original;
+        static readonly object SyncLock = new();
+        readonly GCLatencyMode Original;
 
         SuspendGC()
         {

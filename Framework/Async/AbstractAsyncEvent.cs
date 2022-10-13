@@ -18,7 +18,7 @@ namespace Zebble
         protected string DeclaringFile, EventName;
         protected bool IsDisposing;
 
-        internal ConcurrentList<AsyncEventHandler> handlers = new ConcurrentList<AsyncEventHandler>(2);
+        internal ConcurrentList<AsyncEventHandler> handlers = new(2);
 
         protected AbstractAsyncEvent(string eventName, string declaringFile)
         {

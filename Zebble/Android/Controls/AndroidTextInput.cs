@@ -17,7 +17,7 @@ namespace Zebble.AndroidOS
         static AndroidTextInput CurrentlyFocused;
         TextInput View;
         bool IsApiChangingText;
-        AutoScrollUtility autoScrollUtility = null;
+        readonly AutoScrollUtility autoScrollUtility = null;
         public AndroidTextInput(TextInput view) : base(Renderer.Context)
         {
             View = view;
@@ -236,7 +236,7 @@ namespace Zebble.AndroidOS
 
         class OnKeyListener : Java.Lang.Object, IOnKeyListener
         {
-            TextInput View;
+            readonly TextInput View;
             public OnKeyListener(TextInput view) => View = view;
 
             public bool OnKey(View view, Keycode keyCode, KeyEvent args)

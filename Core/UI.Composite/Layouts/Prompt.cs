@@ -6,11 +6,11 @@ namespace Zebble
 
     public class Prompt : Dialog
     {
-        readonly Stack Stack = new Stack();
+        readonly Stack Stack = new();
         public readonly TextView Description = new TextView().Id("Description");
-        public readonly TextInput Input = new TextInput { Id = "Input", SpellChecking = SpellCheckingType.No, KeyboardActionType = KeyboardActionType.Done };
-        public readonly Button OKButton = new Button { Id = "OKButton", Text = "OK", CssClass = "primary-button" };
-        public readonly Button CancelButton = new Button { Id = "CancelButton", Text = "Cancel" };
+        public readonly TextInput Input = new() { Id = "Input", SpellChecking = SpellCheckingType.No, KeyboardActionType = KeyboardActionType.Done };
+        public readonly Button OKButton = new() { Id = "OKButton", Text = "OK", CssClass = "primary-button" };
+        public readonly Button CancelButton = new() { Id = "CancelButton", Text = "Cancel" };
 
         public Prompt(string title, string description = null)
         {

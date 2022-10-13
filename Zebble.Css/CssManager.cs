@@ -13,7 +13,7 @@
 
     class CssManager
     {
-        List<CssRuleGenerator> Rules = new List<CssRuleGenerator>();
+        readonly List<CssRuleGenerator> Rules = new();
         public bool HasErrors;
         List<SourceMapResult> SourceMapResults;
         int CurrentLine;

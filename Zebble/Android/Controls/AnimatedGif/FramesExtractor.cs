@@ -23,10 +23,11 @@ namespace Zebble.AndroidOS.Gif
         public static int INITIALFRAMEPOINTER = -1;
         public static int LOOPFOREVER = -1;
         public static int BYTESPERINTEGER = 4;
-
-        int[] Act, MainScratch, Pct = new int[256];
+        private int[] Act;
+        private int[] MainScratch;
+        private readonly int[] Pct = new int[256];
         ByteBuffer RawData;
-        static int WORKBUFFERSIZE = 16384;
+        static readonly int WORKBUFFERSIZE = 16384;
         byte[] WorkBuffer, Block, Suffix, PixelStack, MainPixels;
         HeaderParser Parser;
         short[] Prefix;

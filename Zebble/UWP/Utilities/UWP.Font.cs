@@ -13,7 +13,7 @@
     partial class Font
     {
         static TextBlock Sample;
-        static foundation.Size NoLimit = new foundation.Size(double.PositiveInfinity, double.PositiveInfinity);
+        static foundation.Size NoLimit = new(double.PositiveInfinity, double.PositiveInfinity);
         
         public static string DefaultSystemFont => "Segoe UI";
 

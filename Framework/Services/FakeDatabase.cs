@@ -8,7 +8,7 @@ namespace Zebble
 {
     public abstract class FakeDataProvider
     {
-        protected static readonly List<object> Everything = new List<object>();
+        protected static readonly List<object> Everything = new();
 
         protected FakeDataProvider() => Initialize();
 

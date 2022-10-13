@@ -9,15 +9,15 @@ namespace Zebble.AndroidOS
 
     public class ZoomView : FrameLayout
     {
-        Zebble.ScrollView View;
+        readonly Zebble.ScrollView View;
         float Zoom = 1.0f, MaxZoom = 10.0f, SmoothZoom = 1.0f, ZoomX, ZoomY, MiniMapCaptionSize = 10.0f,
         SmoothZoomX, SmoothZoomY, TouchStartX, TouchStartY, TouchLastX, TouchLastY, Startd, Lastd, Lastdx1, Lastdy1, Lastdx2, Lastdy2;
         bool Scrolling, ShowMinimap, Pinching;
         int MiniMapColor = Color.Black, MiniMapHeight = -1, MiniMapCaptionColor = Color.White;
         string MiniMapCaption;
         double LastTapTime;
-        Matrix ZoomMatrix = new Matrix();
-        Paint Paint = new Paint();
+        readonly Matrix ZoomMatrix = new();
+        readonly Paint Paint = new();
         Bitmap Snapshot;
         IZoomViewListener Listener;
 

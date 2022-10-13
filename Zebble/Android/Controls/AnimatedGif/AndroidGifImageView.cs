@@ -16,10 +16,10 @@ namespace Zebble.AndroidOS
 
         FramesExtractor Extractor;
         Bitmap CurrentFrame;
-        new Handler Handler = new Handler(Looper.MainLooper);
+        new readonly Handler Handler = new(Looper.MainLooper);
         bool Animating, RenderFrame, ShouldClear, IsDisposed, IsImageScaled;
         Thread AnimationThread;
-        long FramesDisplayDuration = -1L;
+        readonly long FramesDisplayDuration = -1L;
         byte[] Image;
         ImageView View;
         string Path;

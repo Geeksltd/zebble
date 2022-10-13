@@ -9,7 +9,7 @@ namespace Zebble
     {
         const float DEFAULT_EMPTY_VIEW_HEIGHT = 30;
 
-        internal readonly AsyncEvent PaddingChanged = new AsyncEvent();
+        internal readonly AsyncEvent PaddingChanged = new();
         public readonly Gap Padding, Margin;
         public readonly Length Width, Height;
 

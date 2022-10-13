@@ -8,10 +8,10 @@ namespace Zebble.Mvvm
 {
     class AutoPage : Page
     {
-        static Color WhiteSmoke = "#f3f3f3";
-        ViewModel Target;
-        Stack Body = new Stack().Id("Body").Set(x => x.ClipChildren = false);
-        TextView Header = Text("").Padding(10, top: 35).Background("#333").TextColor(Colors.White).Font(size: 20);
+        static readonly Color WhiteSmoke = "#f3f3f3";
+        readonly ViewModel Target;
+        readonly Stack Body = new Stack().Id("Body").Set(x => x.ClipChildren = false);
+        readonly TextView Header = Text("").Padding(10, top: 35).Background("#333").TextColor(Colors.White).Font(size: 20);
 
         public AutoPage() : this(ViewModel.ActiveScreen) { }
 

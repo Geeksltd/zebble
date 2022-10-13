@@ -11,7 +11,7 @@
 
     partial class Animation
     {
-        readonly List<Timeline> Timelines = new List<Timeline>();
+        readonly List<Timeline> Timelines = new();
 
         struct Timeline
         {

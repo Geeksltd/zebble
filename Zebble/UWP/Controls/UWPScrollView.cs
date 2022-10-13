@@ -14,11 +14,11 @@ namespace Zebble.UWP
         const int REFRESHER_MIN_HEIGHT = 50;
 
         float RefresherHeight;
-        ScrollView View;
+        readonly ScrollView View;
         controls.ScrollViewer Result;
         bool IsSnapping, IsMovingByCode;
 
-        internal controls.StackPanel Container = new controls.StackPanel { VerticalAlignment = xaml.VerticalAlignment.Top };
+        internal controls.StackPanel Container = new() { VerticalAlignment = xaml.VerticalAlignment.Top };
 
         public UWPScrollView(ScrollView view)
         {

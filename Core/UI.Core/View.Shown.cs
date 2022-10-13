@@ -8,7 +8,7 @@
 
     partial class View
     {
-        object ShownSyncLock = new object();
+        readonly object ShownSyncLock = new();
 
         /// <summary>
         /// This is fired every time the view is shown.

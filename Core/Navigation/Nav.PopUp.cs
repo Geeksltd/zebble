@@ -9,8 +9,8 @@ namespace Zebble
 
     partial class Nav
     {
-        static AsyncLock PopupLock = new AsyncLock();
-        static readonly List<PopUp> CachedPopups = new List<PopUp>();
+        static readonly AsyncLock PopupLock = new();
+        static readonly List<PopUp> CachedPopups = new();
 
         internal static ConcurrentList<PopUp> PopUps { get; } = new ConcurrentList<PopUp>();
 

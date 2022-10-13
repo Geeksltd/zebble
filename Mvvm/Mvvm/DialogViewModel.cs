@@ -23,7 +23,7 @@ namespace Zebble.Mvvm
     public partial class DialogViewModel : IDialogViewModel
     {
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public static readonly DialogViewModel Current = new DialogViewModel();
+        public static readonly DialogViewModel Current = new();
 
         public void ShowWaiting(bool block = true) => DoShowWaiting(block);
 

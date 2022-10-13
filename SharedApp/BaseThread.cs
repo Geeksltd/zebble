@@ -8,11 +8,11 @@ namespace Zebble
 
     public abstract partial class BaseThread
     {
-        List<Func<Task>> NextFrameTasks = new List<Func<Task>>();
+        readonly List<Func<Task>> NextFrameTasks = new();
         Task NextFrameSignal = Task.CompletedTask;
-        object NextFrameSyncLock = new object();
+        readonly object NextFrameSyncLock = new();
 
-        static TimeSpan FrameDelay = TimeSpan.FromMilliseconds(1000 / 60.0);
+        static readonly TimeSpan FrameDelay = TimeSpan.FromMilliseconds(1000 / 60.0);
 
         public void OnNextFrame(Action action)
         {

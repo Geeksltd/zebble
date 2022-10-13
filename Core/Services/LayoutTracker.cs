@@ -20,7 +20,7 @@ namespace Zebble
         [EditorBrowsable(EditorBrowsableState.Never)]
         public class LayoutTracker
         {
-            static List<string> Tracking = new List<string>();
+            static readonly List<string> Tracking = new();
 
             public static void StartTracking(params ITrackable[] trackables) => Tracking.AddRange(trackables.Select(GetTrackingRef));
 

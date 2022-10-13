@@ -27,34 +27,34 @@ namespace Zebble
         /// then wrap your code in a using block to await this lock's LockAsync() method return,
         /// to prevent conflicting concurrent changes.
         /// </summary>
-        public readonly AsyncLock DomLock = new AsyncLock();
+        public readonly AsyncLock DomLock = new();
 
         Dictionary<string, object> data;
         internal Effective Effective;
 
-        protected internal readonly AsyncEvent Shown = new AsyncEvent();
-        public readonly AsyncEvent PreRendered = new AsyncEvent();
-        public readonly AsyncEvent Rendered = new AsyncEvent();
-        public readonly AsyncEvent Initializing = new AsyncEvent();
-        public readonly AsyncEvent Initialized = new AsyncEvent();
-        public readonly AsyncEvent Flashed = new AsyncEvent();
-        public readonly AsyncEvent BackgroundImageChanged = new AsyncEvent();
-        public readonly AsyncEvent<UIChangedEventArgs<bool>> IgnoredChanged = new AsyncEvent<UIChangedEventArgs<bool>>();
-        public readonly AsyncEvent AbsoluteChanged = new AsyncEvent();
-        public readonly AsyncEvent VisibilityChanged = new AsyncEvent();
-        public readonly AsyncEvent ZIndexChanged = new AsyncEvent();
-        public readonly AsyncEvent BorderChanged = new AsyncEvent();
-        public readonly AsyncEvent BorderRadiusChanged = new AsyncEvent();
+        protected internal readonly AsyncEvent Shown = new();
+        public readonly AsyncEvent PreRendered = new();
+        public readonly AsyncEvent Rendered = new();
+        public readonly AsyncEvent Initializing = new();
+        public readonly AsyncEvent Initialized = new();
+        public readonly AsyncEvent Flashed = new();
+        public readonly AsyncEvent BackgroundImageChanged = new();
+        public readonly AsyncEvent<UIChangedEventArgs<bool>> IgnoredChanged = new();
+        public readonly AsyncEvent AbsoluteChanged = new();
+        public readonly AsyncEvent VisibilityChanged = new();
+        public readonly AsyncEvent ZIndexChanged = new();
+        public readonly AsyncEvent BorderChanged = new();
+        public readonly AsyncEvent BorderRadiusChanged = new();
         /// <summary>
         /// Fired when the view has a new ViewModel applied as items are being rearranged within a CollectionView.
         /// </summary>
-        public readonly AsyncEvent ReusedInCollectionView = new AsyncEvent();
+        public readonly AsyncEvent ReusedInCollectionView = new();
 
-        internal readonly AsyncEvent VerticalBorderSizeChanged = new AsyncEvent();
-        internal readonly AsyncEvent HorizontalBorderSizeChanged = new AsyncEvent();
-        internal readonly AsyncEvent BackgroundImageParametersChanged = new AsyncEvent();
+        internal readonly AsyncEvent VerticalBorderSizeChanged = new();
+        internal readonly AsyncEvent HorizontalBorderSizeChanged = new();
+        internal readonly AsyncEvent BackgroundImageParametersChanged = new();
 
-        public readonly AsyncEvent<UIChangedEventArgs<float>> OpacityChanged = new AsyncEvent<UIChangedEventArgs<float>>();
+        public readonly AsyncEvent<UIChangedEventArgs<float>> OpacityChanged = new();
 
         internal readonly Length[] Lengths;
 

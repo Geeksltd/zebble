@@ -10,12 +10,10 @@ namespace Zebble.AndroidOS
         Timer MultiTapTimer;
         DateTime StartTime;
 
-        static TimeSpan TAP_DURATION_THRESHOLD = TimeSpan.FromMilliseconds(500);
-
-        int TapMoveThreshhold = Scale.ToDevice(5);
-
-        int CurrentTapCount, NumberOfTouchesRequired = 1;
-
+        static readonly TimeSpan TAP_DURATION_THRESHOLD = TimeSpan.FromMilliseconds(500);
+        readonly int TapMoveThreshhold = Scale.ToDevice(5);
+        private int CurrentTapCount;
+        private readonly int NumberOfTouchesRequired = 1;
         public Action<Zebble.View, Point, int> OnGestureRecognized;
 
         public override void ProcessMotionEvent(Zebble.View handler, MotionEvent eventArgs)

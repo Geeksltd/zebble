@@ -9,9 +9,9 @@ namespace Zebble.Services
 
     partial class ImageService
     {
-        static object LoadingMetaSyncLock = new object();
+        static readonly object LoadingMetaSyncLock = new();
         static bool IsMetaLoaded;
-        public static ConcurrentDictionary<string, Size> SizeCache = new ConcurrentDictionary<string, Size>();
+        public static ConcurrentDictionary<string, Size> SizeCache = new();
 
         /// <summary>
         /// Gets the pixel size of the specified image file divided by the screen density.

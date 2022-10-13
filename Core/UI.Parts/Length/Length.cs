@@ -215,7 +215,7 @@ namespace Zebble
             parent.Height.Update();
         }
 
-        Action AllDependencies;
+        readonly Action AllDependencies;
 
         public void Clear()
         {

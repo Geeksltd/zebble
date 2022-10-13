@@ -23,8 +23,8 @@ namespace Zebble
     public partial class UIWorkBatch
     {
         public static UIWorkBatch Current;
-        static object SyncLock = new object();
-        List<UIChangeCommand> Pending = new List<UIChangeCommand>();
+        static readonly object SyncLock = new();
+        readonly List<UIChangeCommand> Pending = new();
 
         public static void RunSync(Action action)
         {

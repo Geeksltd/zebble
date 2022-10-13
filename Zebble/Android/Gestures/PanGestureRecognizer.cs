@@ -8,15 +8,14 @@ namespace Zebble.AndroidOS
     public class PanGestureRecognizer : BaseGestureRecognizer
     {
         public Action<Zebble.View, Point, Point, Point, int> OnGestureRecognized;
-
-        int MINIMUM_MOVE_DISTANCE = 5;
+        readonly int MINIMUM_MOVE_DISTANCE = 5;
 
         Point LatestPoint, TargetPositionAtStart, PanningVelocity, MaxPanningVelocity;
         VelocityTracker vTracker;
         VelocityTracker VTracker => vTracker ?? (vTracker = VelocityTracker.Obtain());
         Zebble.View PanTarget;
         ScrollView HaltedParentScrollView;
-        Func<MotionEvent, Zebble.View> HandlerDetector;
+        readonly Func<MotionEvent, Zebble.View> HandlerDetector;
         PannedEventArgs PreviousEvent;
         bool RaisedPanned, IsStarted, ScrollBarDecided;
 

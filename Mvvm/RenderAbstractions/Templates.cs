@@ -8,7 +8,7 @@ namespace Zebble.Mvvm
 {
     public static partial class Templates
     {
-        static readonly Dictionary<Type, Template> Mappings = new Dictionary<Type, Template>();
+        static readonly Dictionary<Type, Template> Mappings = new();
 
         public static void Register(Assembly assembly)
         {

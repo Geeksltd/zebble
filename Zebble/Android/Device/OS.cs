@@ -103,7 +103,7 @@ namespace Zebble.Device
 
         class SimpleAwaiterDialogInterface : Java.Lang.Object, IDialogInterfaceOnClickListener
         {
-            TaskCompletionSource<bool> Source = new TaskCompletionSource<bool>();
+            readonly TaskCompletionSource<bool> Source = new();
             public void OnClick(IDialogInterface dialog, int which) => Source.TrySetResult(true);
 
             public Task Task => Source.Task;

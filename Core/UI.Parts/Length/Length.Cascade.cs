@@ -5,8 +5,10 @@ namespace Zebble
 
     partial class Length
     {
-        public readonly AsyncEvent Changed = new AsyncEvent();
-        bool IsSuspended, ShouldCascade, RaisesBoundsChanged;
+        public readonly AsyncEvent Changed = new();
+        private bool IsSuspended;
+        private bool ShouldCascade;
+        private readonly bool RaisesBoundsChanged;
         float ValueAtSuspension;
 
         internal void Suspend()

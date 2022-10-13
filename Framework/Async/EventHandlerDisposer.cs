@@ -11,7 +11,7 @@
     public class EventHandlerDisposer
     {
         readonly Dictionary<IAsyncEvent, WeakReference<IAsyncEventHandler>> Dependencies
-             = new Dictionary<IAsyncEvent, WeakReference<IAsyncEventHandler>>();
+             = new();
 
         public IAsyncEvent[] Events
         {

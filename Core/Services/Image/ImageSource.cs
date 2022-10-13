@@ -58,7 +58,7 @@ namespace Zebble.Services
             /// <summary>
             /// Fired when Image is loaded, decoded and ready for use.
             /// </summary>
-            public readonly AsyncEvent<object> Ready = new AsyncEvent<object>();
+            public readonly AsyncEvent<object> Ready = new();
             TaskCompletionSource<bool> LoadingFromFileTask;
 
             public ImageSource(string cacheKey, string source, Size size, Stretch stretch)

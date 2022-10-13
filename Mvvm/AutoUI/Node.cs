@@ -7,7 +7,7 @@ namespace Zebble.Mvvm.AutoUI
     {
         public string Label;
         public Node Parent;
-        public List<Node> Children = new List<Node>();
+        public List<Node> Children = new();
 
         public int Depth => 1 + (Parent?.Depth ?? 0);
 

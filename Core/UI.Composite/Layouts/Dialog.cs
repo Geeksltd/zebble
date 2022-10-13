@@ -6,8 +6,8 @@ namespace Zebble
     {
         public readonly TextView Title = new TextView().Id("Title");
         internal protected View Content { get; private set; }
-        public readonly Stack ButtonsRow = new Stack(RepeatDirection.Horizontal) { Id = "ButtonsRow" };
-        public readonly AsyncEvent Displayed = new AsyncEvent();
+        public readonly Stack ButtonsRow = new(RepeatDirection.Horizontal) { Id = "ButtonsRow" };
+        public readonly AsyncEvent Displayed = new();
 
         public bool ScrollContent { get; set; } = true;
         public bool ButtonsAtTop { get; set; }

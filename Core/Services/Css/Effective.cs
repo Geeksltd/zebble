@@ -8,7 +8,7 @@ namespace Zebble
 
     internal class Effective
     {
-        View View;
+        readonly View View;
 
         public Effective(View view) => View = view;
 

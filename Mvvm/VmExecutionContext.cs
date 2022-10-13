@@ -7,7 +7,7 @@ namespace Zebble.Mvvm
 {
     internal partial class VmExecutionContext
     {
-        ViewModelNode Root;
+        readonly ViewModelNode Root;
 
         public string Title => ViewModel.ActiveScreen.GetType().Name.ToLiteralFromPascalCase();
 

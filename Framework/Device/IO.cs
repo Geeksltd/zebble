@@ -62,7 +62,7 @@ namespace Zebble.Device
             catch (Exception ex) { throw new Exception($"Failed to convert '{relative}' to FileInfo.", ex); }
         }
 
-        public static DirectoryInfo Directory(string relative) => new DirectoryInfo(AbsolutePath(relative));
+        public static DirectoryInfo Directory(string relative) => new(AbsolutePath(relative));
 
         /// <summary>
         ///  Will convert a specified path to a cross-platform compatible relative path.

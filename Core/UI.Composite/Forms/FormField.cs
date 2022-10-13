@@ -10,8 +10,8 @@ namespace Zebble
 
     public abstract class FormField : Stack
     {
-        public readonly TextView Label = new TextView { Id = "Label" };
-        public readonly ImageView Icon = new ImageView { Id = "Icon", ignored = true };
+        public readonly TextView Label = new() { Id = "Label" };
+        public readonly ImageView Icon = new() { Id = "Icon", ignored = true };
 
         protected FormField() : base(RepeatDirection.Horizontal)
         {
@@ -46,7 +46,7 @@ namespace Zebble
     public class FormField<TControl> : FormField where TControl : View, FormField.IControl, new()
     {
         string placeholder;
-        public TControl Control = new TControl();
+        public TControl Control = new();
         public Action<TControl> PlaceholderChanged;
 
         public string Text => GetValue<object>().ToStringOrEmpty();

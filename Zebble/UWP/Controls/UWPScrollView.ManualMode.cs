@@ -14,7 +14,7 @@ namespace Zebble.UWP
         xaml.Input.ManipulationDeltaRoutedEventArgs RunningInnertia;
 
         internal static Dictionary<ScrollViewRef, UWPScrollViewRef> Mappings =
-            new Dictionary<ScrollViewRef, UWPScrollViewRef>();
+            new();
 
         public bool SupportsChildPanning;
 

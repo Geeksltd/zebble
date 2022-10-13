@@ -11,7 +11,7 @@ namespace Zebble.Mvvm
         internal class BindableMember
         {
             internal MemberInfo Member;
-            object Target;
+            readonly object Target;
             public string Name;
             public Type Type;
 

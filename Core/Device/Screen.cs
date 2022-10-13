@@ -129,9 +129,9 @@ namespace Zebble.Device
 
         internal static Func<float> WidthProvider, HeightProvider;
 
-        public static readonly AsyncEvent OrientationChanged = new AsyncEvent(ConcurrentEventRaisePolicy.Queue);
+        public static readonly AsyncEvent OrientationChanged = new(ConcurrentEventRaisePolicy.Queue);
 
-        public static Size GetSize() => new Size(Width, Height);
+        public static Size GetSize() => new(Width, Height);
 
         [EditorBrowsable(EditorBrowsableState.Never)]
         public static void ConfigureSize(Func<float> widthProvider, Func<float> heightProvider)

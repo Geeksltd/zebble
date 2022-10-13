@@ -18,21 +18,21 @@ namespace Zebble
         int autoResizeMaxHeight = AUTOSIZE_MAX_HEIGHT;
         bool autoResize, multiLineAutoResize;
         TextInputAutoResizer AutoResizer;
-        public readonly TwoWayBindable<string> Value = new TwoWayBindable<string>();
-        public readonly TwoWayBindable<bool> Focused = new TwoWayBindable<bool>();
+        public readonly TwoWayBindable<string> Value = new();
+        public readonly TwoWayBindable<bool> Focused = new();
 
         public TextMode TextMode { get; set; }
         public KeyboardActionType KeyboardActionType { get; set; }
 
         /// <summary>Fired when the user is done typing by either clicking enter (or submit, go, etc) button.</summary>
-        public readonly AsyncEvent UserTextChangeSubmitted = new AsyncEvent();
-        internal readonly AsyncEvent PlaceholderColorChanged = new AsyncEvent();
-        public readonly AsyncEvent UserTextChanged = new AsyncEvent();
+        public readonly AsyncEvent UserTextChangeSubmitted = new();
+        internal readonly AsyncEvent PlaceholderColorChanged = new();
+        public readonly AsyncEvent UserTextChanged = new();
 
-        internal readonly AsyncEvent AutocapitalizationChanged = new AsyncEvent();
-        internal readonly AsyncEvent SpellCheckingChanged = new AsyncEvent();
-        internal readonly AsyncEvent AutoCorrectionChanged = new AsyncEvent();
-        internal readonly AsyncEvent UserTappedOnReturnKey = new AsyncEvent();
+        internal readonly AsyncEvent AutocapitalizationChanged = new();
+        internal readonly AsyncEvent SpellCheckingChanged = new();
+        internal readonly AsyncEvent AutoCorrectionChanged = new();
+        internal readonly AsyncEvent UserTappedOnReturnKey = new();
 
         public TextInput()
         {

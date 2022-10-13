@@ -13,7 +13,7 @@ namespace Zebble
 
         Animation ShowingAnimation, HidingAnimation;
         public static float VisibleOpacity = 0.35f;
-        public readonly static Overlay Default = new Overlay();
+        public readonly static Overlay Default = new();
 
         public Overlay()
         {

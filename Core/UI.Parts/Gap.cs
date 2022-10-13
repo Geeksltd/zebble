@@ -46,9 +46,9 @@ namespace Zebble
 
     public class GapRequest
     {
-        Stylesheet Sheet;
-        GapRequest DirectStyle;
-        Gap Master;
+        readonly Stylesheet Sheet;
+        readonly GapRequest DirectStyle;
+        readonly Gap Master;
         internal Length.LengthRequest left, right, top, bottom;
 
         internal GapRequest(Gap master, Stylesheet sheet, GapRequest directStyle)

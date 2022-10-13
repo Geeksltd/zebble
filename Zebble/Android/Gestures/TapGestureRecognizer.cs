@@ -8,11 +8,12 @@ namespace Zebble.AndroidOS
 
     public class TapGestureRecognizer : BaseGestureRecognizer
     {
-        static TimeSpan TAP_DURATION_THRESHOLD = 300.Milliseconds();
+        static readonly TimeSpan TAP_DURATION_THRESHOLD = 300.Milliseconds();
         Timer MultiTapTimer;
         DateTime StartTime;
-        int CurrentTapCount, NumberOfTouchesRequired = 1;
-        int TapMoveThreshhold = Scale.ToDevice(8);
+        private int CurrentTapCount;
+        private readonly int NumberOfTouchesRequired = 1;
+        readonly int TapMoveThreshhold = Scale.ToDevice(8);
 
         public Action<Zebble.View, Point, int> OnGestureRecognized;
 

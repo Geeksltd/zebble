@@ -7,11 +7,11 @@ namespace Zebble.Mvvm
 {
     public abstract partial class ViewModel
     {
-        public static readonly Bindable<DateTime> NavAnimationStarted = new Bindable<DateTime>();
+        public static readonly Bindable<DateTime> NavAnimationStarted = new();
 
-        static Func<ModalScreen, Task> RealShowPopup;
+        static readonly Func<ModalScreen, Task> RealShowPopup;
 
-        public readonly static Stack<ViewModel> Stack = new Stack<ViewModel>();
+        public readonly static Stack<ViewModel> Stack = new();
 
         /// <summary>
         /// Gets the current full screen page.

@@ -10,7 +10,7 @@ namespace Zebble
     {
         // For performance.
         static readonly Color black = "#000000", white = "#FFFFFF";
-        static readonly Color transparent = new Color(byte.MaxValue, byte.MaxValue, byte.MaxValue, alpha: 0);
+        static readonly Color transparent = new(byte.MaxValue, byte.MaxValue, byte.MaxValue, alpha: 0);
 
         public static Color Transparent => transparent;
         public static Color White => white;

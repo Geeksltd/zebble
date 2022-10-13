@@ -7,8 +7,8 @@ namespace Zebble
 
     public class ImageView : View, FormField.IControl, IAutoContentHeightProvider, IAutoContentWidthProvider
     {
-        readonly AsyncEvent AutoContentWidthChanged = new AsyncEvent();
-        readonly AsyncEvent AutoContentHeightChanged = new AsyncEvent();
+        readonly AsyncEvent AutoContentWidthChanged = new();
+        readonly AsyncEvent AutoContentHeightChanged = new();
 
         public ImageView() : base()
         {

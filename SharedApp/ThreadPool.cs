@@ -9,7 +9,7 @@ namespace Zebble
 
     public partial class ThreadPool : BaseThread
     {
-        static List<Task> GcShield = new List<Task>();
+        static readonly List<Task> GcShield = new();
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override void RunAction(Action action) => RunAction(action, TaskCreationOptions.None);

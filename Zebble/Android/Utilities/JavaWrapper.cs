@@ -4,7 +4,7 @@ namespace Zebble
 {
     class JavaWrapper : Java.Lang.Object
     {
-        object Object;
+        readonly object Object;
 
         public JavaWrapper(object obj) => Object = obj;
 

@@ -6,12 +6,12 @@
 
     class TextInputAutoResizer
     {
-        TimeSpan ANIMATION_DURATION = 300.Milliseconds();
+        readonly TimeSpan ANIMATION_DURATION = 300.Milliseconds();
 
         float? OrginalActuallHeigh;
         int TextLineLength, PreviousCharacterLength, CharacterLength;
         int? MaxTextLineLen;
-        TextInput View;
+        readonly TextInput View;
 
         public int MaxHeight;
 

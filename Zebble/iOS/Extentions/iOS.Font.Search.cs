@@ -10,7 +10,7 @@
     partial class Font
     {
         static string[] availableFonts;
-        static ConcurrentDictionary<string, string> FontNameCache = new ConcurrentDictionary<string, string>();
+        static readonly ConcurrentDictionary<string, string> FontNameCache = new();
 
         static string GetFontName(string name) => FontNameCache.GetOrAdd(name, DiscoverFontName);
 

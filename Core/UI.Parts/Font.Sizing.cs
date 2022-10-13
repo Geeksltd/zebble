@@ -13,10 +13,10 @@ namespace Zebble
         /// </summary>
         public static float FontSizeScale { get; set; } = 1;
 
-        static Dictionary<string, float> TextWidthCache = new Dictionary<string, float>();
-        static Dictionary<string, float> TextHeightCache = new Dictionary<string, float>();
-        static readonly Dictionary<string, float> LineHeightCache = new Dictionary<string, float>();
-        static Dictionary<string, float> AutomaticExtraTopPaddings = new Dictionary<string, float>();
+        static readonly Dictionary<string, float> TextWidthCache = new();
+        static readonly Dictionary<string, float> TextHeightCache = new();
+        static readonly Dictionary<string, float> LineHeightCache = new();
+        static readonly Dictionary<string, float> AutomaticExtraTopPaddings = new();
 
         /// <summary>
         /// Multiplies the font size by the FontSizeScale.

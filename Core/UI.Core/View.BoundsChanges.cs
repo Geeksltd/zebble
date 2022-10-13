@@ -38,7 +38,7 @@ namespace Zebble
 
     public class UIChangedEventArgs
     {
-        internal static readonly UIChangedEventArgs Empty = new UIChangedEventArgs();
+        internal static readonly UIChangedEventArgs Empty = new();
         public Animation Animation;
         protected View View;
 
@@ -58,7 +58,7 @@ namespace Zebble
     {
         public TValue Value;
 
-        internal static readonly UIChangedEventArgs<TValue> Empty = new UIChangedEventArgs<TValue>();
+        internal static readonly UIChangedEventArgs<TValue> Empty = new();
 
         public UIChangedEventArgs(View view, TValue value) : base(view) => Value = value;
 

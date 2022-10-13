@@ -5,8 +5,8 @@ namespace Zebble
 {
     class DynamicPropertyBinding<TSource, TProperty> : DynamicPropertyBinding
     {
-        Func<Bindable<TSource>> TypedSource;
-        Func<TSource, TProperty> ValueExpression;
+        readonly Func<Bindable<TSource>> TypedSource;
+        readonly Func<TSource, TProperty> ValueExpression;
         IBinding<TSource> CurrentBinding;
 
         public DynamicPropertyBinding(View view, string propertyName, Func<Bindable<TSource>> source, Func<TSource, TProperty> valueExpression)
@@ -27,7 +27,7 @@ namespace Zebble
     {
         public View Target;
         public string PropertyName;
-        Func<IBindable> Source;
+        readonly Func<IBindable> Source;
         IBinding CurrentBinding;
 
         public DynamicPropertyBinding(View view, string propertyName, Func<IBindable> source)

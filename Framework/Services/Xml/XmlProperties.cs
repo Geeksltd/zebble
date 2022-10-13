@@ -6,7 +6,7 @@ namespace Zebble.Services
 {
     public class XmlProperties
     {
-        XDocument Data = new XDocument();
+        readonly XDocument Data = new();
 
         const string DOCUMENT_TEMPLATE = @"<?xml version=""1.0"" encoding=""utf-8"" ?><Root>{0}</Root>";
 

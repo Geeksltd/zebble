@@ -7,11 +7,11 @@ namespace Zebble
 
     public class TextView : TextControl, IAutoContentWidthProvider
     {
-        readonly AsyncEvent AutoContentWidthChanged = new AsyncEvent();
-        static ConcurrentDictionary<string, float> HeightCache = new ConcurrentDictionary<string, float>();
-        static int AutoWrapCheckThreshold = 20 /*char*/ * 14 /*Font size*/ ;
-        public readonly AsyncEvent TextChanged = new AsyncEvent();
-        public readonly AsyncEvent LineHeightChanged = new AsyncEvent();
+        readonly AsyncEvent AutoContentWidthChanged = new();
+        static readonly ConcurrentDictionary<string, float> HeightCache = new();
+        static readonly int AutoWrapCheckThreshold = 20 /*char*/ * 14 /*Font size*/ ;
+        public readonly AsyncEvent TextChanged = new();
+        public readonly AsyncEvent LineHeightChanged = new();
         bool autoSizeWidth;
         float? lineHeight;
 

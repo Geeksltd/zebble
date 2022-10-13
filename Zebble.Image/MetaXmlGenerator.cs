@@ -10,7 +10,7 @@
 
     class MetaXmlGenerator
     {
-        static string[] ImageExtensions = "jpg jpeg gif png webp".Split(' ').Trim().ToArray();
+        static readonly string[] ImageExtensions = "jpg jpeg gif png webp".Split(' ').Trim().ToArray();
 
         public void Generate()
         {

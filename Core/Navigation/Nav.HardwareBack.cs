@@ -8,12 +8,12 @@ namespace Zebble
 
     partial class Nav
     {
-        static Stack<KeyValuePair<Type, object>> History = new();
+        static readonly Stack<KeyValuePair<Type, object>> History = new();
 
         public static bool IsHardwareBackBlocked;
 
         public static readonly AsyncEvent<HardwareBackEventArgs> HardwareBack =
-            new AsyncEvent<HardwareBackEventArgs>(ConcurrentEventRaisePolicy.Ignore);
+            new(ConcurrentEventRaisePolicy.Ignore);
 
         static void AddToHistory(Page page)
         {

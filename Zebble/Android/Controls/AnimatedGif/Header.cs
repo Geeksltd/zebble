@@ -10,7 +10,7 @@ namespace Zebble.AndroidOS.Gif
         public int ColorTableSize, BackgroundIndex, AspectRatio, BackgroundColor, Width, Height, Loops, TotalFrames;
         public int Status = FramesExtractor.STATUSOK;
 
-        internal List<Frame> Frames = new List<Frame>();
+        internal List<Frame> Frames = new();
         internal Frame CurrentFrame;
 
         internal class Frame

@@ -1,6 +1,7 @@
 #if !FX46
 namespace Zebble.Device
 {
+    using Olive;
     using System;
     using System.Collections.Generic;
     using System.IO;
@@ -8,7 +9,6 @@ namespace Zebble.Device
     using System.Net;
     using System.Net.Http;
     using System.Threading.Tasks;
-    using Olive;
 
     public static partial class Network
     {
@@ -124,7 +124,7 @@ namespace Zebble.Device
                     try
                     {
                         using var client = HttpClient(url, timeoutPerAttempt.Seconds());
-                        var fetchTask = client.GetAsync(url);
+                        var fetchTask = client.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
 
                         if (await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask) != fetchTask || fetchTask.IsCanceled)
                         {
@@ -135,7 +135,16 @@ namespace Zebble.Device
                             using var httpResponse = fetchTask.GetAlreadyCompletedResult();
                             if (httpResponse.StatusCode == HttpStatusCode.OK)
                             {
-                                data = await httpResponse.Content.ReadAsByteArrayAsync();
+                                long contentLength = 0;
+                                if (httpResponse.Content.Headers.TryGetValues("content-length", out IEnumerable<string> values) && long.TryParse(values?.FirstOrDefault(), out long length))
+                                    contentLength = length;
+                                if (contentLength > 0)
+                                {
+                                    using var stream = await httpResponse.Content.ReadAsStreamAsync();
+                                    data = await ReadAllBytesAsync(stream, contentLength);
+                                }
+                                else
+                                    data = await httpResponse.Content.ReadAsByteArrayAsync();
                                 if (saveOutput != null)
                                     await saveOutput.WriteAllBytesAsync(data);
                             }
@@ -171,6 +180,27 @@ namespace Zebble.Device
             }
 
             source.TrySetResult(data);
+        }
+
+        static async Task<byte[]> ReadAllBytesAsync(Stream stream, long length)
+        {
+            using (MemoryStream memoryStream = new MemoryStream())
+            {
+                byte[] readBytes = new byte[1024 * 512];
+                long writed = 0;
+                while (writed < length)
+                {
+                    int readCount;
+                    if (readBytes.Length > length - writed)
+                        readBytes = new byte[length - writed];
+                    readCount = await stream.ReadAsync(readBytes, 0, readBytes.Length);
+                    if (readCount <= 0)
+                        throw new Exception("Client disconnected!");
+                    await memoryStream.WriteAsync(readBytes, 0, readCount);
+                    writed += readCount;
+                }
+                return memoryStream.ToArray();
+            }
         }
 
         public static async Task<IEnumerable<ulong>> GetBandwidths(OnError errorAction = OnError.Ignore)

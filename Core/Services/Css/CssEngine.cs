@@ -140,7 +140,12 @@ namespace Zebble.Services
         }
 
         static CssRule[] FindMatchedRules(View view)
-            => SelectorCache.GetOrAdd(view.CssReference, () => FindRules(view));
+        {
+            if (SelectorCache.TryGetValue(view.CssReference, out var result))
+                return result;
+
+            return SelectorCache[view.CssReference.CloneForCacheKey()] = FindRules(view);
+        }
 
         static CssRule[] FindRules(View view)
         {

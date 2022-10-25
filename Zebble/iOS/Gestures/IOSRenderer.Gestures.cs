@@ -154,37 +154,33 @@ namespace Zebble
             });
 
             var parentScrollView = View.FindParent<ScrollView>();
-            if (parentScrollView != null)
+            if (parentScrollView is not null)
             {
                 var scrollViewNative = parentScrollView.Native();
 
                 if (scrollViewNative is null)
-                    parentScrollView.Rendered.Event += () => attachToScroller(parentScrollView, panGestureRecognizer);
-                else attachToScroller(parentScrollView, panGestureRecognizer);
-
-                
+                    parentScrollView.Rendered.Event += () => AttachToScroller(parentScrollView, panGestureRecognizer);
+                else AttachToScroller(parentScrollView, panGestureRecognizer);
             }
+
             Result.AddGestureRecognizer(panGestureRecognizer);
         }
 
-        void attachToScroller(ScrollView parentScrollView, UIPanGestureRecognizer panGestureRecognizer)
+        void AttachToScroller(ScrollView parentScrollView, UIPanGestureRecognizer panGestureRecognizer)
         {
-            Thread.UI.Post(async () =>
+            Thread.UI.Post(() =>
             {
                 try
                 {
                     var scrollViewNative = parentScrollView.Native();
-                    var recognizer = scrollViewNative?.GestureRecognizers.SingleOrDefault(gr => (gr as UIPanGestureRecognizer) != null);
-                    if (recognizer != null)
-                    {
-                        recognizer.ShouldBeRequiredToFailByGestureRecognizer(panGestureRecognizer);
-                        panGestureRecognizer.Delegate = new GestureRecognizerDelegate(Result, parentScrollView, recognizer as UIPanGestureRecognizer);
-                    }
+                    var recognizer = scrollViewNative?.GestureRecognizers.OfType<UIPanGestureRecognizer>().SingleOrDefault();
+                    if (recognizer is null) return;
+
+                    recognizer.ShouldBeRequiredToFailByGestureRecognizer(panGestureRecognizer);
+                    panGestureRecognizer.Delegate = new GestureRecognizerDelegate(Result, parentScrollView, recognizer);
                 }
                 catch (Exception ex) { } // No logging is needed
             });
-            
-            
         }
 
         void HandlePinching()

@@ -11,7 +11,7 @@ namespace Zebble.Device
     {
         static Task<bool> DoOpenBrowser(string url)
         {
-            UIApplication.SharedApplication.OpenUrl(new NSUrl(url));
+            UIApplication.SharedApplication.OpenUrl(url.ToNsUrl());
             return Task.FromResult(result: false);
         }
 

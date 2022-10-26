@@ -98,6 +98,8 @@ namespace System
 
         public static NSObject ToNs(this CGImage value) => NSObject.FromObject(value);
 
+        public static NSUrl ToNsUrl(this string value) => NSUrl.FromString(value.ToNs().CreateStringByAddingPercentEscapes(NSStringEncoding.UTF8));
+
         internal static drawing.SizeF Render(this Size size) => new(size.Width, size.Height);
 
         public static UIColor Render(this Color color)

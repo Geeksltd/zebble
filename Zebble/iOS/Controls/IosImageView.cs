@@ -70,10 +70,11 @@ namespace Zebble.IOS
             View.WhenShownOrPageRevisited(() => { try { LoadImage(); } catch { /* No logging needed */ } });
         }
 
+        bool IsAlive() => View?.IsDisposing == false;
+
         internal void LoadImage()
         {
-            if (View?.IsDisposing != false)
-                return;
+            if (!IsAlive()) return;
 
             if (View.BackgroundImagePath.OrEmpty().EndsWith(".gif") || View.HasAnimatedBackgroundImage)
                 Thread.UI.Run(SetGifAnimationLayers);
@@ -94,20 +95,17 @@ namespace Zebble.IOS
 
         void DrawImage(object imageObj)
         {
-            if (imageObj == null)
-                return;
             var image = imageObj as UIImage;
-            if (View?.IsDisposing == false)
-            {
-                if (View.BackgroundImageStretch == Stretch.Fit)
-                    Image = ChangeImageToFit(image, View.BackgroundImageAlignment);
-                else
-                    Image = image;
-                SetImagePosition();
+            if (image == null || !IsAlive()) return;
 
-                if (Mirror is not null)
-                    Mirror.Contents = Image.CGImage;
-            }
+            if (View.BackgroundImageStretch == Stretch.Fit)
+                Image = ChangeImageToFit(image, View.BackgroundImageAlignment);
+            else
+                Image = image;
+            SetImagePosition();
+
+            if (Mirror is not null)
+                Mirror.Contents = Image.CGImage;
         }
 
         UIImage ChangeImageToFit(UIImage image, Alignment alignment)
@@ -196,7 +194,7 @@ namespace Zebble.IOS
 
         void SetImagePosition()
         {
-            if (Image is null) return;
+            if (Image is null || !IsAlive()) return;
             Layer.MasksToBounds = true;
 
             var stretch = View.BackgroundImageStretch;

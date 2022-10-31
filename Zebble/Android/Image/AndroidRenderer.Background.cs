@@ -21,6 +21,10 @@
 
             public override void GetOutline(Android.Views.View view, Android.Graphics.Outline outline)
             {
+                if (View is null) return;
+                if (view is null) return;
+                if (outline is null) return;
+
                 var left = 0;
                 var top = 0;
                 var right = Scale.ToDevice(View.ActualWidth);

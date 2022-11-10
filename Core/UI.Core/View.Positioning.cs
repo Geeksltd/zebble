@@ -58,6 +58,22 @@ namespace Zebble
         }
 
         /// <summary>
+        /// Gets the X of this view from the top left corner of the device screen. 
+        /// </summary>
+        public float CalculateAbsoluteRight()
+        {
+            return CalculateAbsoluteX() + ActualWidth;
+        }
+
+        /// <summary>
+        /// Gets the Y of this view from the top left corner of the device screen. 
+        /// </summary>
+        public float CalculateAbsoluteBottom()
+        {
+            return CalculateAbsoluteY() + ActualHeight;
+        }
+
+        /// <summary>
         ///  Gets the current X of the native Object. Useful to check the progress of animations.
         /// </summary>
         public float NativeX

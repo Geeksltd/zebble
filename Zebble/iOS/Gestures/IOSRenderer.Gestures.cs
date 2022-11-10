@@ -1,6 +1,5 @@
 namespace Zebble
 {
-    using Foundation;
     using System;
     using System.Linq;
     using UIKit;
@@ -106,7 +105,11 @@ namespace Zebble
                     raised = true;
                 }
             })
-            { MinimumPressDuration = 0, Delegate = new GestureRecognizerDelegate() };
+            {
+                MinimumPressDuration = 0,
+                Delegate = new LongPressGestureRecognizerDelegate()
+            };
+
             longPressGestureRecognizer.ShouldBeRequiredToFailByGestureRecognizer(tapRecognizer);
             Result.AddGestureRecognizer(longPressGestureRecognizer);
         }
@@ -156,11 +159,8 @@ namespace Zebble
             var parentScrollView = View.FindParent<ScrollView>();
             if (parentScrollView is not null)
             {
-                var scrollViewNative = parentScrollView.Native();
-
-                if (scrollViewNative is null)
-                    parentScrollView.Rendered.Event += () => AttachToScroller(parentScrollView, panGestureRecognizer);
-                else AttachToScroller(parentScrollView, panGestureRecognizer);
+                if (parentScrollView.IsRendered()) AttachToScroller(parentScrollView, panGestureRecognizer);
+                else parentScrollView.Rendered.Event += () => AttachToScroller(parentScrollView, panGestureRecognizer);
             }
 
             Result.AddGestureRecognizer(panGestureRecognizer);
@@ -172,33 +172,33 @@ namespace Zebble
             {
                 try
                 {
-                    var scrollViewNative = parentScrollView.Native();
-                    var recognizer = scrollViewNative?.GestureRecognizers.OfType<UIPanGestureRecognizer>().SingleOrDefault();
+                    var recognizer = parentScrollView.Native()?.GestureRecognizers.OfType<UIPanGestureRecognizer>().SingleOrDefault();
                     if (recognizer is null) return;
 
                     recognizer.ShouldBeRequiredToFailByGestureRecognizer(panGestureRecognizer);
-                    panGestureRecognizer.Delegate = new GestureRecognizerDelegate(Result, parentScrollView, recognizer);
+                    panGestureRecognizer.Delegate = new PanningGestureRecognizerDelegate(Result, parentScrollView, recognizer);
                 }
-                catch (Exception ex) { } // No logging is needed
+                catch { } // No logging is needed
             });
         }
 
         void HandlePinching()
         {
             var recognizer = new UIPinchGestureRecognizer(g =>
-              {
-                  if (IsDead(out var view)) return;
-                  if (g.State == UIGestureRecognizerState.Changed)
-                  {
-                      if (g.NumberOfTouches > 1)
-                      {
-                          var arg = new PinchedEventArgs(view, g.GetTouchPoint(0), g.GetTouchPoint(1), (float)g.Scale);
-                          view.RaisePinching(arg);
-                      }
-                  }
+            {
+                if (IsDead(out var view)) return;
+                if (g.State == UIGestureRecognizerState.Changed)
+                {
+                    if (g.NumberOfTouches > 1)
+                    {
+                        var arg = new PinchedEventArgs(view, g.GetTouchPoint(0), g.GetTouchPoint(1), (float)g.Scale);
+                        view.RaisePinching(arg);
+                    }
+                }
 
-                  g.Scale = 1; // Reset
-              });
+                g.Scale = 1; // Reset
+            });
+
             Result.AddGestureRecognizer(recognizer);
         }
 
@@ -234,40 +234,45 @@ namespace Zebble
 
         internal static UIGestureRecognizer AddHardwareBackGesture()
         {
-            async void raiseHardwareBack()
-            {
-                await Nav.OnHardwareBack();
-            }
+            static async void RaiseHardwareBack() => await Nav.OnHardwareBack();
 
-            return new UIScreenEdgePanGestureRecognizer(raiseHardwareBack) { Edges = UIRectEdge.Left };
+            return new UIScreenEdgePanGestureRecognizer(RaiseHardwareBack)
+            {
+                Edges = UIRectEdge.Left
+            };
         }
     }
 
-    class GestureRecognizerDelegate : UIGestureRecognizerDelegate
+    class LongPressGestureRecognizerDelegate : UIGestureRecognizerDelegate
+    {
+        public LongPressGestureRecognizerDelegate() { }
+
+        public override bool ShouldRecognizeSimultaneously(UIGestureRecognizer _, UIGestureRecognizer __) => true;
+
+        public override bool ShouldBegin(UIGestureRecognizer recognizer) => true;
+    }
+
+    class PanningGestureRecognizerDelegate : UIGestureRecognizerDelegate
     {
         readonly UIView View;
-        readonly UIPanGestureRecognizer ScrollViewPanGesture;
         readonly ScrollView ContainerScrollView;
+        readonly UIPanGestureRecognizer ScrollViewPanGesture;
 
-        public GestureRecognizerDelegate(UIView view = null, ScrollView containerScrollView = null, UIPanGestureRecognizer scrollViewPanGesture = null)
+        public PanningGestureRecognizerDelegate(UIView view = null, ScrollView containerScrollView = null, UIPanGestureRecognizer scrollViewPanGesture = null)
         {
             View = view;
             ContainerScrollView = containerScrollView;
             ScrollViewPanGesture = scrollViewPanGesture;
         }
 
-        public override bool ShouldRecognizeSimultaneously(UIGestureRecognizer gestureRecognizer, UIGestureRecognizer otherGestureRecognizer)
-        {
-            return true;
-        }
+        public override bool ShouldRecognizeSimultaneously(UIGestureRecognizer _, UIGestureRecognizer __) => true;
 
         public override bool ShouldBegin(UIGestureRecognizer recognizer)
         {
-            if (recognizer as UIPanGestureRecognizer is null) return true;
-            if (ContainerScrollView?.EnableScrolling != true) return true;
+            if (recognizer is not UIPanGestureRecognizer panRecognizer) return true;
+            if (ContainerScrollView.EnableScrolling == false) return true;
 
-            var panGestureRecognizer = (UIPanGestureRecognizer)recognizer;
-            var velocity = panGestureRecognizer.VelocityInView(View);
+            var velocity = panRecognizer.VelocityInView(View);
 
             if (recognizer == ScrollViewPanGesture)
             {

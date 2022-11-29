@@ -22,7 +22,7 @@
                 dir.MoveTo(Path.Combine(rootDir.Parent.FullName, dir.Name));
 
             foreach (var file in files)
-                file.MoveTo(Path.Combine(rootDir.Parent.FullName, file.Name));
+                file.MoveTo(Path.Combine(rootDir.Parent.FullName, file.Name), overwrite: true);
 
             rootDir.Delete();
         }

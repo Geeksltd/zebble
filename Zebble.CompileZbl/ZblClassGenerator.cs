@@ -17,7 +17,7 @@ namespace Zebble.CompileZbl
         protected ZblClassGenerator(XElement node)
         {
             Node = node;
-            Name = node.GetValue<string>("@type");
+            Name = node.GetValue<string>("@type").Replace("[", "<").Replace("]", ">");
             Namespace = node.GetValue<string>("@namespace").Or("UI");
             ViewModel = node.GetValue<string>("@viewmodel");
             BaseClass = node.GetValue<string>("@base").OrEmpty().Replace("[", "<").Replace("]", ">");

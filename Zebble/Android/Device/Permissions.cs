@@ -145,6 +145,10 @@ namespace Zebble.Device
                     report(Manifest.Permission.ReadExternalStorage);
                     report(Manifest.Permission.WriteExternalStorage);
                     break;
+                case Permission.LocalNotification:
+                    report("android.permission.SCHEDULE_EXACT_ALARM");
+                    report("android.permission.USE_EXACT_ALARM");
+                    break;
                 default: return default;
             }
 

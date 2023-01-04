@@ -114,7 +114,7 @@ namespace Zebble.Services
             options.InTargetDensity = options.InScreenDensity = options.InDensity = 1;
             options.InSampleSize = sampleSize;
 
-            using (var bitMap = BitmapFactory.DecodeFile(source.FullName, options))
+            using (var bitMap = await BitmapFactory.DecodeFileAsync(source.FullName, options))
             using (await destination.GetSyncLock().Lock())
             using (var stream = destination.OpenWrite())
             {
@@ -185,7 +185,7 @@ namespace Zebble.Services
                 {
                     using (var stream = File.Open(destination.FullName, FileMode.Create, FileAccess.ReadWrite))
                     {
-                        rotated.Compress(Bitmap.CompressFormat.Jpeg, resultJpegQuality, stream);
+                        await rotated.CompressAsync(Bitmap.CompressFormat.Jpeg, resultJpegQuality, stream);
                         await stream.FlushAsync();
                         stream.Close();
                     }

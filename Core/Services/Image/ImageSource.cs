@@ -229,7 +229,7 @@ namespace Zebble.Services
             static async Task<bool> RemoveImageFileIfText(FileInfo file)
             {
                 // Is this image file in fact text (error message)?
-                if (!file.Exists()) return false;
+                if (!await file.ExistsAsync()) return false;
 
                 try
                 {

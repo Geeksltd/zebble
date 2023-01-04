@@ -192,7 +192,7 @@ namespace Zebble.Device
                 await encoder.FlushAsync();
 
                 var result = Device.IO.GetTempRoot().GetFile(Guid.NewGuid() + ".png");
-                await result.WriteAllBytesAsync(encoded.AsStreamForRead().ReadAllBytes());
+                await result.WriteAllBytesAsync(await encoded.AsStreamForRead().ReadAllBytesAsync());
 
                 return result;
             }

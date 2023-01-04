@@ -148,11 +148,11 @@
                     inputNative.Draw(canvasImage);
 
                     await imageBitmap.CompressAsync(CompressFormat.Png, 0, stream);
-                    imageBitmap?.Recycle();
+                    imageBitmap.Recycle();
 
                     var bitmapData = stream.ToArray();
                     var result = IO.CreateTempFile(".png");
-                    result.WriteAllBytes(bitmapData);
+                    await result.WriteAllBytesAsync(bitmapData);
 
                     return result;
                 }

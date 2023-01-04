@@ -158,7 +158,7 @@ namespace Zebble.Services
             {
                 try
                 {
-                    if (destination.Exists() && destination.FullName.AsFile().Length == 0)
+                    if (await destination.ExistsAsync() && destination.FullName.AsFile().Length == 0)
                         destination.Delete();
                 }
                 catch

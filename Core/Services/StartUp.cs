@@ -27,7 +27,7 @@ namespace Zebble
             ConfigureIO();
             var version = IO.File("inst_" + GetResourcesVersion() + ".txt");
 
-            if (!version.Exists() || Reinstall)
+            if (!await version.ExistsAsync() || Reinstall)
             {
                 await Install();
                 await version.WriteAllTextAsync("Done");

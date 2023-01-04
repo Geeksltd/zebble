@@ -439,7 +439,7 @@ namespace Zebble
 
 			using (var reader = await file.OpenSequentialReadAsync().AsTask())
 			using (var stream = reader.AsStreamForRead())
-				return stream.ReadAllBytes();
+				return await stream.ReadAllBytesAsync();
 		}
 
 		public static async Task<FileInfo> SaveToTempFile(this StorageFile file)

@@ -77,13 +77,22 @@ namespace Zebble.Device
                 set
                 {
                     hasLightContent = value;
-                    DoSetHasLightContent();
+                    SetHasLightContent();
+                }
+            }
+
+            static Task SetHasLightContent(OnError errorAction = OnError.Ignore)
+            {
+                try { return Thread.UI.Run(DoSetHasLightContent); }
+                catch (Exception ex)
+                {
+                    return errorAction.Apply(ex, "Failed to set the StatusBar has light content.");
                 }
             }
 
             static Task SetBackgroundColor(OnError errorAction = OnError.Ignore)
             {
-                try { return Thread.UI.Run(() => DoSetBackgroundColor()); }
+                try { return Thread.UI.Run(DoSetBackgroundColor); }
                 catch (Exception ex)
                 {
                     return errorAction.Apply(ex, "Failed to set the StatusBar background color.");
@@ -92,7 +101,7 @@ namespace Zebble.Device
 
             static Task SetForegroundColor(OnError errorAction = OnError.Ignore)
             {
-                try { return Thread.UI.Run(() => DoSetForegroundColor()); }
+                try { return Thread.UI.Run(DoSetForegroundColor); }
                 catch (Exception ex)
                 {
                     return errorAction.Apply(ex, "Failed to set the StatusBar foreground color.");
@@ -101,7 +110,7 @@ namespace Zebble.Device
 
             static Task SetTransparency(OnError errorAction = OnError.Ignore)
             {
-                try { return Thread.UI.Run(() => DoSetTransparency()); }
+                try { return Thread.UI.Run(DoSetTransparency); }
                 catch (Exception ex)
                 {
                     return errorAction.Apply(ex, "Failed to set the StatusBar foreground color.");
@@ -110,7 +119,7 @@ namespace Zebble.Device
 
             static Task SetVisibility(OnError errorAction = OnError.Ignore)
             {
-                try { return Thread.UI.Run(() => DoSetVisibility()); }
+                try { return Thread.UI.Run(DoSetVisibility); }
                 catch (Exception ex)
                 {
                     return errorAction.Apply(ex, "Failed to set the StatusBar foreground color.");

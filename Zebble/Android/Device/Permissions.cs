@@ -5,6 +5,7 @@ namespace Zebble.Device
     using System.Linq;
     using System.Threading.Tasks;
     using Android;
+    using Android.OS;
     using AndroidX.Core.App;
     using AndroidX.Core.Content;
     using Olive;
@@ -59,11 +60,11 @@ namespace Zebble.Device
             var source = new TaskCompletionSource<PermissionResult>();
             var requestId = (int)permission;
 
-            Task resultReceived(PermissionRequestArgs r)
+            Task ResultReceived(PermissionRequestArgs r)
             {
                 if (r.RequestId != requestId) return Task.CompletedTask;
 
-                ReceivedRequestPermissionResult.RemoveHandler(resultReceived);
+                ReceivedRequestPermissionResult.RemoveHandler(ResultReceived);
 
                 if (r.Result == Android.Content.PM.Permission.Granted)
                     source.TrySetResult(PermissionResult.Granted);
@@ -72,7 +73,7 @@ namespace Zebble.Device
                 return Task.CompletedTask;
             }
 
-            ReceivedRequestPermissionResult.Handle(resultReceived);
+            ReceivedRequestPermissionResult.Handle(ResultReceived);
 
             ActivityCompat.RequestPermissions(UIRuntime.CurrentActivity, permissionsToRequest.ToArray(), requestId);
 
@@ -146,8 +147,8 @@ namespace Zebble.Device
                     report(Manifest.Permission.WriteExternalStorage);
                     break;
                 case Permission.LocalNotification:
-                    report("android.permission.SCHEDULE_EXACT_ALARM");
-                    report("android.permission.USE_EXACT_ALARM");
+                    if ((int)Build.VERSION.SdkInt >= 31 /*BuildVersionCodes.S*/)
+                        report("android.permission.SCHEDULE_EXACT_ALARM");
                     break;
                 default: return default;
             }

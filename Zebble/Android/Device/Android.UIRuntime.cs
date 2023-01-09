@@ -1,12 +1,13 @@
 namespace Zebble
 {
     using System;
-    using System.Reflection;
 
     partial class UIRuntime
     {
         public static Android.App.Activity CurrentActivity;
-        public static Android.Content.Context AppContext => CurrentActivity?.ApplicationContext;
+
+        public static Android.Content.Context AppContext
+            => CurrentActivity?.ApplicationContext ?? Android.App.Application.Context;
 
         /// <summary>
         /// This will be called whenever a new Intent starts

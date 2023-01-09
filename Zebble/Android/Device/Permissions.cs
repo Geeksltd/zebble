@@ -14,7 +14,7 @@ namespace Zebble.Device
     {
         internal static readonly AsyncEvent<PermissionRequestArgs> ReceivedRequestPermissionResult = new();
 
-        static readonly Lazy<IList<string>> ManifestPermissions = new(ReadManifestPermissions);
+        static readonly Lazy<string[]> ManifestPermissions = new(ReadManifestPermissions);
 
         public static Task<bool> ShouldShowDialog(Permission permission)
         {
@@ -156,18 +156,20 @@ namespace Zebble.Device
             return result;
         }
 
-        static IList<string> ReadManifestPermissions()
+        static string[] ReadManifestPermissions()
         {
             try
             {
-                var context = UIRuntime.CurrentActivity;
+                var context = UIRuntime.AppContext;
+                var packageManager = context?.PackageManager;
+                if (packageManager is null) return Array.Empty<string>();
 
-                var info = context.PackageManager.GetPackageInfo(context.PackageName, Android.Content.PM.PackageInfoFlags.Permissions);
+                var info = packageManager.GetPackageInfo(context.PackageName, Android.Content.PM.PackageInfoFlags.Permissions);
 
                 if (info?.RequestedPermissions is null)
                     throw new Exception("Failed to get Package permissions info. Ensure the required permissions are marked in the manifest.");
 
-                return info.RequestedPermissions;
+                return info.RequestedPermissions.ToArray();
             }
             catch (Exception ex) { throw new Exception("Unable to check manifest for permission: " + ex); }
         }

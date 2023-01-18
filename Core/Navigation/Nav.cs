@@ -16,14 +16,17 @@ namespace Zebble
         static readonly List<Page> CachedPages = new();
 
         /// <summary>
-        /// It will return the most recent openned `Page` (or `PopUp`) instance
+        /// It will return the most recent opened `Page` (or `PopUp`) instance
         /// </summary>
         public static Page CurrentPage { get; set; }
 
         /// <summary>
         /// If `CurrentPage` is an instance of the `PopUp` it will return the `PopUp.HostPage` otherwise it will return null.
         /// </summary>
-        public static Page CurrentHostPage => CurrentPage is PopUp popUp ? popUp.HostPage : null;
+        public static Page CurrentHostPage => GetHostPage(CurrentPage);
+
+        static Page GetHostPage(Page page)
+            => page is PopUp popUp ? GetHostPage(popUp.HostPage) : page;
 
         /// <summary>
         /// It will return an array of `Page` instances. then first one will be the `CurrentPage` and the second one will be the `CurrentHostPage` (if it's not null)

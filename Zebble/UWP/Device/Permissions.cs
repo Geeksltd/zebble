@@ -77,6 +77,6 @@ namespace Zebble.Device
         /// <summary>
         /// Asks the user to grant or deny a permission.
         /// </summary>
-        static public Task<PermissionResult> Request(Permission permission) => Check(permission);
+        public static Task<PermissionResult> Request(Permission permission) => Check(permission);
     }
 }

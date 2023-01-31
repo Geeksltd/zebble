@@ -6,7 +6,18 @@ namespace Zebble
     {
         public static Android.App.Activity CurrentActivity;
 
+        static Android.Content.Context appContext;
         public static Android.Content.Context AppContext
+        {
+            get => appContext ?? GetCurrentContext();
+            set
+            {
+                if (GetCurrentContext() is not null) throw new InvalidOperationException();
+                appContext = value;
+            }
+        }
+
+        static Android.Content.Context GetCurrentContext()
             => CurrentActivity?.ApplicationContext ?? Android.App.Application.Context;
 
         /// <summary>

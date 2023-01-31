@@ -42,7 +42,7 @@ namespace Zebble.Device
                 }
 
             // All names are requested in the manifest
-            if (names.Select(x => ContextCompat.CheckSelfPermission(UIRuntime.CurrentActivity, x))
+            if (names.Select(x => ContextCompat.CheckSelfPermission(UIRuntime.AppContext, x))
                 .Contains(Android.Content.PM.Permission.Denied))
                 return Task.FromResult(PermissionResult.Denied);
 
@@ -75,7 +75,9 @@ namespace Zebble.Device
 
             ReceivedRequestPermissionResult.Handle(ResultReceived);
 
-            ActivityCompat.RequestPermissions(UIRuntime.CurrentActivity, permissionsToRequest.ToArray(), requestId);
+            if (UIRuntime.CurrentActivity is null) source.SetResult(PermissionResult.Denied);
+            else
+                ActivityCompat.RequestPermissions(UIRuntime.CurrentActivity, permissionsToRequest.ToArray(), requestId);
 
             return await source.Task;
         }

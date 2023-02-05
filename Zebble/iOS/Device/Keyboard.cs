@@ -35,7 +35,7 @@ namespace Zebble.Device
             var input = View.Root.CurrentDescendants().OfType<TextInput>().FirstOrDefault(x => x.Native()?.IsFirstResponder == true);
             scroller = MainScroller ?? (input?.FindParent<ScrollView>());
 
-            if (scroller == null || input == null) return;
+            if (scroller?.EnableScrolling != true || input == null) return;
 
             ExpandedScrollView = (UIScrollView)scroller.Native();
             CurrentWindowRect = ExpandedScrollView.Window != null ? ExpandedScrollView.Window.Frame : UIScreen.MainScreen.Bounds;

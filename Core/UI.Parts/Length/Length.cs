@@ -96,9 +96,17 @@ namespace Zebble
             }
         }
 
-        void AttachToParentPaddingLeftChanged() => UpdateOn(Owner.parent.Padding.Left.Changed);
+        void AttachToParentPaddingLeftChanged()
+        {
+            if (Owner?.parent is null) return;
+            UpdateOn(Owner.parent.Padding.Left.Changed);
+        }
 
-        void AttachToParentPaddingTopChanged() => UpdateOn(Owner.parent.Padding.Top.Changed);
+        void AttachToParentPaddingTopChanged()
+        {
+            if (Owner?.parent is null) return;
+            UpdateOn(Owner.parent.Padding.Top.Changed);
+        }
 
         public override string ToString()
         {

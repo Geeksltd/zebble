@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>zebble-image</ToolCommandName>
     <Company>Geeks Ltd</Company>
@@ -15,9 +15,9 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.0.13.0</Version>
+    <Version>1.0.14.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-image</RepositoryUrl>
-    <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
+    <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="CICD\**" />
@@ -37,8 +37,8 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
-    <PackageReference Include="Olive" Version="2.1.291" />
-    <PackageReference Include="SkiaSharp" Version="2.80.3" />
+    <PackageReference Include="Olive" Version="2.1.334" />
+    <PackageReference Include="SkiaSharp" Version="2.88.3" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon.png" Pack="true" PackagePath="" />

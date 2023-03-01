@@ -1,12 +1,12 @@
-﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.23">
+﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
-    <TargetFrameworks>Xamarin.iOS10;MonoAndroid90;netcoreapp3.1</TargetFrameworks>
+    <TargetFrameworks>Xamarin.iOS10;MonoAndroid13.0;net6.0</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
     <AssemblyName>Zebble</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>4.5.671.0</Version>
+    <Version>4.5.672.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <DefineConstants>$(DefineConstants)</DefineConstants>
@@ -23,7 +23,7 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <Owners>Geeks Ltd</Owners>
     <Authors>Geeks Ltd</Authors>
-    <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
+    <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
     <DisableExtraReferences>true</DisableExtraReferences>
     <DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
   </PropertyGroup>
@@ -46,8 +46,8 @@
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
     <DefineConstants>$(DefineConstants);IOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('netcoreapp')) ">
-    <DefineConstants>$(DefineConstants);NETCOREAPP</DefineConstants>
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net6.0')) ">
+    <DefineConstants>$(DefineConstants);NET60</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('UWP')) ">
     <SDKReference Include="WindowsMobile, Version=10.0.19041.0">
@@ -58,14 +58,14 @@
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
     <Reference Include="System.Xml.Linq" />
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.3.0" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.0.1" />
     <Compile Include="Android\**\*.cs" />
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
     <Reference Include="System.Xml.Linq" />
     <Compile Include="iOS\**\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('NETCOREAPP')) ">
+  <ItemGroup Condition=" $(DefineConstants.Contains('NET60')) ">
     <Compile Include="Console\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -75,14 +75,13 @@
     <None Remove="Zebble-LicenseAgreement.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="6.0.0" />
-    <PackageReference Include="System.ValueTuple" Version="4.5.0" />
-    <PackageReference Include="Olive" Version="2.1.326" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Olive" Version="2.1.334" />
     <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.0" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.7.5" />
   </ItemGroup>
-  <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'netcoreapp3.1' " />
+  <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'net6.0' " />
   <Import Project="..\Css\Css.projitems" Label="Shared" />
   <Import Project="..\Framework\Framework.projitems" Label="Shared" />
   <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />

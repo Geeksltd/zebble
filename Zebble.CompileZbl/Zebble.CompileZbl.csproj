@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp3.1</TargetFramework>
+    <TargetFramework>net7.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>zebble-compile-zbl</ToolCommandName>
     <Company>Geeks Ltd</Company>
@@ -15,9 +15,9 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.0.29.0</Version>
+    <Version>1.0.30.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-compile-zbl</RepositoryUrl>
-    <Copyright>Geeks Ltd 2021, All rights reserved.</Copyright>
+    <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;FX46</DefineConstants>
@@ -39,7 +39,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive" Version="2.1.291" />
+    <PackageReference Include="Olive" Version="2.1.334" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon.png" Pack="true" PackagePath="" />

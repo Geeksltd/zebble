@@ -102,8 +102,14 @@ namespace Zebble.Services
 
         internal static Size FindImageSize(FileInfo file)
         {
-            var fil = Task.Factory.RunSync(() => file.ToStorageFile());
-            var properties = Task.Factory.RunSync(() => fil.Properties.GetImagePropertiesAsync().AsTask());
+            return Task.Factory.RunSync(() => FetchImageSize(file));
+        }
+
+        static async Task<Size> FetchImageSize(FileInfo file)
+        {
+            var get = await file.ToStorageFile().ConfigureAwait(false);
+            var properties = await get.Properties.GetImagePropertiesAsync().AsTask().ConfigureAwait(false);
+
             return new Size(properties.Width, properties.Height);
         }
 

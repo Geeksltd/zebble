@@ -152,8 +152,9 @@ namespace Zebble.Services
                 var sizedFile = GetSizedFilePath();
                 if (sizedFile is null) return file;
 
-                if (!await sizedFile.ExistsAsync() && await file.ExistsAsync())
-                    await Thread.Pool.Run(() => SaveSpecificSizedCache(file, sizedFile, Stretch));
+                if (file.Length > 1000000) // Large file
+                    if (!await sizedFile.ExistsAsync() && await file.ExistsAsync())
+                        await Thread.Pool.Run(() => SaveSpecificSizedCache(file, sizedFile, Stretch));
 
                 return sizedFile;
             }
@@ -220,8 +221,8 @@ namespace Zebble.Services
                 catch (Exception ex)
                 {
                     var wasText = await RemoveImageFileIfText(toLoad);
-                    var wrappedEx = new Exception(wasText ? "Image file content was error text." : "Failed to load an image from file.", ex);                    
-                    Log.For(this).Error(wrappedEx);                    
+                    var wrappedEx = new Exception(wasText ? "Image file content was error text." : "Failed to load an image from file.", ex);
+                    Log.For(this).Error(wrappedEx);
                     throw wrappedEx;
                 }
             }

@@ -130,6 +130,8 @@ namespace Zebble.Device
                         {
                             Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
                         }
+                        else if (fetchTask.Status == TaskStatus.Faulted)
+                            Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url);
                         else
                         {
                             using var httpResponse = fetchTask.GetAlreadyCompletedResult();

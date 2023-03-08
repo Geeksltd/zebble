@@ -301,7 +301,7 @@ namespace Zebble
 
             // check values are the same
             foreach (var key in first.Keys)
-                if (!first[key].Equals(second[key])) return false;
+                if (first[key] != second[key]) return false;
 
             return true;
         }

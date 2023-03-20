@@ -33,7 +33,7 @@ namespace Zebble
         /// </summary>
         public static Page[] ActivePages => new[] { CurrentPage, CurrentHostPage }.ExceptNull().ToArray();
 
-        public static bool IsNavigating { get; internal set; }
+        internal static DateTime LatestNavigating;
 
         public static readonly AsyncEvent FullRefreshed = new();
 
@@ -128,9 +128,8 @@ namespace Zebble
             var eventArgs = new NavigationEventArgs(CurrentPage, page);
             await RaiseNavigating(eventArgs);
 
-            IsNavigating = true;
-            try
-            {
+            LatestNavigating = DateTime.UtcNow;
+            
                 var oldPage = CurrentPage;
                 CurrentPage = page;
 
@@ -148,11 +147,7 @@ namespace Zebble
                     UIWorkBatch.RunSync(() => page.X(0).Y(0));
 
                 AddToHistory(page);
-            }
-            finally
-            {
-                IsNavigating = false;
-            }
+            
 
             await Waiting.Hide(waitingVersion);
 

@@ -133,7 +133,8 @@ namespace Zebble
 
         void RaiseGestureEvent(Func<Task> invoker)
         {
-            if (IsDisposing || Nav.IsNavigating) return;
+            if (IsDisposing) return;
+            if (Nav.LatestNavigating > DateTime.UtcNow.AddMilliseconds(-250)) return;
             IdleUITasks.ReportGesture();
 
             if (ShouldRaiseGesturesOnUIThread) DoRun();

@@ -75,8 +75,7 @@ namespace Zebble
             await new Nav.Transitor(this, this, View, Transition).Run();
 
             IsFullyVisible = true;
-
-            Nav.IsNavigating = false;
+             
             await Nav.Navigated.Raise(new NavigationEventArgs(HostPage, this));
         }
 
@@ -88,8 +87,7 @@ namespace Zebble
 
             await ShowFully();
             IsFullyVisible = true;
-
-            Nav.IsNavigating = false;
+             
             await Nav.Navigated.Raise(new NavigationEventArgs(HostPage, this));
         }
 

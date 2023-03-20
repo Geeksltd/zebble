@@ -100,9 +100,10 @@ namespace Zebble
             var eventArgs = new NavigationEventArgs(popup.HostPage, popup);
             await Navigating.Raise(eventArgs);
 
+            LatestNavigating = DateTime.UtcNow;
+
             lock (TransitionStack)
             {
-                IsNavigating = true;
                 TransitionStack.Push(popup.Transition);
                 PopUps.Add(popup);
                 CurrentPage = popup;
@@ -174,7 +175,7 @@ namespace Zebble
         {
             var eventArgs = new NavigationEventArgs(popup, popup.HostPage);
             await Navigating.Raise(eventArgs);
-            IsNavigating = true;
+            LatestNavigating = DateTime.UtcNow;
 
             PageTransition transition;
 
@@ -194,8 +195,7 @@ namespace Zebble
             }
 
             async Task onAnimationCompleted()
-            {
-                IsNavigating = false;
+            { 
                 await Navigated.Raise(eventArgs);
 
                 if (!CacheViewAttribute.IsCacheable(popup))

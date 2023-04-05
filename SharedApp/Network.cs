@@ -119,42 +119,24 @@ namespace Zebble.Device
 
                 try
                 {
-                    if (Config.Get<bool>("Offline.Mode")) throw new Exception("Simulated as offline");
+                    using var client = HttpClient(url, timeoutPerAttempt.Seconds());
+                    using var httpResponse = client.GetAsync(url).ConfigureAwait(false).GetAwaiter().GetResult();
 
-                    try
+                    if (httpResponse.IsSuccessStatusCode)
                     {
-                        using var client = HttpClient(url, timeoutPerAttempt.Seconds());
-                        var fetchTask = client.GetAsync(url);
+                        data = await httpResponse.Content.ReadAsByteArrayAsync();
 
-                        if (await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask) != fetchTask || fetchTask.IsCanceled)
-                        {
-                            Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
-                        }
-                        else if (fetchTask.Status == TaskStatus.Faulted)
-                            Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url);
-                        else
-                        {
-                            using var httpResponse = fetchTask.GetAlreadyCompletedResult();
-                            if (httpResponse.StatusCode == HttpStatusCode.OK)
-                            {
-                                data = await httpResponse.Content.ReadAsByteArrayAsync();
-                                if (saveOutput != null)
-                                    await saveOutput.WriteAllBytesAsync(data);
-                            }
-                            else
-                            {
-                                Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url + " >> " + httpResponse.StatusCode);
-                            }
-                        }
+                        if (saveOutput != null)
+                            await saveOutput.WriteAllBytesAsync(data);
                     }
-                    catch (TimeoutException)
+                    else
                     {
-                        Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
+                        Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url + " >> " + httpResponse.StatusCode);
                     }
-                    catch (OperationCanceledException)
-                    {
-                        Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
-                    }
+                }
+                catch (Exception ex) when (ex is TimeoutException || ex is TaskCanceledException || ex is OperationCanceledException)
+                {
+                    Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
                 }
                 catch (Exception ex)
                 {

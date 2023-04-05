@@ -128,6 +128,8 @@ namespace Zebble.Device
 
                         if (saveOutput != null)
                             await saveOutput.WriteAllBytesAsync(data);
+
+                        break;
                     }
                     else
                     {
@@ -143,8 +145,6 @@ namespace Zebble.Device
                     error = ex;
                     Log.For(typeof(Network)).Warning($"Attempt #{retry} failed for downloading {url}\n{ex.Message}");
                 }
-
-                if (data != null) break;
             }
 
             if (data is null)

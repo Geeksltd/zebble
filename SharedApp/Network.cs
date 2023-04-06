@@ -120,20 +120,29 @@ namespace Zebble.Device
                 try
                 {
                     using var client = HttpClient(url, timeoutPerAttempt.Seconds());
-                    using var httpResponse = client.GetAsync(url).ConfigureAwait(false).GetAwaiter().GetResult();
+                    var fetchTask = client.GetAsync(url);
 
-                    if (httpResponse.IsSuccessStatusCode)
-                    {
-                        data = await httpResponse.Content.ReadAsByteArrayAsync();
-
-                        if (saveOutput != null)
-                            await saveOutput.WriteAllBytesAsync(data);
-
-                        break;
-                    }
+                    if (await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask) != fetchTask || fetchTask.IsCanceled)
+                        Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
+                    else if (fetchTask.Status == TaskStatus.Faulted)
+                        Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url);
                     else
                     {
-                        Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url + " >> " + httpResponse.StatusCode);
+                        using var httpResponse = fetchTask.GetAlreadyCompletedResult();
+
+                        if (httpResponse.StatusCode == HttpStatusCode.OK)
+                        {
+                            data = await httpResponse.Content.ReadAsByteArrayAsync();
+
+                            if (saveOutput != null)
+                                await saveOutput.WriteAllBytesAsync(data);
+
+                            break;
+                        }
+                        else
+                        {
+                            Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url + " >> " + httpResponse.StatusCode);
+                        }
                     }
                 }
                 catch (Exception ex) when (ex is TimeoutException || ex is TaskCanceledException || ex is OperationCanceledException)

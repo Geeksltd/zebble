@@ -85,13 +85,13 @@ namespace Zebble.AndroidOS
         {
             HideKeyBoard();
 
-            point = point.RelativeTo(handler);
+            point = point.RelativeTo(handler, Host);
             handler.RaiseTapped(new Zebble.TouchEventArgs(handler, point, touches));
         }
 
         void HandleTouched(Zebble.View handler, Point point)
         {
-            point = point.RelativeTo(handler);
+            point = point.RelativeTo(handler,Host);
             var args = new Zebble.TouchEventArgs(handler, point, 1);
             handler.RaiseTouched(args);
         }

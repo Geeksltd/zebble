@@ -402,12 +402,19 @@ namespace System
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
-        public static Zebble.Point RelativeTo(this Zebble.Point absoluteScreenPoint, Zebble.View target)
+        public static Zebble.Point RelativeTo(this Zebble.Point absoluteScreenPoint, Zebble.View target, Zebble.View host)
         {
-            var targetX = Scale.ToDevice(target.CalculateAbsoluteX());
-            var targetY = Scale.ToDevice(target.CalculateAbsoluteY());
+            absoluteScreenPoint = Scale.ToZebble(absoluteScreenPoint);
 
-            return Scale.ToZebble(new Zebble.Point(absoluteScreenPoint.X - targetX, absoluteScreenPoint.Y - targetY));
+            var withParents = target.WithAllParents().TakeWhile(x => x != host).ToArray();
+
+            var targetX = withParents.Sum(b => b.ActualX);
+            var targetY = withParents.Sum(b => b.ActualY);
+
+            var effectiveX = absoluteScreenPoint.X - targetX;
+            var effectiveY = absoluteScreenPoint.Y - targetY;
+
+            return new Zebble.Point(effectiveX, effectiveY);
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

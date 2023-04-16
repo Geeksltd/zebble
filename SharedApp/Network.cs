@@ -40,7 +40,7 @@ namespace Zebble.Device
         {
             if (hostName.ContainsAny(new[] { "/", ":" })) throw new Exception($"Invalid host name format: {hostName}");
 
-            var client = Context.Current.GetService<IHttpClientFactory>().CreateClient();
+            var client = Context.Current.GetService<IHttpClientFactory>().CreateClient("default");
 
             client.BaseAddress = new Uri($"{scheme}://{hostName}:{port}");
             client.Timeout = timeout;

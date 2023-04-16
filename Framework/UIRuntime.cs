@@ -36,7 +36,16 @@ namespace Zebble
 
             var builder = CreateHostBuilder<TAnyAppType>()
                         .ConfigureHostConfiguration(x => x.AddZebbleConfiguration())
-                        .ConfigureServices(x => x.AddHttpClient())
+                        .ConfigureServices(x =>
+                        {
+                            x.AddHttpClient("default").ConfigureHttpMessageHandlerBuilder(builder =>
+                            {
+                                builder.PrimaryHandler = new System.Net.Http.HttpClientHandler
+                                {
+                                    ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+                                };
+                            });
+                        })
                         .ConfigureLogging(x => x.ClearProviders().AddZebbleLogging());
 
 #if IOS || ANDROID

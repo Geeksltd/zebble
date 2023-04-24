@@ -19,7 +19,11 @@ namespace Zebble.Services
             ActionTimer = new Timer((Action)RunIdleTasks, INTERVALS, Timer.WaitingOption.WaitForCompletion).Start();
         }
 
-        internal static void SetBusyFor(TimeSpan period) => LatestUIAction = LatestUIAction.Max(DateTime.UtcNow.Add(period));
+        internal static void SetBusyFor(TimeSpan period)
+        {
+            if (period > 1.Seconds()) return; // Long running animations don't count
+            LatestUIAction = LatestUIAction.Max(DateTime.UtcNow.Add(period));
+        }
 
         internal static void ReportAction(TimeSpan duration) => ReportAction(DateTime.UtcNow.Add(duration));
 

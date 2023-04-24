@@ -167,7 +167,7 @@ namespace Zebble
         public Task SendToBack()
         {
             var newZIndex = parent?.CurrentChildren.Except(this).MinOrDefault(x => x.zIndex) ?? 0;
-            newZIndex = Math.Min(zIndex, newZIndex);
+            newZIndex = Math.Min(zIndex, newZIndex).LimitMax(0);
             ZIndex = newZIndex - 1;
             return Task.CompletedTask;
         }

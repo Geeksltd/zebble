@@ -152,6 +152,10 @@ namespace Zebble.Device
                     if ((int)Build.VERSION.SdkInt >= 31 /*BuildVersionCodes.S*/)
                         report("android.permission.SCHEDULE_EXACT_ALARM");
                     break;
+                case Permission.RecordAudio:
+                        report(Manifest.Permission.RecordAudio);
+                        report(Manifest.Permission.ModifyAudioSettings);
+                    break;
                 default: return default;
             }
 

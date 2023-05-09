@@ -10,7 +10,7 @@ namespace Zebble.Device
 
 #if ANDROID
               , ReadPhoneState, ReadCallLog, WriteCallLog, AddVoicemail, UseSip, ProcessOutgoingCalls,
-        ReceiveSms, ReadSms, ReceiveWapPush, ReceiveMms, ExternalStorage
+        ReceiveSms, ReadSms, ReceiveWapPush, ReceiveMms, ExternalStorage, RecordAudio
 #elif IOS
         , BackgroundLocation
 #endif

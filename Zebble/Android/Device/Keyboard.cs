@@ -21,7 +21,7 @@ namespace Zebble.Device
         {
             IsOpen = KeepKeyboardOpen = false;
 
-            var hid = InputManager.HideSoftInputFromWindow(View.Root.Native().WindowToken, HideSoftInputFlags.ImplicitOnly);
+            var hid = InputManager.HideSoftInputFromWindow(View.Root.Native().WindowToken, HideSoftInputFlags.None);
             if (hid) DoHide();
         }
 

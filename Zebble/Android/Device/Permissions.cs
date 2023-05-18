@@ -149,12 +149,12 @@ namespace Zebble.Device
                     report(Manifest.Permission.WriteExternalStorage);
                     break;
                 case Permission.LocalNotification:
-                    if ((int)Build.VERSION.SdkInt >= 31 /*BuildVersionCodes.S*/)
-                        report("android.permission.SCHEDULE_EXACT_ALARM");
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.S)
+                        report(Manifest.Permission.ScheduleExactAlarm);
                     break;
                 case Permission.RecordAudio:
-                        report(Manifest.Permission.RecordAudio);
-                        report(Manifest.Permission.ModifyAudioSettings);
+                    report(Manifest.Permission.RecordAudio);
+                    report(Manifest.Permission.ModifyAudioSettings);
                     break;
                 default: return default;
             }

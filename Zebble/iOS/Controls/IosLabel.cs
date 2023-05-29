@@ -108,6 +108,8 @@ namespace Zebble.IOS
 
         void ViewTextChanged()
         {
+            if (View is null) return;
+
             var shouldWrap = View.ShouldWrap();
             Label.Lines = shouldWrap ? 0 : 1;
             Label.LineBreakMode = StringAttributes.ParagraphStyle.LineBreakMode = shouldWrap ? UILineBreakMode.WordWrap : UILineBreakMode.TailTruncation;

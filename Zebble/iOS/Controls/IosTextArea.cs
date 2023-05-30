@@ -44,7 +44,7 @@ namespace Zebble.IOS
 
         async void IosTextArea_Changed(object sender, EventArgs e)
         {
-            PlaceHolder.Hidden = Text.Length > 0;
+            PlaceHolder.Hidden = Text?.Length > 0;
 
             var text = View.TextTransform.Apply(Text);
             await Thread.Pool.Run(() => View.Value.SetByInput(text));
@@ -73,13 +73,13 @@ namespace Zebble.IOS
             BecomeFirstResponder();
             View.Focused.SetByInput(true);
 
-            PlaceHolder.Hidden = true;
+            PlaceHolder.Hidden = Text?.Length > 0;
             Thread.Pool.Run(() => View.Focused.SetByInput(true));
         }
 
         void IosTextArea_Ended(object _, EventArgs __)
         {
-            PlaceHolder.Hidden = Text.Length > 0;
+            PlaceHolder.Hidden = Text?.Length > 0;
             Thread.Pool.Run(() => View.Focused.SetByInput(false));
         }
 
@@ -91,6 +91,7 @@ namespace Zebble.IOS
             HandleApiChange(View.Focused, () => { if (View.Focused.Value) BecomeFirstResponder(); else ResignFirstResponder(); });
             View.FontChanged.HandleOnUI(() => Font = View.Font.Render());
             View.TextAlignmentChanged.HandleOnUI(SetAlignment);
+            View.UserTextChanged.HandleOnUI(UserTextChanged);
         }
 
         void HandleApiChange<T>(Olive.TwoWayBindable<T> bindable, Action action)
@@ -120,7 +121,7 @@ namespace Zebble.IOS
                     Frame.Width - (View.Padding.Left.CurrentValue + View.Padding.Right.CurrentValue),
                     Frame.Height - (View.Padding.Top.CurrentValue + View.Padding.Bottom.CurrentValue)
                 ),
-                Hidden = Text.Length > 0
+                Hidden = Text?.Length > 0
             };
 
             PlaceHolder.SizeToFit();
@@ -134,6 +135,12 @@ namespace Zebble.IOS
         }
 
         void Focus()
+        {
+            View.Focused.SetByInput(true);
+            BecomeFirstResponder();
+        }
+
+        void UserTextChanged()
         {
             View.Focused.SetByInput(true);
             BecomeFirstResponder();

@@ -14,8 +14,6 @@ namespace Zebble.IOS
         {
             View = view;
 
-            //TextContainerInset = view.Padding.Render();
-
             InnerView = new(View);
 
             AddSubview(InnerView);
@@ -25,6 +23,19 @@ namespace Zebble.IOS
         {
             if (property == "TextColor")
                 InnerView.TextColor = (change as TextColorChangedEventArgs).Value.Render(); // TODO: Support animation
+        }
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                InnerView?.Dispose();
+                InnerView = null;
+
+                View = null;
+            }
+
+            base.Dispose(disposing);
         }
 
         class IosTextArea : UITextView

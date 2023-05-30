@@ -87,11 +87,10 @@ namespace Zebble.IOS
         {
             View.Tapped.HandleOnUI(Focus);
             View.Swiped.HandleOnUI(Focus);
-            HandleApiChange(View.Value, () => Text = View.TransformedText);
+            HandleApiChange(View.Value, ValueChanged);
             HandleApiChange(View.Focused, () => { if (View.Focused.Value) BecomeFirstResponder(); else ResignFirstResponder(); });
             View.FontChanged.HandleOnUI(() => Font = View.Font.Render());
             View.TextAlignmentChanged.HandleOnUI(SetAlignment);
-            View.UserTextChanged.HandleOnUI(UserTextChanged);
         }
 
         void HandleApiChange<T>(Olive.TwoWayBindable<T> bindable, Action action)
@@ -140,10 +139,10 @@ namespace Zebble.IOS
             BecomeFirstResponder();
         }
 
-        void UserTextChanged()
+        void ValueChanged()
         {
-            View.Focused.SetByInput(true);
-            BecomeFirstResponder();
+            Text = View.TransformedText;
+            PlaceHolder.Hidden = Text?.Length > 0;
         }
 
         protected override void Dispose(bool disposing)

@@ -26,7 +26,7 @@ namespace Zebble
                 else if (view is TextView tv) Result = new IosLabel(tv);
                 else if (view is TextInput ti)
                 {
-                    if (ti.Lines > 1) Result = new IosTextArea(ti);
+                    if (ti.Lines > 1) Result = new IosTextAreaWrapper(ti);
                     else Result = new IosTextBox(ti);
                 }
                 else if (view is ImageView img) Result = await new IosImageWrapper(img).Render();

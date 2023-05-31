@@ -51,12 +51,16 @@ namespace Zebble.IOS
 
                 CreateInnerTextBox();
                 HandleEvents();
+                UpdateFrame();
+            }
 
+            void UpdateFrame()
+            {
                 Frame = new CGRect(
-                    view.Padding.Left.CurrentValue,
-                    view.Padding.Top.CurrentValue,
-                    view.ActualWidth - view.Padding.Horizontal(),
-                    view.ActualHeight - view.Padding.Vertical());
+                    View.Padding.Left.CurrentValue,
+                    View.Padding.Top.CurrentValue,
+                    View.ActualWidth - View.Padding.Horizontal(),
+                    View.ActualHeight - View.Padding.Vertical());
             }
 
             void CreateInnerTextBox()
@@ -129,6 +133,8 @@ namespace Zebble.IOS
                 HandleApiChange(View.Focused, () => { if (View.Focused.Value) BecomeFirstResponder(); else ResignFirstResponder(); });
                 View.FontChanged.HandleOnUI(() => Font = View.Font.Render());
                 View.TextAlignmentChanged.HandleOnUI(SetAlignment);
+                View.Height.Changed.HandleOnUI(UpdateFrame);
+                View.Width.Changed.HandleOnUI(UpdateFrame);
             }
 
             void HandleApiChange<T>(Olive.TwoWayBindable<T> bindable, Action action)

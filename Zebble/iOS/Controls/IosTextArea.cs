@@ -152,12 +152,7 @@ namespace Zebble.IOS
                     TextAlignment = View.TextAlignment.Render(),
                     Lines = View.Lines,
                     LineBreakMode = UILineBreakMode.WordWrap,
-                    Frame = new CGRect(
-                        View.Padding.Left.CurrentValue,
-                        View.Padding.Top.CurrentValue,
-                        Frame.Width - (View.Padding.Left.CurrentValue + View.Padding.Right.CurrentValue),
-                        Frame.Height - (View.Padding.Top.CurrentValue + View.Padding.Bottom.CurrentValue)
-                    ),
+                    Frame = Frame,
                     Hidden = Text?.Length > 0
                 };
 

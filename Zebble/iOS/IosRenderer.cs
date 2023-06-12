@@ -111,7 +111,7 @@ namespace Zebble
                     SetBackgroundColor((UIChangedEventArgs<Color>)change);
                     break;
                 case "ClipChildren":
-                    Result.ClipsToBounds = ((UIChangedEventArgs<bool>)change).Value;
+                    Result.Set(x => x.ClipsToBounds = ((UIChangedEventArgs<bool>)change).Value);
                     break;
                 case "TextColor":
                     break;
@@ -226,7 +226,7 @@ namespace Zebble
         void OnVisibilityChanged()
         {
             if (IsDead(out var view)) return;
-            Result.Hidden = !view.IsEffectivelyVisible();
+            Result.Set(x => x.Hidden = !view.IsEffectivelyVisible());
         }
 
         void UpdateZOrder()
@@ -261,14 +261,15 @@ namespace Zebble
 
             var parent = view.parent;
             var nativeParent = parent?.Native();
+            var result = Result;
 
             // High concurrency. Already disposed:
-            if (view.IsDisposing || parent == null || parent.IsDisposed || nativeParent is null) return;
+            if (view.IsDisposing || parent == null || parent.IsDisposed || nativeParent is null || result is null) return;
 
-            Result.Hidden = true;
+            result.Hidden = true;
             OnBoundsChanged(new BoundsChangedEventArgs(view) { Animation = null });
 
-            nativeParent.AddSubview(Result);
+            nativeParent.AddSubview(result);
             UpdateZOrder();
 
             nativeParent.ReloadInputViews();
@@ -292,8 +293,8 @@ namespace Zebble
 
             try
             {
-                var superView = Result.Superview;
-                Result.RemoveFromSuperview();
+                var superView = Result?.Superview;
+                Result?.RemoveFromSuperview();
                 superView?.ReloadInputViews();
             }
             catch (Exception ex)
@@ -307,11 +308,16 @@ namespace Zebble
         public void Dispose()
         {
             IsDisposing = true;
-            RenderOrchestrator?.Dispose(); RenderOrchestrator = null;
-            Result?.Dispose();
+
+            RenderOrchestrator?.Dispose();
+            RenderOrchestrator = null;
+
             BackgroundImage?.Dispose();
-            Result = null;
             BackgroundImage = null;
+
+            Result?.Dispose();
+            Result = null;
+
             View = null;
         }
     }

@@ -66,13 +66,12 @@ namespace Zebble
         public T FindParent<T>() where T : View
         {
             if (parent is null) return null;
-            if (parent is T) return (T)parent;
-            return parent.FindParent<T>();
+            return parent is T p ? p : parent?.FindParent<T>();
         }
 
         public TView FindDescendent<TView>() where TView : View => AllDescendents().OfType<TView>().FirstOrDefault();
 
-        public Page Page => this is Page ? (Page)this : parent?.Page;
+        public Page Page => this is Page page ? page : parent?.Page;
 
         /// <summary>
         /// Adds an element to the virtual DOM. It also calls its OnInitializing. 

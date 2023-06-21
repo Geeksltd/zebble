@@ -197,6 +197,7 @@ namespace Zebble
         void OnOpacityChanged(UIChangedEventArgs<float> args)
         {
             if (IsDead(out var view)) return;
+            if (Layer is null) return;
 
             if (args.Animated())
                 args.Animation.AddNative(Layer, "opacity", args.Value.ToNs());

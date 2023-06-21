@@ -70,6 +70,8 @@ namespace Zebble.IOS
 
         CGImage CorrectImageSize(CGImage inputImage)
         {
+            if (inputImage is null) return null;
+
             var img = UIKit.UIImage.FromImage(inputImage);
             var correctSize = Services.ImageService.GetPixelSize(img.Size.ToZebble(), Frame.Size.ToZebble(), View.BackgroundImageStretch);
             if (img.Size != correctSize.Render())

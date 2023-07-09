@@ -29,7 +29,7 @@
                     Mirror = BackgroundImageLayer = new CALayer()
                 };
 
-                Layer.InsertSublayer(BackgroundImageLayer, BackgroundColourLayer is null ? 0 : 1);
+                Layer?.InsertSublayer(BackgroundImageLayer, BackgroundColourLayer is null ? 0 : 1);
                 Cling(BackgroundImageLayer);
             }
 
@@ -53,7 +53,7 @@
 
             if (BackgroundColourLayer is null)
             {
-                Layer.InsertSublayer(BackgroundColourLayer = new CAGradientLayer(), 0);
+                Layer?.InsertSublayer(BackgroundColourLayer = new CAGradientLayer(), 0);
                 Cling(BackgroundColourLayer);
             }
 

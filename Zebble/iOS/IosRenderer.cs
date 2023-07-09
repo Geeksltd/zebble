@@ -12,7 +12,7 @@ namespace Zebble
     partial class Renderer
     {
         UIView Result;
-        CALayer Layer => Result.Layer;
+        CALayer Layer => Result?.Layer;
 
         public async Task<UIView> Render()
         {
@@ -58,8 +58,13 @@ namespace Zebble
         {
             if (IsDead(out var view)) return;
 
-            // This is the default value.
-            Layer.AnchorPoint = new CGPoint(view.TransformOriginX, view.TransformOriginY);
+            var layer = Layer;
+            if (layer is not null)
+            {
+                // This is the default value.
+                Layer.AnchorPoint = new CGPoint(view.TransformOriginX, view.TransformOriginY);
+            }
+
             Result.Frame = view.GetFrame();
 
             if (!view.IsEffectivelyVisible()) Result.Hidden = true;
@@ -68,12 +73,12 @@ namespace Zebble
             if (view.Opacity != 1) Result.Alpha = view.Opacity;
 
             RenderBorder();
-            if (view is ImageView) Layer.MasksToBounds = true;
+            if (view is ImageView) layer.Set(x => x.MasksToBounds = true);
 
             SetBackgroundColor(new UIChangedEventArgs<Color>(View, View.BackgroundColor) { Animation = null });
             SetBackgroundImage();
 
-            Layer.RasterizationScale = UIScreen.MainScreen.Scale;
+            layer.Set(x => x.RasterizationScale = UIScreen.MainScreen.Scale);
             var transform = new TransformationChangedEventArgs(view);
 
             if (transform.HasValue()) Transform(transform);
@@ -136,28 +141,31 @@ namespace Zebble
         {
             if (IsDead(out var view)) return;
 
+            var layer = Layer;
+            if (layer is null) return;
+
             // https://developer.apple.com/documentation/quartzcore/calayer/1410791-position
-            var relativeX = (args.Width * Layer.AnchorPoint.X) + args.X;
-            var relativeY = (args.Height * Layer.AnchorPoint.Y) + args.Y;
+            var relativeX = (args.Width * layer.AnchorPoint.X) + args.X;
+            var relativeY = (args.Height * layer.AnchorPoint.Y) + args.Y;
             var newPosition = new CGPoint(relativeX, relativeY);
 
-            if (Layer.Position.ToString() != newPosition.ToString())
+            if (layer.Position.ToString() != newPosition.ToString())
             {
-                var xChanged = !Layer.Position.X.AlmostEquals(newPosition.X);
-                var yChanged = !Layer.Position.Y.AlmostEquals(newPosition.Y);
+                var xChanged = !layer.Position.X.AlmostEquals(newPosition.X);
+                var yChanged = !layer.Position.Y.AlmostEquals(newPosition.Y);
 
                 if (xChanged || yChanged)
                 {
                     if (args.Animated())
                     {
-                        if (xChanged) args.Animation.AddNative(Layer, "position.x", newPosition.X.ToNs());
-                        if (yChanged) args.Animation.AddNative(Layer, "position.y", newPosition.Y.ToNs());
+                        if (xChanged) args.Animation.AddNative(layer, "position.x", newPosition.X.ToNs());
+                        if (yChanged) args.Animation.AddNative(layer, "position.y", newPosition.Y.ToNs());
                     }
                     else
                     {
                         // Keep setting position value even when
                         // the change should be applied through animations
-                        Layer.Position = newPosition;
+                        layer.Position = newPosition;
                     }
                 }
             }
@@ -165,23 +173,23 @@ namespace Zebble
             // X and Y of the bounds are always 0
             // https://stackoverflow.com/questions/1210047/cocoa-whats-the-difference-between-the-frame-and-the-bounds#comment1033809_1210141
             var newSize = new CGSize(args.Width, args.Height);
-            if (Layer.Bounds.Size.ToString() != newSize.ToString())
+            if (layer.Bounds.Size.ToString() != newSize.ToString())
             {
-                var widthChanged = !Layer.Bounds.Size.Width.AlmostEquals(newSize.Width);
-                var heightChanged = !Layer.Bounds.Size.Height.AlmostEquals(newSize.Height);
+                var widthChanged = !layer.Bounds.Size.Width.AlmostEquals(newSize.Width);
+                var heightChanged = !layer.Bounds.Size.Height.AlmostEquals(newSize.Height);
 
                 if (widthChanged || heightChanged)
                 {
                     if (args.Animated())
                     {
-                        if (widthChanged) args.Animation.AddNative(Layer, "bounds.size.width", newSize.Width.ToNs());
-                        if (heightChanged) args.Animation.AddNative(Layer, "bounds.size.height", newSize.Height.ToNs());
+                        if (widthChanged) args.Animation.AddNative(layer, "bounds.size.width", newSize.Width.ToNs());
+                        if (heightChanged) args.Animation.AddNative(layer, "bounds.size.height", newSize.Height.ToNs());
                     }
                     else
                     {
                         // Keep setting position value even when
                         // the change should be applied through animations
-                        Layer.Bounds = new CGRect(Layer.Bounds.Location, newSize);
+                        layer.Bounds = new CGRect(layer.Bounds.Location, newSize);
                     }
                 }
             }
@@ -196,30 +204,36 @@ namespace Zebble
 
         void OnOpacityChanged(UIChangedEventArgs<float> args)
         {
-            if (IsDead(out var view)) return;
-            if (Layer is null) return;
+            if (IsDead(out var _)) return;
+
+            var layer = Layer;
+            if (layer is null) return;
 
             if (args.Animated())
-                args.Animation.AddNative(Layer, "opacity", args.Value.ToNs());
-            Layer.Opacity = args.Value;
+                args.Animation.AddNative(layer, "opacity", args.Value.ToNs());
+            layer.Opacity = args.Value;
         }
 
         void Transform(TransformationChangedEventArgs args)
         {
-            if (IsDead(out var view)) return;
+            if (IsDead(out var _)) return;
 
-            Layer.AnchorPoint = new CGPoint(args.OriginX, args.OriginY);
+            var layer = Layer;
+            if (layer is null) return;
+
+            layer.AnchorPoint = new CGPoint(args.OriginX, args.OriginY);
 
             if (args.Animated())
             {
-                args.Animation.AddNative(Layer, "transform.rotation.x", args.RotateX.ToRadians().ToNs());
-                args.Animation.AddNative(Layer, "transform.rotation.y", args.RotateY.ToRadians().ToNs());
-                args.Animation.AddNative(Layer, "transform.rotation.z", args.RotateZ.ToRadians().ToNs());
+                args.Animation.AddNative(layer, "transform.rotation.x", args.RotateX.ToRadians().ToNs());
+                args.Animation.AddNative(layer, "transform.rotation.y", args.RotateY.ToRadians().ToNs());
+                args.Animation.AddNative(layer, "transform.rotation.z", args.RotateZ.ToRadians().ToNs());
 
-                args.Animation.AddNative(Layer, "transform.scale.x", args.ScaleX.ToNs());
-                args.Animation.AddNative(Layer, "transform.scale.y", args.ScaleY.ToNs());
+                args.Animation.AddNative(layer, "transform.scale.x", args.ScaleX.ToNs());
+                args.Animation.AddNative(layer, "transform.scale.y", args.ScaleY.ToNs());
             }
-            Layer.Transform = args.Render();
+
+            layer.Transform = args.Render();
 
             RenderBorder();
         }
@@ -250,7 +264,6 @@ namespace Zebble
 
             if (!nativeParent.Subviews.IsEquivalentTo(correctOrder))
                 Log.For(this).Error("Native parent's children are modified while setting the ZOrder");
-            //throw new ArgumentOutOfRangeException("this should not happen.");
 
             foreach (var nView in correctOrder)
                 nativeParent.BringSubviewToFront(nView);
@@ -281,16 +294,17 @@ namespace Zebble
 
         void OnZIndexChanged()
         {
-            if (IsDead(out var view)) return;
+            if (IsDead(out var _)) return;
 
             UpdateZOrder();
         }
 
-        public static void Redraw(View view) => view.Parent?.Native()?.SetNeedsDisplay();
+        public static void Redraw(View view)
+            => view.Parent?.Native()?.SetNeedsDisplay();
 
         void RemoveFromNativeParent()
         {
-            if (IsDead(out View view)) return;
+            if (IsDead(out View _)) return;
 
             try
             {

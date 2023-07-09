@@ -24,9 +24,12 @@ namespace Zebble
         void ApplyCornerRadius(IBorderRadius borderRadius)
         {
             if (IsDead(out View view)) return;
+            
+            var layer = Layer;
+            if (layer is null) return;
 
-            if (!borderRadius.HasValue()) Layer.Mask = null;
-            else Layer.Mask = new CAShapeLayer
+            if (!borderRadius.HasValue()) layer.Mask = null;
+            else layer.Mask = new CAShapeLayer
             {
                 Frame = Result.Bounds,
                 BackgroundColor = UIColor.Clear.CGColor,
@@ -46,16 +49,19 @@ namespace Zebble
 
         void ApplyBorderLines(IBorder border, IBorderRadius borderRadius)
         {
+            var layer = Layer;
+            if (layer is null) return;
+
             if (border.IsUniform() && !border.HasValue())
             {
                 // Same line all over (or no line)
                 RemoveSideBorders();
-                Layer.BorderWidth = border.Left;
-                Layer.BorderColor = border.Color.ToCG();
+                layer.BorderWidth = border.Left;
+                layer.BorderColor = border.Color.ToCG();
             }
             else
             {
-                Layer.BorderWidth = 0; // We need a shape added to the layer for each one.
+                layer.BorderWidth = 0; // We need a shape added to the layer for each one.
 
                 var width = (float)Result.Frame.Width;
                 var height = (float)Result.Frame.Height;
@@ -180,7 +186,7 @@ namespace Zebble
         void AddToLayer(ref CAShapeLayer layer, Color color, float width, CGPath path)
         {
             if (layer == null)
-                Layer.AddSublayer(layer = new CAShapeLayer());
+                Layer?.AddSublayer(layer = new CAShapeLayer());
 
             layer.Frame = Result.Bounds;
             layer.FillColor = UIColor.Clear.CGColor;

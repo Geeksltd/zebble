@@ -31,7 +31,7 @@ namespace Zebble.Device
             var id = Config.Get("Application.Apple.ID");
             if (id.IsEmpty()) throw new Exception("'Application.Apple.ID' was not found in the config file.");
 
-            return "https:" + "//itunes.apple.com/app/id" + id;
+            return $"https://itunes.apple.com/app/id{id}?action=write-review";
         }
 
         public static Task LaunchAppRating() => OpenBrowser(GetAppRatingUrl());

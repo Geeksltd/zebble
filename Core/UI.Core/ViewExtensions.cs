@@ -132,5 +132,8 @@ namespace Zebble
         /// is basically the location of the child within the parent, plus the point.
         /// </summary>
         internal static Point OnParentOf(this Point @this, View child) => @this.Add(child.ActualX, child.ActualY);
+
+        internal static bool ShouldIgnoreHorizontalPadding(this TextView view)
+            => view.TextAlignment == Alignment.Middle && view.Wrap == false;
     }
 }

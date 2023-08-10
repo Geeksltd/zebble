@@ -112,6 +112,18 @@ namespace Zebble.AndroidOS
             }
         }
 
+        public override void SetPadding(int left, int top, int right, int bottom)
+        {
+            if (View == null) return;
+
+            if (View is zbl.TextView textView && textView.ShouldIgnoreHorizontalPadding())
+            {
+                left = right = 0;
+            }
+
+            base.SetPadding(left, top, right, bottom);
+        }
+
         protected override void Dispose(bool disposing)
         {
             View = null;

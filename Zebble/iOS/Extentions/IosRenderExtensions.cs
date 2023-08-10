@@ -73,6 +73,22 @@ namespace System
             return new CGRect(view.ActualX, view.ActualY, view.ActualWidth, view.ActualHeight);
         }
 
+        public static CGRect GetEffectiveFrame(this TextView view)
+        {
+            if (view.ShouldIgnoreHorizontalPadding())
+            {
+                var effective = view.Effective;
+                return new CGRect(
+                    x: effective.BorderLeft(),
+                    y: effective.BorderAndPaddingTop(),
+                    width: view.ActualWidth - effective.BorderTotalHorizontal(),
+                    height: view.ActualHeight - view.VerticalPaddingAndBorder()
+                );
+            }
+
+            return ((View)view).GetEffectiveFrame();
+        }
+
         public static CGRect GetEffectiveFrame(this View view)
         {
             var effective = view.Effective;

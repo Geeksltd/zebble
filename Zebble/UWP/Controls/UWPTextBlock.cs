@@ -42,7 +42,7 @@ namespace Zebble.UWP
 
 		void PaddingChanged()
 		{
-			Result.Padding = View.Padding.RenderThickness();
+			Result.Padding = View.RenderPadding();
 			Result.Margin = new Thickness(0, -View.Font.GetUnwantedExtraTopPadding(), 0, 0);
 		}
 

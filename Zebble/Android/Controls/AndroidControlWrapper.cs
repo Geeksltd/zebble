@@ -40,6 +40,11 @@ namespace Zebble.AndroidOS
             if (View == null) return;
             if (Control?.LayoutParameters is not LayoutParams frame) return;
 
+            if (View is zbl.TextView textView && textView.ShouldIgnoreHorizontalPadding())
+            {
+                left = right = 0;
+            }
+
             frame.LeftMargin = left;
             frame.TopMargin = top;
             frame.Width = (Scale.ToDevice(View.ActualWidth) - left - right).LimitMin(0);

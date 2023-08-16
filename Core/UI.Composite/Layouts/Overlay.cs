@@ -9,7 +9,7 @@ namespace Zebble
     /// </summary>
     public class Overlay : Canvas
     {
-        static string LatestCommand = nameof(Hide);
+        string LatestCommand = nameof(Hide);
 
         Animation ShowingAnimation, HidingAnimation;
         public static float VisibleOpacity = 0.35f;
@@ -55,22 +55,16 @@ namespace Zebble
             ShowingAnimation = Animation.Create(this, x => x.Opacity(VisibleOpacity))
                 .Easing(AnimationEasing.Linear)
                 .Duration(Animation.FadeDuration)
-                .OnCompleted(() =>
-                {
-                    ShowingAnimation = null;
-                });
+                .OnCompleted(() => ShowingAnimation = null);
 
-            Thread.UI.Run(async () =>
-            {
-                this.Animate(ShowingAnimation).RunInParallel();
-            }).RunInParallel();
+            Thread.UI.Run(() => this.Animate(ShowingAnimation).RunInParallel()).RunInParallel();
         }
 
         public async Task Hide()
         {
             if (parent == null) return;
             if (LatestCommand == nameof(Hide) && Opacity == 0)
-            { 
+            {
                 await SendToBack();
                 return;
             }

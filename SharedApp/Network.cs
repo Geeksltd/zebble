@@ -159,11 +159,9 @@ namespace Zebble.Device
             if (data is null)
             {
                 error ??= new Exception(retries + " attempts to download a URL all failed: " + url);
-
                 source.TrySetException(error);
             }
-
-            source.TrySetResult(data);
+            else source.TrySetResult(data);
         }
 
         public static async Task<IEnumerable<ulong>> GetBandwidths(OnError errorAction = OnError.Ignore)

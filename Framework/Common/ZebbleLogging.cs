@@ -53,7 +53,7 @@
                 catch { /* No logging needed. */ }
             }
 
-            public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Warning;
+            public bool IsEnabled(LogLevel logLevel) => logLevel >= LogLevel.Error;
 
             public IDisposable BeginScope<TState>(TState state) => default;
         }
@@ -72,7 +72,7 @@
             if (configure != null)
                 builder.Services.Configure(configure);
 
-            builder.SetMinimumLevel(UIRuntime.IsDebuggerAttached ? LogLevel.Debug : LogLevel.Information);
+            builder.SetMinimumLevel(UIRuntime.IsDebuggerAttached ? LogLevel.Debug : LogLevel.Error);
 
             return builder;
         }

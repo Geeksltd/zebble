@@ -111,7 +111,10 @@ namespace Zebble.Device
             switch (permission)
             {
                 case Permission.Albums:
-                    report(Manifest.Permission.WriteExternalStorage); break;
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+                        report(Manifest.Permission.ReadMediaImages);
+                    else
+                        report(Manifest.Permission.WriteExternalStorage); break;
                 case Permission.Calendar:
                     report(Manifest.Permission.ReadCalendar);
                     report(Manifest.Permission.WriteCalendar);

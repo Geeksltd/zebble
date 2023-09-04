@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.IO;
 using Olive;
 using System.Reflection;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace Zebble.Mvvm
 {
@@ -114,8 +115,24 @@ namespace Zebble.Mvvm
                     .Select(v => v.ValueString.Unless(v.ValueString.OrEmpty().StartsWith("ERR: ")))
                     .Trim().ToString(" | ");
 
+                text += DialogViewModel.Current.LastToast;
+
                 if (text.Lacks(textOnScreen, caseSensitive))
                     throw new TestFailedException($"'{textOnScreen}' Not found. Current text: '{text}'");
+            });
+        }
+
+        /// <summary>
+        /// If the specified text does not exist on the bindable properties of the active screen (or its children) an exception is thrown.
+        /// </summary>
+        [DebuggerStepThrough]
+        public static void ExpectToast(string textOnScreen, bool caseSensitive = false)
+        {
+            Try(() =>
+            {
+                var contains = DialogViewModel.Current.LastToast.OrEmpty().Contains(textOnScreen, caseSensitive);
+                if (!contains)
+                    throw new TestFailedException($"'{textOnScreen}' Not found in the last toast.");
             });
         }
 

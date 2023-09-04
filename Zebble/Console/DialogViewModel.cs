@@ -8,6 +8,7 @@ namespace Zebble.Mvvm
 {
     partial class DialogViewModel
     {
+        internal string LastToast;
         string SimulatedTap;
 
         static void WriteLine(string text = "") => Console.WriteLine(text);
@@ -22,7 +23,11 @@ namespace Zebble.Mvvm
 
         void DoShowWaiting(bool block) => WriteLine($"({(block ? "wait" : "loading")}...)", ConsoleColor.DarkGray);
 
-        void DoToast(string message, bool showButton) => WriteLine(message, ConsoleColor.Cyan);
+        void DoToast(string message, bool showButton)
+        {
+            LastToast = message;
+            WriteLine(message, ConsoleColor.Cyan);
+        }
 
         void DoAlert(string title, string message)
         {

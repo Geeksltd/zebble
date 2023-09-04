@@ -42,7 +42,7 @@
 #elif ANDROID
                 Android.Util.Log.Info("app", message);
 #else
-                Console.WriteLine(message);
+                Console.WriteLine(message, ConsoleColor.DarkGray);
 #endif
 
                 if (UIRuntime.IsDebuggerAttached) return;

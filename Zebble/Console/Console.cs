@@ -8,7 +8,7 @@ namespace Zebble
 {
     public class Console
     {
-        [Obsolete("Instead of this, call UIRuntime.Initialize<Program>()", error: true)]
+        // [Obsolete("Instead of this, call UIRuntime.Initialize<Program>()", error: true)]
         public static void Configure()
         {
             IO.Root = AppDomain.CurrentDomain.GetBaseDirectory().GetOrCreateSubDirectory("AppFiles");

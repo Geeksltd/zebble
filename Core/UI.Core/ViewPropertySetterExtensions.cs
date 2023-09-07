@@ -346,9 +346,9 @@ namespace Zebble
 
         public static TView ImageData<TView>(this TView view, byte[] value) where TView : ImageView => view.Set(x => x.ImageData = value);
 
-        public static TData Data<TData>(this View view, string key) => view.Data.TryGetValue(key, out var result) ? (TData)result : default;
+        public static TData Data<TData>(this View view, string key) => (TData)view.Data.GetOrDefault(key);
 
-        public static TView Data<TView>(this TView view, string key, object value) where TView : View => view.Set(x => x.Data.TryAdd(key, value));
+        public static TView Data<TView>(this TView view, string key, object value) where TView : View => view.Set(x => x.Data[key] = value);
 
         public static TView Lines<TView>(this TView view, int value) where TView : TextInput => view.Set(x => x.Lines = value);
 

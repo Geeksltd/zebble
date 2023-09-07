@@ -7,6 +7,7 @@ namespace Zebble
     using System.Threading.Tasks;
     using Services;
     using Olive;
+    using System.Collections.Concurrent;
 
     public abstract partial class View : IDisposable
     {
@@ -29,7 +30,7 @@ namespace Zebble
         /// </summary>
         public readonly AsyncLock DomLock = new();
 
-        Dictionary<string, object> data;
+        ConcurrentDictionary<string, object> data = new();
         internal Effective Effective;
 
         protected internal readonly AsyncEvent Shown = new();
@@ -175,7 +176,7 @@ namespace Zebble
         /// <summary>
         /// Provides a dictionary that can be used to attach any custom data on the view.
         /// </summary>
-        public Dictionary<string, object> Data { get { if (data is null) data = new Dictionary<string, object>(); return data; } }
+        public ConcurrentDictionary<string, object> Data => data;
 
         public string Id
         {

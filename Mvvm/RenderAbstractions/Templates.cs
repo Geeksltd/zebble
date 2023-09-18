@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -8,7 +9,7 @@ namespace Zebble.Mvvm
 {
     public static partial class Templates
     {
-        static readonly Dictionary<Type, Template> Mappings = new();
+        static readonly ConcurrentDictionary<Type, Template> Mappings = new();
 
         public static void Register(Assembly assembly)
         {
@@ -34,12 +35,18 @@ namespace Zebble.Mvvm
 
                 if (modelType.IsA<FullScreen>() || modelType.IsA<ModalScreen>())
                 {
+                    var tp = type.AsType();
+
                     if (Mappings.TryGetValue(modelType, out var existing))
+                    {
+                        if (existing.TemplateType == tp) continue;
+
                         throw new Exception("More than one template is defined for " + modelType.FullName
                             + Environment.NewLine + existing.TemplateType.FullName +
                             Environment.NewLine + type.FullName);
+                    }
 
-                    Mappings.Add(modelType, new Template(type.AsType()));
+                    Mappings[modelType] = new Template(tp);
                 }
             }
         }

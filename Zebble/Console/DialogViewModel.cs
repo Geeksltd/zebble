@@ -9,7 +9,7 @@ namespace Zebble.Mvvm
     partial class DialogViewModel
     {
         internal string LastToast;
-        string SimulatedTap;
+        string SimulatedTap, ExpectText;
 
         static void WriteLine(string text = "") => Console.WriteLine(text);
         static void WriteLine(string text, ConsoleColor color) => Console.WriteLine(text, color);
@@ -52,6 +52,15 @@ namespace Zebble.Mvvm
             WriteLine();
         }
 
+        static void ShowFailed(string text)
+        {
+            System.Console.ForegroundColor = ConsoleColor.Red;
+            System.Console.WriteLine("=== TEST FAILED ===");
+            System.Console.WriteLine(text);
+            System.Console.ResetColor();
+            throw new TestFailedException(text);
+        }
+
         object DoDecide(string title, string message, Type _, KeyValuePair<string, object>[] buttons)
         {
             DoAlert(title, message);
@@ -60,14 +69,28 @@ namespace Zebble.Mvvm
             var nodes = buttons.Select((b, i) => new InvokeNode(b.Key, () => result = b.Value, null) { Index = i + 1 }).ToArray();
             nodes.Do(x => x.Render());
 
+            if (ExpectText.HasValue())
+            {
+                var choices = buttons.Select(x => x.Key).ToString(" ");
+
+                var allText = $"{title} | {message} | {choices}";
+                if (allText.Contains(ExpectText)) ExpectText = null;
+                else ShowFailed($"Failed to find the text '{ExpectText}' in dialog.\nFound: {allText}");
+
+                var picked = nodes.FirstOrDefault(v => v.Label == SimulatedTap);
+                if (picked is null) ShowFailed($"Failed to tap '{SimulatedTap}' in dialog.\nOptions: {choices}");
+                SimulatedTap = null;
+                picked.Execute();
+                return result;
+            }
+
             while (true)
             {
-                var choice = SimulatedTap.Or(() => Console.AwaitCommand());
-                SimulatedTap = null;
-
+                var choice = Console.AwaitCommand();
                 if (choice.IsEmpty()) continue;
 
-                var cmd = nodes.FirstOrDefault(v => v.Index.ToString() == choice);
+                var cmd = nodes.FirstOrDefault(v => v.Label == choice)
+                    ?? nodes.FirstOrDefault(v => v.Index.ToString() == choice);
                 if (cmd != null)
                 {
                     cmd.Execute();
@@ -83,6 +106,10 @@ namespace Zebble.Mvvm
         /// <summary>
         /// (Autoamted testing only) Call this before calling Dialog.Alert or Dialog.Confirm, to mock the user answer.
         /// </summary>  
-        public void WhenPromptedSimulate(string button) => SimulatedTap = button;
+        public void ExpectAndTap(string text, string buttonToTap)
+        {
+            ExpectText = text;
+            SimulatedTap = buttonToTap;
+        }
     }
 }

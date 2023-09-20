@@ -16,7 +16,7 @@ namespace Zebble.Mvvm
         bool Confirm(string message);
         bool Confirm(string title, string message);
         string Prompt(string title, string description = null);
-        void WhenPromptedSimulate(string button);
+        void ExpectAndTap(string text, string buttonToTap);
     }
 
     [EditorBrowsable(EditorBrowsableState.Never)]
@@ -48,8 +48,8 @@ namespace Zebble.Mvvm
             return (T)DoDecide(title, message, typeof(T), args);
         }
 
-        void IDialogViewModel.WhenPromptedSimulate(string button)
-            => throw new InvalidOperationException("WhenPromptedSimulate is for automated testing and can be executed in VM runtime only.");
+        void IDialogViewModel.ExpectAndTap(string text, string buttonToTap)
+            => throw new InvalidOperationException("ExpectAndTap is for automated testing and can be executed in VM runtime only.");
     }
 
     partial class ViewModel

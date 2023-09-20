@@ -20,7 +20,19 @@ namespace Zebble.Mvvm
     {
         public static void Try(Action action, int attempts = 5)
         {
-            Task.Factory.RunSync(doTry);
+            try
+            {
+                Task.Factory.RunSync(doTry);
+            }
+            catch (Exception ex)
+            {
+                System.Console.WriteLine();
+                System.Console.ForegroundColor = ConsoleColor.Red;
+                System.Console.WriteLine("=== TEST FAILED ===\n");
+                System.Console.WriteLine(ex.Message);
+                System.Console.ResetColor();
+                throw;
+            }
 
             async Task doTry()
             {
@@ -118,7 +130,7 @@ namespace Zebble.Mvvm
                 text += DialogViewModel.Current.LastToast;
 
                 if (text.Lacks(textOnScreen, caseSensitive))
-                    throw new TestFailedException($"'{textOnScreen}' Not found. Current text: '{text}'");
+                    throw new TestFailedException($"Failed to find the text '{textOnScreen}'\nCurrent text: '{text}'");
             });
         }
 
@@ -200,5 +212,7 @@ namespace Zebble.Mvvm
         /// Invokes the standard back navigation, similar to pressing the device back button, or swiping the screen left on iOS.
         /// </summary>
         protected void Back() => ViewModel.Back();
+
+        protected DialogViewModel Dialog => DialogViewModel.Current;
     }
 }

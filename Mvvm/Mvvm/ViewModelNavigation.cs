@@ -28,35 +28,40 @@ namespace Zebble.Mvvm
 
         partial void Configure();
 
-        public void Go() => RunFullPage(RealGo);
-        public void Forward() => RunFullPage(RealForward);
-        public void Replace() => RunFullPage(RealReplace);
-        public void Back() => RunFullPage(RealBack);
+        public Task Go() => RunFullPage(RealGo);
 
-        public void HidePopUp()
+        public Task Forward() => RunFullPage(RealForward);
+
+        public Task Replace() => RunFullPage(RealReplace);
+
+        public Task Back() => RunFullPage(RealBack);
+
+        public async Task HidePopUp()
         {
             var modal = ViewModel.Modal;
             ViewModel.Modal = null;
+
             modal?.LeaveStarted();
-            RealHidePopup().ContinueWith(t => modal?.LeaveCompleted());
+
+            await RealHidePopup();
+
+            modal?.LeaveCompleted();
         }
 
-        public void ShowPopUp()
+        public async Task ShowPopUp()
         {
             ViewModel.NavAnimationStarted.Set(LocalTime.UtcNow);
+
             Target.NavigationStarted();
+            await Target.NavigationStartedAsync();
 
-            Task.Delay(1000 / 60).ContinueWith(async t =>
-            {
-                if (RealShowPopup is not null) await RealShowPopup();
-                await Task.Factory.StartNew(Target.NavigationStartedAsync);
+            if (RealShowPopup is not null) await RealShowPopup();
 
-                Target.NavigationCompleted();
-                await Target.NavigationCompletedAsync();
-            });
+            Target.NavigationCompleted();
+            await Target.NavigationCompletedAsync();
         }
 
-        void RunFullPage(Func<Task> method)
+        async Task RunFullPage(Func<Task> method)
         {
             if (From == Target) return;
 
@@ -64,17 +69,13 @@ namespace Zebble.Mvvm
 
             From?.LeaveStarted();
             Target.NavigationStarted();
-            var asyncStarted = Task.Factory.StartNew(Target.NavigationStartedAsync);
+            await Target.NavigationStartedAsync();
 
-            Task.Delay(1000 / 60).ContinueWith(async t =>
-            {
-                if (method != null) await method();
-                await asyncStarted;
+            if (method != null) await method();
 
-                From?.LeaveCompleted();
-                Target.NavigationCompleted();
-                await Target.NavigationCompletedAsync();
-            });
+            From?.LeaveCompleted();
+            Target.NavigationCompleted();
+            await Target.NavigationCompletedAsync();
         }
     }
 }

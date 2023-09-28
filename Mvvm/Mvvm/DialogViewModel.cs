@@ -28,6 +28,7 @@ namespace Zebble.Mvvm
         public void ShowWaiting(bool block = true) => DoShowWaiting(block);
 
         public void HideWaiting() => DoHideWaiting();
+
         partial void DoHideWaiting();
 
         public string Prompt(string title, string description = null) => DoPrompt(title, description);

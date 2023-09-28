@@ -1,35 +1,36 @@
 ﻿namespace Zebble.Mvvm
 {
     using System;
+    using System.Threading.Tasks;
 
     partial class ViewModel
     {
-        public static void Go<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
+        public static Task Go<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
             where TDestination : FullScreen
         {
             configure?.Invoke(The<TDestination>());
-            Go<TDestination>(transition);
+            return Go<TDestination>(transition);
         }
 
-        public static void Forward<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
+        public static Task Forward<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
            where TDestination : FullScreen
         {
             configure?.Invoke(The<TDestination>());
-            Forward<TDestination>(transition);
+            return Forward<TDestination>(transition);
         }
 
-        public static void Replace<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
+        public static Task Replace<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.SlideForward)
            where TDestination : FullScreen
         {
             configure?.Invoke(The<TDestination>());
-            Replace<TDestination>(transition);
+            return Replace<TDestination>(transition);
         }
 
-        public static void ShowPopUp<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.DropUp)
+        public static Task ShowPopUp<TDestination>(Action<TDestination> configure, PageTransition transition = PageTransition.DropUp)
             where TDestination : ModalScreen
         {
             configure?.Invoke(The<TDestination>());
-            ShowPopUp<TDestination>(transition);
+            return ShowPopUp<TDestination>(transition);
         }
     }
 }

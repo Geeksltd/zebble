@@ -9,8 +9,6 @@ namespace Zebble.Mvvm
     {
         public static readonly Bindable<DateTime> NavAnimationStarted = new();
 
-        static readonly Func<ModalScreen, Task> RealShowPopup;
-
         public readonly static Stack<ViewModel> Stack = new();
 
         /// <summary>
@@ -28,61 +26,67 @@ namespace Zebble.Mvvm
         /// </summary>
         public static ViewModel ActiveScreen => Modal ?? (ViewModel)Page;
 
-        public static void HidePopUp() => new ViewModelNavigation(null, PageTransition.DropUp).HidePopUp();
+        public static Task HidePopUp() => new ViewModelNavigation(null, PageTransition.DropUp).HidePopUp();
 
-        public static void Back(PageTransition transition = PageTransition.SlideBack)
+        public static bool CanGoBack() => Stack.Count > 1;
+
+        public static Task Back(PageTransition transition = PageTransition.SlideBack)
         {
             if (Stack.None()) throw new Exception("There is no previous page in the stack to go back to.");
-            new ViewModelNavigation((FullScreen)Stack.Pop(), transition).Back();
+
+            return new ViewModelNavigation((FullScreen)Stack.Pop(), transition).Back();
         }
 
-        public static void Go(FullScreen target, PageTransition transition = PageTransition.SlideForward)
+        public static Task Go(FullScreen target, PageTransition transition = PageTransition.SlideForward)
         {
             Stack.Clear();
-            new ViewModelNavigation(target, transition).Go();
+
+            return new ViewModelNavigation(target, transition).Go();
         }
 
-        public static void Forward(FullScreen target, PageTransition transition = PageTransition.SlideForward)
+        public static Task Forward(FullScreen target, PageTransition transition = PageTransition.SlideForward)
         {
             if (Page != null) Stack.Push(Page);
-            new ViewModelNavigation(target, transition).Forward();
+
+            return new ViewModelNavigation(target, transition).Forward();
         }
 
-        public static void Replace(FullScreen target, PageTransition transition = PageTransition.SlideForward)
+        public static Task Replace(FullScreen target, PageTransition transition = PageTransition.SlideForward)
         {
             if (Stack.None()) throw new Exception("There is no previous page in the stack to be peeked out.");
             Page = (FullScreen)Stack.Peek();
-            new ViewModelNavigation(target, transition).Replace();
+
+            return new ViewModelNavigation(target, transition).Replace();
         }
 
-        public static void ShowPopUp(ModalScreen target, PageTransition transition = PageTransition.DropUp)
+        public static Task ShowPopUp(ModalScreen target, PageTransition transition = PageTransition.DropUp)
         {
             if (Modal != null) HidePopUp();
 
-            new ViewModelNavigation(target, transition).ShowPopUp();
+            return new ViewModelNavigation(target, transition).ShowPopUp();
         }
 
-        public static void Go<TDestination>(PageTransition transition = PageTransition.SlideForward)
+        public static Task Go<TDestination>(PageTransition transition = PageTransition.SlideForward)
             where TDestination : FullScreen
         {
-            Go(The<TDestination>(), transition);
+            return Go(The<TDestination>(), transition);
         }
 
-        public static void Forward<TDestination>(PageTransition transition = PageTransition.SlideForward)
+        public static Task Forward<TDestination>(PageTransition transition = PageTransition.SlideForward)
            where TDestination : FullScreen
         {
-            Forward(The<TDestination>(), transition);
+            return Forward(The<TDestination>(), transition);
         }
 
-        public static void Replace<TDestination>(PageTransition transition = PageTransition.SlideForward)
+        public static Task Replace<TDestination>(PageTransition transition = PageTransition.SlideForward)
            where TDestination : FullScreen
         {
-            Replace(The<TDestination>(), transition);
+            return Replace(The<TDestination>(), transition);
         }
 
-        public static void ShowPopUp<TDestination>(PageTransition transition = PageTransition.DropUp) where TDestination : ModalScreen
+        public static Task ShowPopUp<TDestination>(PageTransition transition = PageTransition.DropUp) where TDestination : ModalScreen
         {
-            ShowPopUp(The<TDestination>(), transition);
+            return ShowPopUp(The<TDestination>(), transition);
         }
 
         protected internal virtual void NavigationStarted() { }

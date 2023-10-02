@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Olive;
 
@@ -28,7 +29,7 @@ namespace Zebble.Mvvm
 
         public static Task HidePopUp() => new ViewModelNavigation(null, PageTransition.DropUp).HidePopUp();
 
-        public static bool CanGoBack() => Stack.Count > 1;
+        public static bool CanGoBack() => Stack.Any();
 
         public static Task Back(PageTransition transition = PageTransition.SlideBack)
         {

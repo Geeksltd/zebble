@@ -18,9 +18,14 @@ namespace Zebble.Mvvm
         public static FullScreen Page { get; internal set; }
 
         /// <summary>
-        /// Gets the current modal screen on the page.
+        /// Gets all modal screens on the page.
         /// </summary>
-        public static ModalScreen Modal { get; internal set; }
+        public static Stack<ModalScreen> Modals { get; } = new();
+
+        /// <summary>
+        /// Gets the top most modal screen on the page.
+        /// </summary>
+        public static ModalScreen Modal => Modals.TryPeek(out var modal) ? modal : null;
 
         /// <summary>
         /// Gets the current modal (if open) or otherwise, the current page.
@@ -62,8 +67,6 @@ namespace Zebble.Mvvm
 
         public static Task ShowPopUp(ModalScreen target, PageTransition transition = PageTransition.DropUp)
         {
-            if (Modal != null) HidePopUp();
-
             return new ViewModelNavigation(target, transition).ShowPopUp();
         }
 

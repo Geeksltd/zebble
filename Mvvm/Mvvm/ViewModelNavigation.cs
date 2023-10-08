@@ -20,8 +20,8 @@ namespace Zebble.Mvvm
 
             if (target is FullScreen full)
                 ViewModel.Page = full;
-
-            ViewModel.Modal = target as ModalScreen;
+            else if (target is ModalScreen modal)
+                ViewModel.Modals.Push(modal);
 
             Configure();
         }
@@ -38,8 +38,7 @@ namespace Zebble.Mvvm
 
         public async Task HidePopUp()
         {
-            var modal = ViewModel.Modal;
-            ViewModel.Modal = null;
+            ViewModel.Modals.TryPop(out var modal);
 
             modal?.LeaveStarted();
 

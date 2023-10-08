@@ -32,7 +32,7 @@ namespace Zebble.Mvvm
             RenderStack();
             Console.WriteLine();
 
-            Console.WriteLine(Title + " (Modal)".OnlyWhen(ViewModel.Modal != null), ConsoleColor.Cyan);
+            Console.WriteLine(Title + " (Modal)".OnlyWhen(ViewModel.Modals.Any()), ConsoleColor.Cyan);
             Console.WriteLine("─────────────────────────────────────────────────────────────", ConsoleColor.Cyan);
 
             Root.Children.Except(x => x is InvokeNode).Do(x => x.RenderBlock());

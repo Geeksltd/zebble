@@ -156,18 +156,18 @@ namespace Zebble
             return CalculateContentHeight() - ActualHeight <= 0;
         }
 
-        protected override async Task ChildAdded(View view)
+        protected override async Task OnChildAdded(View view)
         {
-            await base.ChildAdded(view);
+            await base.OnChildAdded(view);
             await RaiseContentSizeChanged();
 
             view.Height.Changed.Handle(RaiseContentSizeChanged);
             view.Width.Changed.Handle(RaiseContentSizeChanged);
         }
 
-        protected override void ChildRemoved(View view)
+        protected override void OnChildRemoved(View view)
         {
-            base.ChildRemoved(view);
+            base.OnChildRemoved(view);
 
             view.Height.Changed.RemoveHandler(RaiseContentSizeChanged);
             view.Width.Changed.RemoveHandler(RaiseContentSizeChanged);

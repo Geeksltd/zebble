@@ -117,6 +117,8 @@ namespace Zebble
 
         public Task<TView> AddAfter<TView>(TView sibling) where TView : View => parent?.AddAfter(this, sibling);
 
+        public readonly AsyncEvent<View> ChildAdded = new();
+
         public virtual async Task<TView> AddAt<TView>(int index, TView child, bool awaitNative = false) where TView : View
         {
             if (IsDisposing || child.parent == this) return child;
@@ -158,7 +160,8 @@ namespace Zebble
                 await child.InitializeWithAllChildren();
             }
 
-            await ChildAdded(child);
+            await OnChildAdded(child);
+            await ChildAdded.Raise(child);
 
             return child;
         }
@@ -174,7 +177,7 @@ namespace Zebble
             if (child == this) throw new ArgumentException("You cannot add a view as its own child.");
 
             if (child.IsAnyOf(GetAllParents()))
-                throw new ArgumentException($"The specified child view ({child})  is already a parent of this view ({this}).");
+                throw new ArgumentException($"The specified child view ({child}) is already a parent of this view ({this}).");
         }
 
         [DebuggerStepThrough]
@@ -184,9 +187,9 @@ namespace Zebble
                 await Add(c);
         }
 
-        protected virtual Task ChildAdded(View view) => Task.CompletedTask;
+        protected virtual Task OnChildAdded(View view) => Task.CompletedTask;
 
-        protected virtual void ChildRemoved(View view)
+        protected virtual void OnChildRemoved(View view)
         {
             if (Height.AutoOption == Length.AutoStrategy.Content)
                 Height.Update();
@@ -211,6 +214,8 @@ namespace Zebble
             return Remove(AllChildren[childIndex], awaitNative);
         }
 
+        public readonly AsyncEvent<View> ChildRemoved = new();
+
         public virtual async Task Remove(View view, bool awaitNative = false)
         {
 #if UWP
@@ -225,7 +230,8 @@ namespace Zebble
                 AllChildren.Remove(view);
                 view.parent = null;
                 view.CssReference.RemoveParent();
-                ChildRemoved(view);
+                OnChildRemoved(view);
+                await ChildRemoved.Raise(view);
             }
 
             if (IsRendered())

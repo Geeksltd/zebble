@@ -40,24 +40,43 @@ namespace Zebble
             AutoOption = strategy;
             ApplyAutoStrategy();
 
-            if (strategy == AutoStrategy.Container)
+            if (strategy != AutoStrategy.Container)
             {
-                if (Type == LengthType.Height && Owner.parent is Stack stack && stack.Direction == RepeatDirection.Vertical)
+                return this;
+            }
+
+            if (Type != LengthType.Height)
+            {
+                return this;
+            }
+
+            if (Owner.parent is null)
+                Owner.ParentSet.Handle(TryAttach);
+            else TryAttach();
+
+            void TryAttach()
+            {
+                if (Owner.parent is not Stack stack || stack.Direction != RepeatDirection.Vertical)
                 {
-                    void attach(View sibling)
-                    {
-                        UpdateOn(sibling.IgnoredChanged);
-                        UpdateOn(sibling.Height.Changed);
-                        UpdateOn(sibling.Margin.Top.Changed);
-                        UpdateOn(sibling.Margin.Bottom.Changed);
-                    }
-
-                    UpdateOn(Owner.Margin.Top.Changed);
-                    UpdateOn(Owner.Margin.Bottom.Changed);
-
-                    foreach (var sibling in stack.ManagedChildren.Except(Owner))
-                        attach(sibling);
+                    return;
                 }
+
+                void attach(View sibling)
+                {
+                    UpdateOn(sibling.IgnoredChanged);
+                    UpdateOn(sibling.Height.Changed);
+                    UpdateOn(sibling.Margin.Top.Changed);
+                    UpdateOn(sibling.Margin.Bottom.Changed);
+                }
+
+                UpdateOn(Owner.Margin.Top.Changed);
+                UpdateOn(Owner.Margin.Bottom.Changed);
+
+                foreach (var sibling in stack.ManagedChildren.Except(Owner))
+                    attach(sibling);
+
+                stack.ChildAdded.Handle(attach);
+                stack.ChildRemoved.RemoveHandler(attach);
             }
 
             return this;
@@ -139,7 +158,7 @@ namespace Zebble
 
             UpdateOn(owner.Margin.Left.Changed, owner.Margin.Right.Changed);
 
-            if (parent is Stack {Direction: RepeatDirection.Horizontal} stack)
+            if (parent is Stack { Direction: RepeatDirection.Horizontal } stack)
             {
                 return AutoWidthByHorizontalStackContainer(stack);
             }
@@ -161,7 +180,7 @@ namespace Zebble
 
             UpdateOn(parent.Height.Changed, parent.Padding.Top.Changed, parent.Padding.Bottom.Changed, parent.VerticalBorderSizeChanged);
 
-            if (parent is Stack {Direction: RepeatDirection.Vertical} stack)
+            if (parent is Stack { Direction: RepeatDirection.Vertical } stack)
             {
                 return AutoHeightByVerticalStackContainer(stack);
             }

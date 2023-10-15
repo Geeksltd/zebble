@@ -25,9 +25,9 @@ namespace Zebble
             ParentSet.Handle(LayoutChildren);
         }
 
-        protected override async Task ChildAdded(View view)
+        protected override async Task OnChildAdded(View view)
         {
-            await base.ChildAdded(view);
+            await base.OnChildAdded(view);
 
             foreach (var length in new[] { view.Width , view.Height,
                 view.Margin.Left, view.Margin.Right, view.Margin.Bottom, view.Margin.Top})

@@ -59,10 +59,6 @@ namespace Zebble.Services
             if (file is null) throw new ArgumentNullException(nameof(file));
             if (!await file.ExistsAsync()) throw new Exception("File not found: " + file.FullName);
 
-            var originalSize = GetPixelSize(file);
-            if (desiredSize is null) desiredSize = originalSize;
-            else desiredSize = GetPixelSize(originalSize, desiredSize.Value, stretch);
-
             var fileData = await file.ReadAllBytesAsync();
             if (fileData.Length == 0) throw new Exception("Image file has zero bytes: " + file.FullName);
 
@@ -74,10 +70,16 @@ namespace Zebble.Services
                 {
                     var result = new BitmapImage();
 
-                    if (desiredSize?.Height > 0) result.DecodePixelHeight = (int)desiredSize.Value.Height;
-                    if (desiredSize?.Width > 0) result.DecodePixelWidth = (int)desiredSize.Value.Width;
+                    try
+                    {
+                        await result.SetSourceAsync(asStream).AsTask();
 
-                    try { result.SetSourceAsync(asStream).AsTask().GetAwaiter(); }
+                        var originalSize = new Size(result.PixelWidth, result.PixelHeight);
+                        if (desiredSize is null) desiredSize = originalSize;
+                        else desiredSize = GetPixelSize(originalSize, desiredSize.Value, stretch);
+                        if (desiredSize?.Height > 0) result.DecodePixelHeight = (int)desiredSize.Value.Height;
+                        if (desiredSize?.Width > 0) result.DecodePixelWidth = (int)desiredSize.Value.Width;
+                    }
                     catch (Exception ex)
                     {
                         Log.For(typeof(ImageService)).Error(ex, "Failed to decode image from: " + file.FullName);

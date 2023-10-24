@@ -70,7 +70,7 @@ namespace Zebble.UWP
                 Stretch = View.Stretch.Render(),
                 AlignmentX = View.Alignment.RenderX(),
                 AlignmentY = View.Alignment.RenderY()
-            };
+            };            
         }
 
         public void Dispose()

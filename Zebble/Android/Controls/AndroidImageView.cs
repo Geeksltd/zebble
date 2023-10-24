@@ -30,6 +30,7 @@ namespace Zebble.AndroidOS
         ImageService.ImageSource Source;
         readonly EventHandlerDisposer EventHandlerDisposer = new();
         string DrawnImageKey;
+        string LoadedImageKey;
 
         public AndroidImageView(Zebble.View view, bool backgroundImageOnly = false) : base(UIRuntime.CurrentActivity)
         {
@@ -145,15 +146,16 @@ namespace Zebble.AndroidOS
             EventHandlerDisposer.DisposeAll();
             if (View == null || View.IsDisposing) return;
 
-            var oldSource = Source;
-            if (oldSource == null)
-            {
-                ImageService.Draw(View, DrawImage);
-                return;
-            }
+            var key = View.GetBackgroundImageKey();
+            if (LoadedImageKey == key) return;            
+            LoadedImageKey = key;
 
-            var newSource = View.BackgroundImageData.None() && View.BackgroundImagePath.HasValue() ? ImageService.GetSource(View) : null;
-            if (oldSource == newSource) return; // No change.
+            var oldSource = Source;
+            if (oldSource != null)
+            {
+                var newSource = View.BackgroundImageData.None() && View.BackgroundImagePath.HasValue() ? ImageService.GetSource(View) : null;
+                if (oldSource == newSource) return; // No change.
+            }
 
             ImageService.Draw(View, DrawImage);
             oldSource.UnregisterViewer();

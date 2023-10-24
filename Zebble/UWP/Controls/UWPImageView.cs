@@ -10,6 +10,7 @@ namespace Zebble.UWP
     {
         ImageView View;
         controls.Border Result;
+        string LoadedImageKey;
         readonly EventHandlerDisposer EventHandlerDisposer = new();
 
         public UWPImageView(ImageView view) => View = view;
@@ -50,9 +51,13 @@ namespace Zebble.UWP
 
         void LoadImageAsync()
         {
+            var key = View.GetBackgroundImageKey();
+            if (LoadedImageKey == key) return;
+            LoadedImageKey = key;
+
             EventHandlerDisposer.DisposeAll();
             if (IsDisposing()) return;
-            Services.ImageService.Draw(View, DrawImage);
+            Services.ImageService.Draw(View, DrawImage);            
         }
 
         void DrawImage(object imageObj)

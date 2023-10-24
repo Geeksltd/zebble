@@ -145,5 +145,11 @@
                 page.OnRevisited.Handle(x => action(x.NavParams ?? new Dictionary<string, object>()), callerFile, callerLine);
             }, callerFile, callerLine);
         }
+
+        internal string GetBackgroundImageKey()
+        {
+            return ActualWidth + BackgroundImagePath + BackgroundImageAlignment
+                + ActualHeight + BackgroundImageStretch + Padding + BorderRadius;
+        }
     }
 }

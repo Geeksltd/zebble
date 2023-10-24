@@ -59,6 +59,7 @@ namespace Zebble.IOS
         View View;
         ImageService.ImageSource Source;
         internal CoreAnimation.CALayer Mirror;
+        string LoadedImageKey;
 
         public IosImageView(View view)
         {
@@ -76,6 +77,10 @@ namespace Zebble.IOS
         {
             if (!IsAlive()) return;
 
+            var key = View.GetBackgroundImageKey();
+            if (LoadedImageKey == key) return;
+            LoadedImageKey = key;
+
             if (View.BackgroundImagePath.OrEmpty().EndsWith(".gif") || View.HasAnimatedBackgroundImage)
                 Thread.UI.Run(SetGifAnimationLayers);
             else Layer.RemoveAllAnimations();
@@ -90,7 +95,7 @@ namespace Zebble.IOS
 
             Source = newSource;
 
-            ImageService.Draw(View, DrawImage);
+            ImageService.Draw(View, DrawImage);            
         }
 
         void DrawImage(object imageObj)

@@ -40,28 +40,29 @@ namespace Zebble
             AutoOption = strategy;
             ApplyAutoStrategy();
 
-            if (strategy != AutoStrategy.Container)
-            {
-                return this;
-            }
-
-            if (Type != LengthType.Height)
-            {
-                return this;
-            }
-
             if (Owner.parent is null)
                 Owner.ParentSet.Handle(TryAttach);
             else TryAttach();
 
             void TryAttach()
             {
-                if (Owner.parent is not Stack stack || stack.Direction != RepeatDirection.Vertical)
+                if (strategy == AutoStrategy.Content)
+                {
+                    if (Type == LengthType.Width) WidthContent();
+                    else HeightContent();
+                }
+                else if (Type == LengthType.Width) WidthContainer();
+                else HeightContainer();
+            }
+
+            void HeightContainer()
+            {
+                if (Owner.parent is not Stack stack)
                 {
                     return;
                 }
 
-                void attach(View sibling)
+                void Attach(View sibling)
                 {
                     UpdateOn(sibling.IgnoredChanged);
                     UpdateOn(sibling.Height.Changed);
@@ -73,10 +74,85 @@ namespace Zebble
                 UpdateOn(Owner.Margin.Bottom.Changed);
 
                 foreach (var sibling in stack.ManagedChildren.Except(Owner))
-                    attach(sibling);
+                    Attach(sibling);
 
-                stack.ChildAdded.Handle(attach);
-                stack.ChildRemoved.RemoveHandler(attach);
+                stack.ChildAdded.Handle(Attach);
+                stack.ChildRemoved.RemoveHandler(Attach);
+            }
+
+            void WidthContainer()
+            {
+                if (Owner.parent is not Stack stack)
+                {
+                    return;
+                }
+
+                void Attach(View sibling)
+                {
+                    UpdateOn(sibling.IgnoredChanged);
+                    UpdateOn(sibling.Width.Changed);
+                    UpdateOn(sibling.Margin.Left.Changed);
+                    UpdateOn(sibling.Margin.Right.Changed);
+                }
+
+                UpdateOn(Owner.Margin.Left.Changed);
+                UpdateOn(Owner.Margin.Right.Changed);
+
+                foreach (var sibling in stack.ManagedChildren.Except(Owner))
+                    Attach(sibling);
+
+                stack.ChildAdded.Handle(Attach);
+                stack.ChildRemoved.RemoveHandler(Attach);
+            }
+
+            void HeightContent()
+            {
+                if (Owner is not Stack stack)
+                {
+                    return;
+                }
+
+                void Attach(View sibling)
+                {
+                    UpdateOn(sibling.IgnoredChanged);
+                    UpdateOn(sibling.Height.Changed);
+                    UpdateOn(sibling.Padding.Top.Changed);
+                    UpdateOn(sibling.Padding.Bottom.Changed);
+                }
+
+                UpdateOn(Owner.Padding.Top.Changed);
+                UpdateOn(Owner.Padding.Bottom.Changed);
+
+                foreach (var sibling in stack.ManagedChildren)
+                    Attach(sibling);
+
+                stack.ChildAdded.Handle(Attach);
+                stack.ChildRemoved.RemoveHandler(Attach);
+            }
+
+            void WidthContent()
+             {
+                if (Owner is not Stack stack)
+                {
+                    return;
+                }
+
+                void Attach(View sibling)
+                {
+                    UpdateOn(sibling.IgnoredChanged);
+                    UpdateOn(sibling.Width.Changed);
+                    UpdateOn(sibling.Padding.Left.Changed);
+                    UpdateOn(sibling.Padding.Right.Changed);
+                }
+
+                UpdateOn(Owner.Padding.Left.Changed);
+                UpdateOn(Owner.Padding.Right.Changed);
+
+                foreach (var sibling in stack.ManagedChildren.Except(Owner))
+                    Attach(sibling);
+
+                stack.ChildAdded.Handle(Attach);
+                stack.ChildRemoved.RemoveHandler(Attach);
             }
 
             return this;

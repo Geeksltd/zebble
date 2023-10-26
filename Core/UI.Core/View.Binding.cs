@@ -53,7 +53,7 @@ namespace Zebble
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void SetViewModelValue(object value)
+        public virtual void SetViewModelValue(object value)
         {
             var templateType = GetType();
 

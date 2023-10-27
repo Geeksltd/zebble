@@ -65,6 +65,8 @@ namespace Zebble.Mvvm
             return new ViewModelNavigation(target, transition).Replace();
         }
 
+        public static Task Reload() => ViewModelNavigation.Reload(); 
+
         public static Task ShowPopUp(ModalScreen target, PageTransition transition = PageTransition.DropUp)
         {
             return new ViewModelNavigation(target, transition).ShowPopUp();

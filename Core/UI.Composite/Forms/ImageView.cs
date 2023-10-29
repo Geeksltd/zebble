@@ -43,7 +43,7 @@ namespace Zebble
             get => BackgroundImageData;
             set
             {
-                Style.BackgroundImageData = value;
+                base.BackgroundImageData = value;
                 if (IsRendered()) RaiseBackgroundImageChanged();
             }
         }

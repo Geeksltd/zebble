@@ -148,8 +148,8 @@
 
         internal string GetBackgroundImageKey()
         {
-            return ActualWidth + BackgroundImagePath + BackgroundImageAlignment
-                + ActualHeight + BackgroundImageStretch + Padding + BorderRadius + BackgroundImageDataKey;
+            return ActualWidth + BackgroundImagePath + BackgroundImageDataHash + BackgroundImageAlignment
+                + ActualHeight + BackgroundImageStretch + Padding + BorderRadius;
         }
     }
 }

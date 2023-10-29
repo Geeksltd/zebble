@@ -11,7 +11,6 @@ namespace Zebble
     public abstract partial class View : IDisposable
     {
         bool IsInitialized, IsFlashing, enabled = true;
-        string BackgroundImageDataKey = string.Empty;
         internal bool ignored, absolute;
         internal int zIndex;
 
@@ -203,13 +202,14 @@ namespace Zebble
             set => Style.BackgroundImagePath = value;
         }
 
+        string BackgroundImageDataHash = string.Empty;
         public byte[] BackgroundImageData
         {
             get => Style.backgroundImageData ?? Css.backgroundImageData;
             set
             {
                 Style.BackgroundImageData = value;
-                BackgroundImageDataKey = string.Join(",", value.Take(500).Select(x => ((int)x).ToString()));
+                BackgroundImageDataHash = (value ?? Array.Empty<byte>()).ToBase64String().ToSimplifiedSHA1Hash();
             }
         }
 

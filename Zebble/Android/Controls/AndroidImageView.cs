@@ -158,7 +158,7 @@ namespace Zebble.AndroidOS
             }
 
             ImageService.Draw(View, DrawImage);
-            oldSource.UnregisterViewer();
+            oldSource?.UnregisterViewer();
         }
 
         void DisposeDrawable()

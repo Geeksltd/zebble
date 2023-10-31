@@ -19,7 +19,6 @@ namespace Zebble.UWP
         bool WaitUntilPointerReleased;
         readonly HashSet<uint> Pointers = new();
         readonly Dictionary<uint, Point> Points = new();
-        readonly List<Point> CirclePoints = new();
 
         PannedEventArgs PreviousRefrence;
 
@@ -255,7 +254,8 @@ namespace Zebble.UWP
 
         void Element_Tapped(object sender, TappedRoutedEventArgs args)
         {
-            var view = View; if (view is null) return;
+            var view = View;
+            if (view is null) return;
 
             if (UIRuntime.IsDevMode)
             {
@@ -274,8 +274,10 @@ namespace Zebble.UWP
             var pos = new TouchEventArgs(view, args.GetPosition(Element).ToPoint(), touches);
             view.RaiseTapped(pos);
 
-            UIRuntime.RenderRoot.CurrentDescendants().Where(t => t is TextInput)
-            .Except(view).Do(t => (t as TextInput).UnFocus());
+            UIRuntime.RenderRoot.CurrentDescendants()
+                .Except(view)
+                .OfType<TextInput>()
+                .Do(t => t.UnFocus());
 
             RaisedTapped = DateTime.Now;
             args.Handled = true;

@@ -41,7 +41,7 @@ namespace Zebble
             bool IsRotating { get; }
             Task PrepareRuntimeRoot();
             Task Collapse();
-            Task Load(View view);
+            Task Load(View view = null);
             Task DomUpdated(View view);
         }
     }

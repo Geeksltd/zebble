@@ -26,6 +26,7 @@ namespace Zebble
 
         /// <summary>Fired when the user is done typing by either clicking enter (or submit, go, etc) button.</summary>
         public readonly AsyncEvent UserTextChangeSubmitted = new();
+        public readonly AsyncEvent PlaceholderChanged = new();
         internal readonly AsyncEvent PlaceholderColorChanged = new();
         public readonly AsyncEvent UserTextChanged = new();
 
@@ -128,6 +129,7 @@ namespace Zebble
             {
                 if (placeholder == value) return;
                 placeholder = value;
+                PlaceholderChanged.Raise();
                 UIWorkBatch.Publish(this, "Placeholder", new UIChangedEventArgs<string>(this, value));
             }
         }

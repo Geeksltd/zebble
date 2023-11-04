@@ -184,7 +184,7 @@ namespace Zebble
         }
 
         [PropertyGroup("Visibility")]
-        public bool Enabled
+        public virtual bool Enabled
         {
             get => enabled;
             set

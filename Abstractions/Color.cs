@@ -2,6 +2,7 @@ namespace Zebble
 {
     using System;
     using System.Collections.Generic;
+    using System.Drawing;
     using System.Globalization;
     using System.Linq;
     using Olive;
@@ -151,18 +152,6 @@ namespace Zebble
 
         public Color Darken(int amount) => Lighten(-amount);
 
-        static bool TryParse(string text, Type type, out object result)
-        {
-            result = null;
-
-            if (!type.IsA<Color>()) return false;
-
-            try { result = Parse(text); return true; }
-            catch
-            {
-                // No logging is needed
-                return false;
-            }
-        }
+        public Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
     }
 }

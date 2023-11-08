@@ -23,11 +23,11 @@ namespace Zebble
         }
     }
 
-    class DynamicPropertyBinding
+    class DynamicPropertyBinding : IDisposable
     {
         public View Target;
         public string PropertyName;
-        readonly Func<IBindable> Source;
+        Func<IBindable> Source;
         IBinding CurrentBinding;
 
         public DynamicPropertyBinding(View view, string propertyName, Func<IBindable> source)
@@ -41,6 +41,14 @@ namespace Zebble
         {
             CurrentBinding?.Remove();
             CurrentBinding = Source.Invoke().AddBinding(Target, PropertyName);
+        }
+
+        public void Dispose()
+        {
+            CurrentBinding?.Remove();
+            Source = null;
+            CurrentBinding = null;
+            Target = null;
         }
     }
 }

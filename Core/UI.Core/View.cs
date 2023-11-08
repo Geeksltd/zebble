@@ -428,7 +428,7 @@ namespace Zebble
             x.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
             .Where(v => v.FieldType.IsA<AbstractAsyncEvent>()).ToArray());
 
-            fields.Select(v => v.GetValue(this)).OfType<AbstractAsyncEvent>().Do(v => v.Dispose());
+            fields.Select(v => v.GetValue(this)).OfType<AbstractAsyncEvent>().Do(v => v.Dispose());            
         }
 
         [EscapeGCop("It's a special case, so async void is fine.")]
@@ -439,6 +439,8 @@ namespace Zebble
                 IsDisposing = true;
 
                 DisposeEvents();
+                DynamicBindings.OrEmpty().Do(x => x.Dispose());
+                DynamicBindings?.Clear();
 
                 Width?.Dispose();
                 Height?.Dispose();

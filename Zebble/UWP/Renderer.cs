@@ -110,9 +110,8 @@ namespace Zebble
 
         void NativeResult_Loaded(object _, xaml.RoutedEventArgs __)
         {
-            if (IsDisposing) return;
-            OnLoaded();
-            NativeResult.Loaded -= NativeResult_Loaded;
+            NativeResult.Perform(x => x.Loaded -= NativeResult_Loaded);
+            if (!IsDisposing) OnLoaded();
         }
 
         async void Transform(TransformationChangedEventArgs args)

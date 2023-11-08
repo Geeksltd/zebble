@@ -3,24 +3,23 @@ namespace Zebble.UWP
     using System;
     using System.Linq;
     using System.Threading.Tasks;
+    using Olive;
     using Windows.UI.Xaml.Media;
     using controls = Windows.UI.Xaml.Controls;
     using xaml = Windows.UI.Xaml;
-    using Olive;
 
     class UWPControlWrapper
     {
-        readonly View View;
-        readonly Renderer Renderer;
-        static readonly controls.Border DefaultBorder = new();
+        WeakReference<View> ViewRef;
+        View View => ViewRef.GetTargetOrDefault();
+
         internal controls.Border Native;
         controls.Grid BackgroundImageLayer;
         ImageView BackgroundImage;
 
         public UWPControlWrapper(Renderer renderer)
         {
-            Renderer = renderer;
-            View = renderer.View;
+            ViewRef = renderer.View.GetWeakReference();
             Native = new controls.Border { Child = renderer.NativeElement };
             HandleEvents();
             BorderChanged();
@@ -147,6 +146,17 @@ namespace Zebble.UWP
 
         public void Dispose()
         {
+            var view = View;
+            if (view != null)
+            {
+                view.BackgroundImageChanged.RemoveActionHandler(BackgroundChanged);
+                view.BorderChanged.RemoveActionHandler(BorderChanged);
+                view.BorderRadiusChanged.RemoveActionHandler(BorderRadiusChanged);
+                view.BackgroundImageParametersChanged.RemoveActionHandler(BackgroundImageParametersChanged);
+            }
+
+            ViewRef?.SetTarget(null);
+
             (Native.Parent as controls.Canvas).Perform(p => p.Children.Remove(Native));
             (Native.Child as IDisposable)?.Dispose();
         }

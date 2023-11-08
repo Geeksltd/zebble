@@ -210,21 +210,6 @@ namespace Zebble
             return ApiScrolledTo.Raise(new ApiMoveToEventArgs { XOffset = xOffset, YOffset = yOffset, Animate = animate });
         }
 
-        public override void Dispose()
-        {
-            ScrollEnded?.Dispose();
-            EnableScrollingChanged?.Dispose();
-            UserScrolledVertically?.Dispose();
-            UserScrolledHorizontally?.Dispose();
-            ContentSizeChanged?.Dispose();
-            ScrolledToNewPage?.Dispose();
-            RefreshScrollContentSize?.Dispose();
-            ZoomSettingsChanged?.Dispose();
-            ApiScrolledTo?.Dispose();
-
-            base.Dispose();
-        }
-
         public class Refresher
         {
             public Canvas Indicator = new Canvas().Id("RefreshingIndicator");

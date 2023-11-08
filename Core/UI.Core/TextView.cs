@@ -133,12 +133,5 @@ namespace Zebble
         AsyncEvent IAutoContentWidthProvider.Changed => AutoContentWidthChanged;
 
         bool IAutoContentWidthProvider.DependsOnChildren() => false;
-
-        public override void Dispose()
-        {
-            AutoContentWidthChanged?.Dispose();
-            TextChanged?.Dispose();
-            base.Dispose();
-        }
     }
 }

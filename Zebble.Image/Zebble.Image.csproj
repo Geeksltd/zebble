@@ -37,7 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Mono.Cecil" Version="0.11.4" />
-    <PackageReference Include="Olive" Version="2.1.334" />
+    <PackageReference Include="Olive" Version="2.1.353" />
     <PackageReference Include="SkiaSharp" Version="2.88.3" />
   </ItemGroup>
   <ItemGroup>

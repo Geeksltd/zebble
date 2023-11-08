@@ -51,6 +51,8 @@ namespace Zebble.UWP
 
         void LoadImageAsync()
         {
+            if (IsDisposing()) return;
+
             var key = View.GetBackgroundImageKey();
             if (LoadedImageKey == key) return;
             LoadedImageKey = key;

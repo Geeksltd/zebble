@@ -236,12 +236,12 @@ namespace Zebble
             AutoOption = null;
             ExpressionValue = null;
 
-            if (Owner != null)
+            if (Owner?.ParentSet != null)
                 Owner.ParentSet.Event -= Update;
 
             if (PercentageValue.HasValue)
             {
-                if (Owner != null)
+                if (Owner?.ParentSet != null)
                     Owner.ParentSet.Event -= BindToPercentageOfParent;
                 PercentageValue = null;
             }

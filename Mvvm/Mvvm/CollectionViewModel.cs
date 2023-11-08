@@ -20,7 +20,7 @@ namespace Zebble.Mvvm
 
         public static BindableCollection<TTarget> Get<TValue, TTarget>(this Bindable<TValue> @this, Func<TValue, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0)
         {
-            return @this.Get(null, valueProvider, callerFile, callerLine);
+            return Get(@this, null, valueProvider, callerFile, callerLine);
         }
 
         //
@@ -40,7 +40,7 @@ namespace Zebble.Mvvm
 
         public static BindableCollection<TTarget> Get<TValue, TTarget>(this BindableCollection<TValue> @this, Func<IEnumerable<TValue>, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0)
         {
-            return @this.Get(null, valueProvider, callerFile, callerLine);
+            return Get(@this, null, valueProvider, callerFile, callerLine);
         }
 
         //
@@ -60,7 +60,7 @@ namespace Zebble.Mvvm
 
         public static CollectionViewModel<TViewModel> Get<TValue, TTarget, TViewModel>(this Bindable<TValue> @this, Func<TValue, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel, IViewModelOf<TTarget>, new()
         {
-            return @this.Get<TValue, TTarget, TViewModel>(null, valueProvider, callerFile, callerLine);
+            return @Get<TValue, TTarget, TViewModel>(@this, null, valueProvider, callerFile, callerLine);
         }
 
         //
@@ -100,7 +100,7 @@ namespace Zebble.Mvvm
 
         public static CollectionViewModel<TViewModel> Get<TViewModel>(this CollectionViewModel<TViewModel> @this, Func<IEnumerable<TViewModel>, IEnumerable<TViewModel>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel
         {
-            return @this.Get(null, valueProvider, callerFile, callerLine);
+            return Get(@this, null, valueProvider, callerFile, callerLine);
         }
 
         //

@@ -76,14 +76,6 @@ namespace Zebble
 
         float IAutoContentHeightProvider.Calculate() => CalculateAutoHeight();
 
-        public override void Dispose()
-        {
-            AutoContentHeightChanged?.Dispose();
-            TextAlignmentChanged?.Dispose();
-            FontChanged?.Dispose();
-            base.Dispose();
-        }
-
         bool IAutoContentHeightProvider.DependsOnChildren() => false;
 
         public override IEnumerable<View> AllDescendents() => Enumerable.Empty<View>();

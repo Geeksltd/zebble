@@ -64,15 +64,5 @@ namespace Zebble
                 scroller.Refresh.Requested.Handle(PulledToRefresh.Raise);
             }
         }
-
-        public override void Dispose()
-        {
-            OnRevisiting?.Dispose();
-            OnRevisited?.Dispose();
-            OnExiting?.Dispose();
-            OnExited?.Dispose();
-
-            base.Dispose();
-        }
     }
 }

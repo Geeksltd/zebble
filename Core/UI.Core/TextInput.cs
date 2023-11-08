@@ -233,10 +233,7 @@ namespace Zebble
         {
             Focused.ClearBindings();
             Value.ClearBindings();
-
-            UserTextChangeSubmitted?.Dispose();
-            PlaceholderColorChanged?.Dispose();
-            UserTextChanged?.Dispose();
+             
             AutoResizer = null;
             InputChanged = null;
 

@@ -165,14 +165,7 @@ namespace Zebble
         bool IAutoContentHeightProvider.DependsOnChildren() => true;
 
         bool IAutoContentWidthProvider.DependsOnChildren() => true;
-
-        public override void Dispose()
-        {
-            AutoContentHeightChanged.Dispose();
-            AutoContentWidthChanged.Dispose();
-            base.Dispose();
-        }
-
+         
         public void LayoutChildren()
         {
             if (Direction == RepeatDirection.Horizontal)

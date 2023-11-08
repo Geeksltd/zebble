@@ -7,6 +7,8 @@ namespace Zebble
     using System.Threading.Tasks;
     using Services;
     using Olive;
+    using System.Collections.Concurrent;
+    using System.Reflection;
 
     public abstract partial class View : IDisposable
     {
@@ -418,6 +420,17 @@ namespace Zebble
 
         protected virtual string GetStringSpecifier() => null;
 
+        static ConcurrentDictionary<Type, FieldInfo[]> EventFields = new();
+
+        void DisposeEvents()
+        {
+            var fields = EventFields.GetOrAdd(GetType(), x =>
+            x.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
+            .Where(v => v.FieldType.IsA<AbstractAsyncEvent>()).ToArray());
+
+            fields.Select(v => v.GetValue(this)).OfType<AbstractAsyncEvent>().Do(v => v.Dispose());
+        }
+
         [EscapeGCop("It's a special case, so async void is fine.")]
         public virtual async void Dispose()
         {
@@ -425,7 +438,8 @@ namespace Zebble
             {
                 IsDisposing = true;
 
-                IgnoredChanged?.Dispose();
+                DisposeEvents();
+
                 Width?.Dispose();
                 Height?.Dispose();
                 X?.Dispose();
@@ -433,46 +447,24 @@ namespace Zebble
                 Margin?.Dispose();
                 Padding?.Dispose();
 
-                Shown?.Dispose();
-                PreRendered?.Dispose();
-                Rendered?.Dispose();
-                Initializing?.Dispose();
-                Initialized?.Dispose();
-                PanFinished?.Dispose();
-                BackgroundImageChanged?.Dispose();
-                PaddingChanged?.Dispose();
-                Flashed?.Dispose();
-                Touched?.Dispose();
-                Tapped?.Dispose();
-                LongPressed?.Dispose();
-                Swiped?.Dispose();
-                Panning?.Dispose();
-                ParentSet?.Dispose();
-                AbsoluteChanged?.Dispose();
-                OpacityChanged?.Dispose();
-                VisibilityChanged?.Dispose();
-                BorderChanged?.Dispose();
-                VerticalBorderSizeChanged?.Dispose();
-                HorizontalBorderSizeChanged?.Dispose();
-                Pinching?.Dispose();
-                UserRotating?.Dispose();
-                ReusedInCollectionView?.Dispose();
-
                 parent = null;
                 AllChildren.Do(c => c.Dispose());
                 AllChildren.Clear();
 
-                var native = Native;
                 Native = null;
 
                 var renderer = Renderer;
                 Renderer = null;
 
-                Thread.UI.Post(() =>
+                void disposeNative()
                 {
                     try { renderer?.Dispose(); }
                     catch (Exception ex) { Log.For(this).Error(ex, "Disposing the native renderer failed."); }
-                });
+                }
+
+                if (renderer != null)
+                    if (Thread.UI.IsRunning()) disposeNative();
+                    else Thread.UI.Post(disposeNative);
 
                 IsDisposed = true;
             }

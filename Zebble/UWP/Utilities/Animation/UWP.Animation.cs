@@ -1,13 +1,12 @@
 namespace Zebble
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
+    using Olive;
     using Windows.UI.Xaml.Media.Animation;
     using xaml = Windows.UI.Xaml;
-    using Olive;
 
     partial class Animation
     {
@@ -90,7 +89,11 @@ namespace Zebble
                     return;
                 }
 
-                lock (RunningAnimations) RunningAnimations.Add(this);
+                lock (RunningAnimations)
+                {
+                    RunningAnimations.RemoveWhere(v => v.IsCompleted);
+                    RunningAnimations.Add(this);
+                }
 
                 Storyboard = new Storyboard();
                 lock (Timelines)

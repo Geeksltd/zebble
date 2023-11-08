@@ -3,13 +3,11 @@ namespace Zebble.UWP
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using Windows.UI.Text;
+    using Olive;
     using Windows.UI.Xaml;
     using Windows.UI.Xaml.Controls;
     using Windows.UI.Xaml.Input;
-    using controls = Windows.UI.Xaml.Controls;
     using xaml = Windows.UI.Xaml;
-    using Olive;
 
     public abstract class UWPTextBoxBase<TResult> : IRenderOrchestrator, UIChangeCommand.IHandler
         where TResult : Control, new()

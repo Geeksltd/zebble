@@ -10,7 +10,7 @@ namespace Zebble.UWP
 
 	public class UWPTextBlock : controls.Grid, UIChangeCommand.IHandler, INativeRenderer
 	{
-        readonly TextView View;
+        TextView View;
 
 		protected controls.TextBlock Result;
 
@@ -113,6 +113,6 @@ namespace Zebble.UWP
 			ViewLineHeightChanged();
 		}
 
-		public void Dispose() { }
+		public void Dispose() { View = null; }
 	}
 }

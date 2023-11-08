@@ -165,13 +165,6 @@ namespace Zebble
 
         #endregion
 
-        public override void Dispose()
-        {
-            AutoContentWidthChanged?.Dispose();
-            AutoContentHeightChanged?.Dispose();
-            base.Dispose();
-        }
-
         public override IEnumerable<View> AllDescendents() => Enumerable.Empty<View>();
     }
 }

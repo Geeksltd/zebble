@@ -59,7 +59,7 @@ namespace Zebble.UWP
 
             EventHandlerDisposer.DisposeAll();
             if (IsDisposing()) return;
-            Services.ImageService.Draw(View, DrawImage);            
+            Services.ImageService.Draw(View, DrawImage);
         }
 
         void DrawImage(object imageObj)
@@ -72,14 +72,23 @@ namespace Zebble.UWP
                 Stretch = View.Stretch.Render(),
                 AlignmentX = View.Alignment.RenderX(),
                 AlignmentY = View.Alignment.RenderY()
-            };            
+            };
         }
 
         public void Dispose()
         {
+            var view = View;
+            view = null;
+            if (view != null)
+            {
+                view.BackgroundImageChanged.RemoveActionHandler(LoadImageAsync);
+                view.BackgroundImageParametersChanged.RemoveActionHandler(LoadImageAsync);
+                view.PaddingChanged.RemoveActionHandler(PaddingChanged);
+                view.BorderRadiusChanged.RemoveActionHandler(BorderRadiusChanged);
+            }
+
             Result.Set(x => x.Loading -= Result_Loading);
             EventHandlerDisposer.DisposeAll();
-            View = null;
             Result = null;
         }
     }

@@ -267,17 +267,19 @@ namespace Zebble
         {
             IsDisposing = true;
 
+            NativeResult.Perform(x => x.Loaded -= NativeResult_Loaded);
+
             ResultWrapper?.Dispose();
             RenderOrchestrator?.Dispose();
             RenderOrchestrator = null;
 
             GestureRecognizer?.Dispose();
-            (NativeElement as IDisposable)?.Dispose();
-
             GestureRecognizer = null;
             ResultWrapper = null;
             NativeContainer = null;
             View = null;
+
+            (NativeElement as IDisposable)?.Dispose();
             NativeElement = null;
         }
     }

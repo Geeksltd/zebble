@@ -158,7 +158,10 @@ namespace Zebble.UWP
             ViewRef?.SetTarget(null);
 
             (Native.Parent as controls.Canvas).Perform(p => p.Children.Remove(Native));
-            (Native.Child as IDisposable)?.Dispose();
+            (Native.Child as IDisposable)?.Dispose(); 
+
+            BackgroundImage?.Dispose(); 
+            BackgroundImage = null;
         }
     }
 }

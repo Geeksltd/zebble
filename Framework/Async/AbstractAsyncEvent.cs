@@ -109,6 +109,8 @@ namespace Zebble
             Action<TArg> handlerAction, string callerFile, int line, int? index = null)
             where TReturn : AbstractAsyncEvent
         {
+            if (IsDisposing) return (TReturn)this;
+
             if (handlerTask == null && handlerAction is null) return (TReturn)this;
 
             var caller = UIRuntime.IsDebuggerAttached ? $"{callerFile}:{line}" : string.Empty;
@@ -148,6 +150,8 @@ namespace Zebble
         public void Dispose()
         {
             IsDisposing = true;
+            DeclaringFile = EventName = null;
+            OwnerReference?.SetTarget(null);
             ClearHandlers();
         }
     }

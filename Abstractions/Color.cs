@@ -6,6 +6,7 @@ namespace Zebble
     using System.Globalization;
     using System.Linq;
     using Olive;
+    using SkiaSharp;
 
     public class Color
     {
@@ -153,5 +154,7 @@ namespace Zebble
         public Color Darken(int amount) => Lighten(-amount);
 
         public Color WithAlpha(byte alpha) => new(Red, Green, Blue, alpha);
+
+        public SKColor ToSKColor() => new(Red, Green, Blue, Alpha);
     }
 }

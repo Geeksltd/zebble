@@ -9,8 +9,7 @@
     <Import_RootNamespace>Css</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)CssSetting.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)CssBodyProcessor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ZebbleCssSetting.cs" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

@@ -9,11 +9,7 @@
     <Import_RootNamespace>ZblFormat</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Constants\ZebbleSolutionItemNames.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CollectionExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Helpers\PathHelpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Serialization\ZebbleStringWriter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Serialization\ZebbleWriter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)XmlHelpers\XmlHelpers.cs" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

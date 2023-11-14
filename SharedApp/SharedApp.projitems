@@ -9,9 +9,7 @@
     <Import_RootNamespace>SharedApp</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)BaseThread.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Network.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Thread.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ThreadPool.cs" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

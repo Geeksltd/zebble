@@ -9,39 +9,7 @@
     <Import_RootNamespace>Zebble.Framework</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AsyncEvent.Handler.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AsyncEvent.Raise.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AsyncEvent.TArg.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AsyncEventExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AsyncEventHandlingException.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AsyncEvent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\AbstractAsyncEvent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\EventHandlerDisposer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\ConcurrentEventRaisePolicy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\Lock\AsyncWaitQueue.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\Lock\DisposableAwaitable.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Async\Lock\AsyncLockDeque.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\AssemblyInfo.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\ZebbleConfiguration.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Common\ZebbleLogging.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Device\ExceptionLog.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Device\IO.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DI\DependencyManager.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\FakeDatabase.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\Hierarchy\IHierarchy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\EmptyEnumerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\EventArgs.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\IdentifierGenerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\Pair.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\PropertyGroupAttribute.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\SuspendGC.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\System\Timer.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\Xml\StringWriterWithEncoding.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\Xml\XmlProperties.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)StartUp.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)System.Extensions\IHierarchy.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)System.Extensions\Object.Get.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)System.Extensions\String.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)UIRuntime.cs" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

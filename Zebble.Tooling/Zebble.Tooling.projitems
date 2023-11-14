@@ -9,18 +9,7 @@
     <Import_RootNamespace>Zebble.Tooling.Core</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Builders\Builder.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Commands.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\CommandArgsExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Extensions\DirectoryInfoExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Markup\BaseGenerator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Markup\CSharpFormatter.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Runtime.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Builders\Unknown.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\ConsoleHelpers.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Utilities\DirectoryContext.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="$(MSBuildThisFileDirectory)Builders\" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

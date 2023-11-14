@@ -9,10 +9,7 @@
     <Import_RootNamespace>Abstractions</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Color.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Colors.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Enums.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)GradientColor.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Point.cs" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

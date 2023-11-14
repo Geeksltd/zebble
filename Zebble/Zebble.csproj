@@ -6,7 +6,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>4.5.728.0</Version>
+    <Version>4.5.729.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <DefineConstants>$(DefineConstants)</DefineConstants>
@@ -58,7 +58,7 @@
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
     <Reference Include="System.Xml.Linq" />
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.0.1" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.5" />
     <Compile Include="Android\**\*.cs" />
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
@@ -75,11 +75,11 @@
     <None Remove="Zebble-LicenseAgreement.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="7.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Olive" Version="2.1.353" />
     <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.5" />
+    <PackageReference Include="Xamarin.Essentials" Version="1.8.0" />
   </ItemGroup>
   <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'net6.0' " />
   <Import Project="..\Css\Css.projitems" Label="Shared" />

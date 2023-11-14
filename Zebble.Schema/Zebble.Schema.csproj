@@ -36,7 +36,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Mono.Cecil" Version="0.11.4" />
+    <PackageReference Include="Mono.Cecil" Version="0.11.5" />
     <PackageReference Include="Olive" Version="2.1.353" />
   </ItemGroup>
   <ItemGroup>

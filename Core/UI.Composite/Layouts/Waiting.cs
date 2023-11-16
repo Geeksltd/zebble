@@ -3,7 +3,7 @@ namespace Zebble
     using System;
     using System.Threading.Tasks;
 
-    public partial class Waiting
+    partial class Waiting
     {
         const int TOP_MOST = 10000;
         public readonly static Overlay Overlay = new Overlay().CssClass("waiting-overlay");

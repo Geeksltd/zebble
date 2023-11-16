@@ -251,7 +251,7 @@
                     r.AppendLine();
                     r.AppendLine("{");
                     r.AppendLine($"try {{ return{navAction}; }}");
-                    r.AppendLine("catch (Exception ex) { return Alert.Show(ex.Message); }");
+                    r.AppendLine("catch (Exception ex) { return Dialogs.Current.Alert(ex.Message); }");
                     r.AppendLine("}");
                 }
 

@@ -9,27 +9,7 @@
     <Import_RootNamespace>Mvvm</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\ValueNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\ViewModelNode.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\Node.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\Command.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)AutoUI\ViewModel.Bindables.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelNavigation.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.Nav.Shortcuts.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModelExtensions.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)VmExecutionContext.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\CollectionViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\DialogViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\FullScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ModalScreen.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\PageTransition.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.Nav.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Mvvm\ViewModel.Singleton.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\CssReference.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\ITemplate.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\Template.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\Templates.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)RenderAbstractions\View.cs" />
+    <None Include="$(MSBuildThisFileDirectory)**\*.*" />
+    <Compile Include="$(MSBuildThisFileDirectory)**\*.cs" />
   </ItemGroup>
 </Project>

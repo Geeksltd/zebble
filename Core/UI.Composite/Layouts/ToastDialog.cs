@@ -4,21 +4,18 @@ namespace Zebble
     using System.Threading.Tasks;
     using Olive;
 
-    public class Toast : Canvas
+    class ToastDialog : Canvas
     {
         public readonly static AsyncEvent<string> ToastShown = new();
         public readonly Stack MessageContainer = new(RepeatDirection.Horizontal);
         public readonly TextView Label = new() { Id = "Label" };
-        public readonly Button OKButton = new() { Id = "OKButton", Text = "OK" };
         const int DROP_RANGE = 30;
 
         static readonly ConcurrentList<string> CurrentToastMessages = new();
 
-        public Toast(string message) => Message = message;
+        public ToastDialog(string message) => Message = message;
 
         public string Message { get; set; }
-
-        public bool ShowButton { get; set; }
 
         public TimeSpan Duration { get; set; } = 2.Seconds();
 
@@ -29,9 +26,6 @@ namespace Zebble
             await Add(MessageContainer);
 
             await MessageContainer.Add(Label.Set(x => x.Text = Message));
-
-            if (ShowButton)
-                await MessageContainer.Add(OKButton.On(x => x.Tapped, Hide));
 
             this.On(x => x.Tapped, Hide);
         }

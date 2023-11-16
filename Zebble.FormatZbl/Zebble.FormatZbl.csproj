@@ -14,7 +14,7 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.0.10.0</Version>
+    <Version>1.0.11.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-format-zbl</RepositoryUrl>
     <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
   </PropertyGroup>
@@ -45,6 +45,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Olive" Version="2.1.353" />
+    <PackageReference Include="SkiaSharp" Version="2.88.6" />
   </ItemGroup>
   <Import Project="..\Zebble.Tooling\Zebble.Tooling.projitems" Label="Shared" />
   <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />

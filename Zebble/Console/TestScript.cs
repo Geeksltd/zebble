@@ -127,7 +127,7 @@ namespace Zebble.Mvvm
                     .Select(v => v.ValueString.Unless(v.ValueString.OrEmpty().StartsWith("ERR: ")))
                     .Trim().ToString(" | ");
 
-                text += DialogViewModel.Current.LastToast;
+                text += Dialogs.LastToast;
 
                 if (text.Lacks(textOnScreen, caseSensitive))
                     throw new TestFailedException($"Failed to find the text '{textOnScreen}'\nCurrent text: '{text}'");
@@ -142,7 +142,7 @@ namespace Zebble.Mvvm
         {
             Try(() =>
             {
-                var contains = DialogViewModel.Current.LastToast.OrEmpty().Contains(textOnScreen, caseSensitive);
+                var contains = Dialogs.LastToast.OrEmpty().Contains(textOnScreen, caseSensitive);
                 if (!contains)
                     throw new TestFailedException($"'{textOnScreen}' Not found in the last toast.");
             });
@@ -213,6 +213,6 @@ namespace Zebble.Mvvm
         /// </summary>
         protected void Back() => ViewModel.Back();
 
-        protected DialogViewModel Dialog => DialogViewModel.Current;
+        protected static DialogsViewModel Dialogs => DialogsViewModel.Current;
     }
 }

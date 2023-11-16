@@ -15,7 +15,7 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.1.47.0</Version>
+    <Version>1.1.48.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-css</RepositoryUrl>
     <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
   </PropertyGroup>
@@ -40,6 +40,7 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Olive" Version="2.1.353" />
+    <PackageReference Include="SkiaSharp" Version="2.88.6" />
     <PackageReference Include="SourceMapToolkit" Version="1.1.4" />
     <PackageReference Include="LibSassHost" Version="1.3.3" />
     <PackageReference Include="LibSassHost.Native.osx-x64" Version="1.3.3" />

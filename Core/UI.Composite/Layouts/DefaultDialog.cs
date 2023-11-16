@@ -2,15 +2,14 @@ namespace Zebble
 {
     using System.Threading.Tasks;
 
-    public abstract class Dialog : Stack
+    abstract class DefaultDialog : Stack
     {
-        public readonly TextView Title = new TextView().Id("Title");
+        public readonly TextView Title = new();
         internal protected View Content { get; private set; }
-        public readonly Stack ButtonsRow = new(RepeatDirection.Horizontal) { Id = "ButtonsRow" };
+        public readonly Stack ButtonsRow = new(RepeatDirection.Horizontal);
         public readonly AsyncEvent Displayed = new();
 
         public bool ScrollContent { get; set; } = true;
-        public bool ButtonsAtTop { get; set; }
 
         public override async Task OnInitializing()
         {
@@ -19,10 +18,9 @@ namespace Zebble
             await Add(Title);
 
             if (ScrollContent) await Add(Content = new ScrollView());
-            else await Add(Content = new Canvas().Id("DialogContent"));
+            else await Add(Content = new Canvas());
 
-            if (ButtonsAtTop) await AddAt(0, ButtonsRow);
-            else await Add(ButtonsRow);
+            await Add(ButtonsRow);
         }
     }
 }

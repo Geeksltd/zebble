@@ -180,8 +180,8 @@ namespace Zebble
             {
                 case OnError.Ignore: return Task.CompletedTask;
                 case OnError.Throw: throw error;
-                case OnError.Toast: return Alert.Toast(friendlyMessage.Or(error.Message));
-                case OnError.Alert: return Alert.Show(friendlyMessage.Or(error.Message));
+                case OnError.Toast: return Dialogs.Current.Toast(friendlyMessage.Or(error.Message));
+                case OnError.Alert: return Dialogs.Current.Alert(friendlyMessage.Or(error.Message));
                 default: throw new NotSupportedException(strategy + " is not implemented.");
             }
         }

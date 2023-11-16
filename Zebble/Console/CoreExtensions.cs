@@ -19,10 +19,10 @@ namespace Zebble
                 case OnError.Ignore: break;
                 case OnError.Throw: throw error;
                 case OnError.Toast:
-                    Mvvm.DialogViewModel.Current.Toast(friendlyMessage.Or(error.Message));
+                    Mvvm.DialogsViewModel.Current.Toast(friendlyMessage.Or(error.Message));
                     break;
                 case OnError.Alert:
-                    Mvvm.DialogViewModel.Current.Alert(friendlyMessage.Or(error.Message));
+                    Mvvm.DialogsViewModel.Current.Alert(friendlyMessage.Or(error.Message));
                     break;
                 default: throw new NotSupportedException(strategy + " is not implemented.");
             }

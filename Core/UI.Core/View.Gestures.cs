@@ -151,7 +151,7 @@ namespace Zebble
                     if (UIRuntime.IsDebuggerAttached) throw;
                     else
                     {
-                        await Alert.Show("Error",
+                        await Dialogs.Current.Alert("Error",
                             $"Unfortunately there is an unexpected error.{Environment.NewLine}" +
                             $"You may contact our support team with the following technical info to help rectify this problem:{Environment.NewLine}{ex.ToFullMessage()}");
                     }

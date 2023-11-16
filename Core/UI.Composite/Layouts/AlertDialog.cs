@@ -3,9 +3,9 @@ namespace Zebble
     using System.Threading.Tasks;
     using Olive;
 
-    public class AlertDialog : Dialog
+    class AlertDialog : DefaultDialog
     {
-        public readonly TextView Message = new TextView().Id("Message");
+        public readonly TextView Message = new TextView();
 
         public AlertDialog(string title, string message = null)
         {

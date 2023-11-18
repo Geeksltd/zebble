@@ -7,10 +7,11 @@
 
     class MarkupPropertySetting
     {
-        public string Key, Value, Bindable;
+        public string Name, Key, Value, Bindable;
 
-        public MarkupPropertySetting(XAttribute attribute)
+        public MarkupPropertySetting(string name, XAttribute attribute)
         {
+            Name = name;
             Key = attribute.Name.LocalName;
 
             if (Key == "style") Key = "Style"; // Common error
@@ -73,7 +74,7 @@
                 if (last.EndsWith(".ChangedByInput")) binding = ".Set(v => v." + last + " += ";
                 else binding = ".On(v => v." + last;
             }
-            else binding += "\"" + last + "\"";
+            else binding += "nameof(" + Name + "." + last + ")";
 
             binding += ", () => " + Bindable + ")";
 

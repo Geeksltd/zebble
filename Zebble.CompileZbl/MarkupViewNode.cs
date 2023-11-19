@@ -79,7 +79,7 @@
 
         IEnumerable<MarkupPropertySetting> GetSettings()
         {
-            return Element.Attributes().Select(a => new MarkupPropertySetting(Name, a))
+            return Element.Attributes().Select(a => new MarkupPropertySetting(NodeType, a))
                   .ToList();
         }
 

@@ -64,6 +64,7 @@
         {
             var last = Key.Split('.').Last();
             var beforeLast = Key.Split('.').ExceptLast().ToString(".");
+            var owner = beforeLast.WithPrefix("x.").Or(NodeType.OnlyWhen(NodeType != "class"));
 
             var binding = ".Bind(";
 
@@ -74,7 +75,7 @@
                 if (last.EndsWith(".ChangedByInput")) binding = ".Set(v => v." + last + " += ";
                 else binding = ".On(v => v." + last;
             }
-            else binding += "nameof(" + NodeType.OnlyWhen(NodeType != "class").WithSuffix(".") + last + ")";
+            else binding += "nameof(" + owner.WithSuffix(".") + last + ")";
 
             binding += ", () => " + Bindable + ")";
 

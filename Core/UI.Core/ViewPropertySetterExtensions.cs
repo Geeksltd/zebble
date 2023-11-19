@@ -123,13 +123,12 @@ namespace Zebble
         /// <summary>
         /// Will set the margin-top of this view to a value that makes its bottom the same as the specified sibling.
         /// </summary>
-        public static TView BottomAlign<TView>(this TView view, View sibling, bool delayUntilRender = false) where TView : View
+        public static TView BottomAlign<TView>(this TView view, View sibling) where TView : View
         {
-            void set() => view.Margin(top: sibling.ActualHeight - view.ActualHeight);
+            void set() => view.Margin.Top.BindTo(sibling.Height, view.Height, (sh, vh) => sh - vh);
 
             if (view.IsRendered()) set();
-            else if (delayUntilRender) view.PreRendered.HandleWith(set);
-            else set();
+            else view.PreRendered.HandleWith(set);
 
             return view;
         }
@@ -137,15 +136,14 @@ namespace Zebble
         /// <summary>
         /// Will set the margin-left of this view in a way to center align it in its parent horizontally. It assumes no siblings exist.
         /// </summary>
-        public static TView CenterAlign<TView>(this TView view, bool delayUntilRender = false) where TView : View
+        public static TView CenterHorizontally<TView>(this TView view) where TView : View
         {
             void set()
             {
-                view.Margin(left: (view.parent.ActualWidth - (view.ActualWidth + view.parent.HorizontalPaddingAndBorder())) / 2);
+                view.Margin.Left.BindTo(view.parent.Width, view.Width, (pw, vw) => (pw - (vw + view.parent.HorizontalPaddingAndBorder())) / 2);
             }
 
             if (view.IsRendered()) set();
-            else if (delayUntilRender || view.parent is null) view.PreRendered.HandleWith(set);
             else view.PreRendered.HandleWith(set);
 
             return view;
@@ -154,18 +152,25 @@ namespace Zebble
         /// <summary>
         /// Will set the margin-top of this view in a way to middle align it in its parent vertically. It assumes no siblings exist.
         /// </summary>
-        public static TView MiddleAlign<TView>(this TView view, bool delayUntilRender = false) where TView : View
+        public static TView CenterVertically<TView>(this TView view) where TView : View
         {
             void set()
             {
-                view.Margin(top: (view.parent.ActualHeight - (view.ActualHeight + view.parent.VerticalPaddingAndBorder())) / 2);
+                view.Margin.Top.BindTo(view.parent.Height, view.Height, (ph, vh) => (ph - (vh + view.parent.VerticalPaddingAndBorder())) / 2);
             }
 
             if (view.IsRendered()) set();
-            else if (delayUntilRender || view.parent is null) view.PreRendered.HandleWith(set);
             else view.PreRendered.HandleWith(set);
 
             return view;
+        }
+
+        /// <summary>
+        /// Will set the margin-top of this view in a way to middle align it in its parent vertically. It assumes no siblings exist.
+        /// </summary>
+        public static TView Center<TView>(this TView view) where TView : View
+        {
+            return view.CenterHorizontally().CenterVertically();
         }
 
         public static TView Background<TView>(this TView view, Color color = null, string path = null, Alignment? alignment = null, Stretch? stretch = null)

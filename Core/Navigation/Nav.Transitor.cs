@@ -24,6 +24,8 @@ namespace Zebble
 
             public async Task Run()
             {
+                UIWorkBatch.Current?.Flush();
+
                 switch (Transition)
                 {
                     case PageTransition.SlideForward: await SlideForward(); break;
@@ -36,6 +38,8 @@ namespace Zebble
                     case PageTransition.None:
                     default: await None(); break;
                 }
+
+                UIWorkBatch.Current?.Flush();
 
                 if (FromView is Page fp && ToView is Page tp)
                 {
@@ -116,7 +120,7 @@ namespace Zebble
 
             async Task None()
             {
-                if (ToView == ParentView) return;
+                if (ToView == ParentView) return;                
 
                 Duration = TimeSpan.Zero;
                 EnterAnimation = await AnimatePage(x => x.X(0).Y(0), x => x.X(0));

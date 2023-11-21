@@ -33,6 +33,7 @@ namespace Zebble
             get => BackgroundImagePath;
             set
             {
+                if (Style.BackgroundImagePath == value) return;
                 Style.BackgroundImagePath = value;
                 if (IsRendered()) RaiseBackgroundImageChanged();
             }
@@ -43,7 +44,8 @@ namespace Zebble
             get => BackgroundImageData;
             set
             {
-                base.BackgroundImageData = value;
+                if (BackgroundImageData == value) return;
+                BackgroundImageData = value;
                 if (IsRendered()) RaiseBackgroundImageChanged();
             }
         }
@@ -59,6 +61,7 @@ namespace Zebble
             get => BackgroundImageStretch;
             set
             {
+                if (Style.BackgroundImageStretch == value) return;
                 Style.BackgroundImageStretch = value;
                 if (IsRendered()) RaiseBackgroundImageChanged();
             }

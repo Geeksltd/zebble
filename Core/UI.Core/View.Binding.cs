@@ -11,18 +11,24 @@ namespace Zebble
         /// <summary>
         /// Binds the specified property of this view to a bindable object.
         /// </summary> 
-        public static TView Bind<TView>(this TView @this, string propertyName, Func<IBindable> bindable)
-          where TView : View
+        public static TView Bind<TView>(this TView @this, string propertyName, Func<IBindable> bindable) where TView : View
+            => @this.Bind(x => x, propertyName, bindable);
+
+        /// <summary>
+        /// Binds the specified property of this view to a bindable object.
+        /// </summary> 
+        public static TView Bind<TView>(this TView @this, Func<TView, object> targetExpression, string propertyName, Func<IBindable> bindable) where TView : View
         {
-            @this.RegisterPropertyBinding(new DynamicPropertyBinding(@this, propertyName, bindable));
+            @this.RegisterPropertyBinding(new DynamicPropertyBinding(targetExpression(@this), propertyName, bindable));
             return @this;
         }
 
-        public static TView Bind<TView, TSource, TProperty>(this TView @this, string propertyName,
-           Func<Bindable<TSource>> bindable, Func<TSource, TProperty> valueExpression)
-        where TView : View
+        public static TView Bind<TView, TSource, TProperty>(this TView @this, string propertyName, Func<Bindable<TSource>> bindable, Func<TSource, TProperty> valueExpression) where TView : View
+            => @this.Bind(x => x, propertyName, bindable, valueExpression);
+
+        public static TView Bind<TView, TSource, TProperty>(this TView @this, Func<TView, object> targetExpression, string propertyName, Func<Bindable<TSource>> bindable, Func<TSource, TProperty> valueExpression) where TView : View
         {
-            @this.RegisterPropertyBinding(new DynamicPropertyBinding<TSource, TProperty>(@this, propertyName, bindable, valueExpression));
+            @this.RegisterPropertyBinding(new DynamicPropertyBinding<TSource, TProperty>(targetExpression(@this), propertyName, bindable, valueExpression));
             return @this;
         }
     }

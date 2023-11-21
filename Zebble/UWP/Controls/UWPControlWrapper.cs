@@ -65,6 +65,8 @@ namespace Zebble.UWP
 
         public void BackgroundChanged(UIChangedEventArgs args)
         {
+            if (View is null) return;
+
             var color = View.BackgroundColor;
             if (args is UIChangedEventArgs<Color> c) color = c.Value;
 
@@ -135,12 +137,16 @@ namespace Zebble.UWP
 
         public void BorderChanged()
         {
+            if (View is null) return;
+
             Native.BorderBrush = View.Effective.BorderColor().RenderBrush();
             Native.BorderThickness = View.Border.RenderThickness();
         }
 
         public void BorderRadiusChanged()
         {
+            if (View is null) return;
+
             Native.CornerRadius = View.Effective.RenderCornerRadius();
         }
 

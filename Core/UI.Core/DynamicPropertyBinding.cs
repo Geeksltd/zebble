@@ -12,8 +12,8 @@ namespace Zebble
         public DynamicPropertyBinding(object target, string propertyName, Func<Bindable<TSource>> source, Func<TSource, TProperty> valueExpression)
             : base(target, propertyName, source)
         {
-            TypedSource = source;
-            ValueExpression = valueExpression;
+            TypedSource = source ?? throw new ArgumentNullException(nameof(source));
+            ValueExpression = valueExpression ?? throw new ArgumentNullException(nameof(valueExpression));
         }
 
         public override void Apply()
@@ -32,9 +32,9 @@ namespace Zebble
 
         public DynamicPropertyBinding(object target, string propertyName, Func<IBindable> source)
         {
-            Target = target;
-            PropertyName = propertyName;
-            Source = source;
+            Target = target ?? throw new ArgumentNullException(nameof(target));
+            PropertyName = propertyName ?? throw new ArgumentNullException(nameof(propertyName));
+            Source = source ?? throw new ArgumentNullException(nameof(source));
         }
 
         public virtual void Apply()

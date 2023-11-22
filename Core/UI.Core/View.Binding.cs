@@ -52,7 +52,7 @@ namespace Zebble
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void RefreshBindings()
         {
-            DynamicBindings?.Do(x => x.Apply());
+            DynamicBindings?.ToArray().Do(x => x.Apply());
 
             foreach (var c in AllChildren.ToArray())
                 c.RefreshBindings();

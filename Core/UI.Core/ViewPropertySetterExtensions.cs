@@ -173,10 +173,16 @@ namespace Zebble
             return view.CenterHorizontally().CenterVertically();
         }
 
-        public static TView Background<TView>(this TView view, Color color = null, string path = null, Alignment? alignment = null, Stretch? stretch = null)
+        public static TView BackgroundColor<TView>(this TView view, object color)
             where TView : View
         {
-            if (color != null) view.Style.BackgroundColor = color;
+            return view.ApplyColor(x => x, nameof(View.BackgroundColor), (x, clr) => x.BackgroundColor = clr, color);
+        }
+
+        public static TView Background<TView>(this TView view, object color = null, string path = null, Alignment? alignment = null, Stretch? stretch = null)
+            where TView : View
+        {
+            view.BackgroundColor(color);
             if (path != null) view.Style.BackgroundImagePath = path;
             if (alignment.HasValue) view.Style.BackgroundImageAlignment = alignment.Value;
             if (stretch.HasValue) view.Style.BackgroundImageStretch = stretch.Value;
@@ -190,8 +196,8 @@ namespace Zebble
         /// </summary>
         public static TView Round<TView>(this TView view) where TView : View
         {
-            view.Height.Changed.Handle(() => view.Border(radius: view.ActualHeight / 2));
-            return view.Border(radius: view.ActualHeight / 2);
+            view.Height.Changed.Handle(() => view.BorderRadius(view.ActualHeight / 2));
+            return view.BorderRadius(view.ActualHeight / 2);
         }
 
         public static TView Margin<TView>(this TView view, float? all = null, float? horizontal = null, float? vertical = null, float? top = null, float? right = null, float? bottom = null, float? left = null) where TView : View
@@ -206,7 +212,8 @@ namespace Zebble
             return view;
         }
 
-        public static TView Border<TView>(this TView view, float? all = null, float? top = null, float? right = null, float? bottom = null, float? left = null, float? radius = null, Color color = null) where TView : View
+        public static TView Border<TView>(this TView view, float? all = null, float? top = null, float? right = null, float? bottom = null, float? left = null, object color = null)
+            where TView : View
         {
             if (all.HasValue) view.Style.Border.Width = all.Value;
 
@@ -214,9 +221,11 @@ namespace Zebble
             if (left.HasValue) view.Style.Border.Left = left.Value;
             if (bottom.HasValue) view.Style.Border.Bottom = bottom.Value;
             if (right.HasValue) view.Style.Border.Right = right.Value;
-            if (radius.HasValue) view.Style.BorderRadius = radius.Value;
 
-            if (color != null) view.Style.Border.Color = color;
+            if (color != null)
+            {
+                view.ApplyColor(x => x.Style.Border, nameof(View.Style.Border.Color), (x, clr) => x.Style.Border.Color = clr, color);
+            }
 
             return view;
         }
@@ -311,33 +320,43 @@ namespace Zebble
             return view.ChangeInBatch(() => view.Width(size).Height(size));
         }
 
-        public static TView Text<TView>(this TView view, string text) where TView : TextControl => view.Set(x => x.Text = text);
+        public static TView Text<TView>(this TView view, object text) where TView : TextControl
+        {
+            if (text is Bindable<string> bindable) return view.Bind(nameof(TextControl.Text), () => bindable);
+            return view.Set(x => x.Text = (string)text);
+        }
 
         public static TView Wrap<TView>(this TView view, bool? value = true) where TView : TextView => view.Set(x => x.Style.WrapText = value);
 
         public static TView Text<TView>(this TView view, Func<TView, string> text) where TView : TextControl => view.Set(x => x.Text = text(view));
 
-        public static TView TextColor<TView>(this TView view, Color value) where TView : TextControl => view.Set(x => x.Style.TextColor = value);
+        public static TView TextColor<TView>(this TView view, object color)
+            where TView : TextControl
+        {
+            return view.ApplyColor(x => x, nameof(TextControl.TextColor), (x, clr) => x.TextColor = clr, color);
+        }
 
         public static TView TextAlignment<TView>(this TView view, Alignment value) where TView : TextControl => view.Set(x => x.Style.TextAlignment = value);
 
         public static TView AutoSizeWidth<TView>(this TView view, bool auto = true) where TView : TextView => view.Set(x => x.AutoSizeWidth = auto);
 
-        public static TView Font<TView>(this TView view, Font font, Color color = null) where TView : TextControl
+        public static TView Font<TView>(this TView view, Font font, object color = null)
+            where TView : TextControl
         {
             if (font != null) view.Style.Font = font;
-            if (color != null) view.Style.TextColor = color;
+            if (color != null) view.TextColor(color);
             return view;
         }
 
-        public static TView Font<TView>(this TView view, float? size = null, bool? bold = null, bool? italic = null, Color color = null) where TView : TextControl
+        public static TView Font<TView>(this TView view, float? size = null, bool? bold = null, bool? italic = null, object color = null)
+            where TView : TextControl
         {
             return view.ChangeInBatch(() =>
             {
                 if (size.HasValue) view.Style.Font.Size = size.Value;
                 if (bold.HasValue) view.Style.Font.Bold = bold.Value;
                 if (italic.HasValue) view.Style.Font.Italic = italic.Value;
-                if (color != null) view.Style.TextColor = color;
+                if (color != null) view.TextColor(color);
             });
         }
 
@@ -399,5 +418,25 @@ namespace Zebble
         public static Length MinLimit(this Length @this, float? value) => @this.Set(x => x.MinLimit = value);
 
         public static Length MaxLimit(this Length @this, float? value) => @this.Set(x => x.MaxLimit = value);
+
+        public static TView PlaceholderColor<TView>(this TView view, object color)
+            where TView : TextInput
+        {
+            return view.ApplyColor(x => x, nameof(TextInput.PlaceholderColor), (x, clr) => x.PlaceholderColor = clr, color);
+        }
+
+        static TView ApplyColor<TView>(this TView view, Func<TView, object> targetExpression, string propertyName, Action<TView, Color> update, object value)
+            where TView : View
+        {
+            if (value is null) return view;
+
+            if (value is Bindable<Color> bindColor) return view.Bind(targetExpression, propertyName, () => bindColor);
+            if (value is Bindable<GradientColor> bindGradient) return view.Bind(targetExpression, propertyName, () => bindGradient);
+
+            if (value is Color color) return view.Set(x => update(x, color));
+            if (value is GradientColor gradient) return view.Set(x => update(x, gradient));
+
+            return view.Set(x => update(x, (Color)(string)value));
+        }
     }
 }

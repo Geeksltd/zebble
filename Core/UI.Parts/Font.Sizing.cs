@@ -1,6 +1,7 @@
 namespace Zebble
 {
     using System;
+    using System.Linq;
     using System.Collections.Generic;
     using System.Diagnostics;
     using Olive;
@@ -54,20 +55,19 @@ namespace Zebble
             if (text.IsEmpty()) text = "Tg";
             var key = ToString() + "|" + text + "||" + width;
 
-            if (TextHeightCache.TryGetValue(key, out var result))
-            {
-                return result;
-            }
+            if (TextHeightCache.TryGetValue(key, out var result)) return result;
+
+            // Definitely single line?
+            if (text.Sum(x => x.IsLower() ? 0.3 : 0.5) * GetLineHeight() < 0.7 * width)
+                return TextHeightCache[key] = GetLineHeight();
+
+            result = Thread.UI.Run(() => CalculateTextHeight(width, text.OrEmpty()));
+            if (result != 0 || EffectiveSize == 0)
+                return TextHeightCache[key] = result;
             else
             {
-                result = Thread.UI.Run(() => CalculateTextHeight(width, text.OrEmpty()));
-                if (result != 0 || EffectiveSize == 0)
-                    return TextHeightCache[key] = result;
-                else
-                {
-                    Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
-                    return 0;
-                }
+                Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
+                return 0;
             }
         }
 

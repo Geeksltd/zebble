@@ -35,12 +35,11 @@ namespace Zebble
 
     partial class View
     {
-        List<DynamicPropertyBinding> DynamicBindings;
+        ConcurrentList<DynamicPropertyBinding> DynamicBindings = new();
 
         internal void RegisterPropertyBinding(DynamicPropertyBinding definition)
         {
             if (definition is null) return;
-            if (DynamicBindings is null) DynamicBindings = new List<DynamicPropertyBinding>();
 
             DynamicBindings.Add(definition);
             definition.Apply();
@@ -52,7 +51,7 @@ namespace Zebble
         [EditorBrowsable(EditorBrowsableState.Never)]
         public void RefreshBindings()
         {
-            DynamicBindings?.ToArray().Do(x => x.Apply());
+            DynamicBindings.Do(x => x.Apply());
 
             foreach (var c in AllChildren.ToArray())
                 c.RefreshBindings();

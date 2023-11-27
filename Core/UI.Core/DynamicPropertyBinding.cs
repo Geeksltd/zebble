@@ -25,8 +25,8 @@ namespace Zebble
 
     class DynamicPropertyBinding : IDisposable
     {
-        public object Target;
-        public string PropertyName;
+        protected object Target;
+        protected string PropertyName;
         Func<IBindable> Source;
         IBinding CurrentBinding;
 
@@ -40,6 +40,10 @@ namespace Zebble
         public virtual void Apply()
         {
             CurrentBinding?.Remove();
+
+            if (Source is null) return;
+            if (Target is null) return;
+
             CurrentBinding = Source.Invoke().AddBinding(Target, PropertyName);
         }
 

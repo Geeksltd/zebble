@@ -64,11 +64,9 @@ namespace Zebble
             result = Thread.UI.Run(() => CalculateTextHeight(width, text.OrEmpty()));
             if (result != 0 || EffectiveSize == 0)
                 return TextHeightCache[key] = result;
-            else
-            {
-                Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
-                return 0;
-            }
+
+            Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
+            return 0;
         }
 
         public float GetLineHeight() => LineHeightCache.GetOrAdd(ToString(), () => CalculateFontLineHeight());

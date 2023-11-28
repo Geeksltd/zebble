@@ -41,22 +41,33 @@ namespace Zebble
             }
         }
 
-        float CalculateFontLineHeight() => GetTextHeight(1000, "Tag");
+        float CalculateFontLineHeight()
+        {
+            using var paint = CreatePaint();
+
+            var text = "Tag";
+            
+            Rect result = new();
+            paint.GetTextBounds(text, 0, text.Length, result);
+
+            return result.Height();
+        }
 
         float CalculateAutomaticExtraTopPadding()
         {
-            using (var paint = new Paint { TextSize = EffectiveSize })
-            {
-                var typeFace = TypefaceStyle.Normal;
+            using var paint = CreatePaint();
 
-                if (Italic && Bold) typeFace = TypefaceStyle.BoldItalic;
-                else if (Bold) typeFace = TypefaceStyle.Bold;
-                else if (Italic) typeFace = TypefaceStyle.Italic;
+            return paint.Descent() - paint.Ascent() - EffectiveSize;
+        }
 
-                paint.SetTypeface(Typeface.Create(Name, typeFace));
-                paint.SetStyle(Paint.Style.Fill);
-                return paint.Descent() - paint.Ascent() - EffectiveSize;
-            }
+        Paint CreatePaint()
+        {
+            var paint = new Paint { TextSize = EffectiveSize };
+
+            paint.SetTypeface(Render());
+            paint.SetStyle(Paint.Style.Fill);
+
+            return paint;
         }
 
         Android.Widget.TextView GetSample()
@@ -71,7 +82,6 @@ namespace Zebble
 
         float CalculateTextWidth(string text)
         {
-            
             GetSample().Paint.GetTextBounds(text, 0, text.Length, SampleRectangle);
             return Scale.ToZebble(SampleRectangle.Right + SampleRectangle.Left + Scale.ToDevice(TEXT_WIDTH_ERROR));
         }

@@ -128,7 +128,7 @@ namespace Zebble
             void set() => view.Margin.Top.BindTo(sibling.Height, view.Height, (sh, vh) => sh - vh);
 
             if (view.IsRendered()) set();
-            else view.PreRendered.HandleWith(set);
+            else view.Rendered.HandleWith(set);
 
             return view;
         }
@@ -144,7 +144,7 @@ namespace Zebble
             }
 
             if (view.IsRendered()) set();
-            else view.PreRendered.HandleWith(set);
+            else view.Rendered.HandleWith(set);
 
             return view;
         }
@@ -160,7 +160,7 @@ namespace Zebble
             }
 
             if (view.IsRendered()) set();
-            else view.PreRendered.HandleWith(set);
+            else view.Rendered.HandleWith(set);
 
             return view;
         }

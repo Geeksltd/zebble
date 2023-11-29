@@ -46,11 +46,11 @@ namespace Zebble
             using var paint = CreatePaint();
 
             var text = "Tag";
-            
+
             Rect result = new();
             paint.GetTextBounds(text, 0, text.Length, result);
 
-            return result.Height();
+            return result.Height() + CalculateAutomaticExtraTopPadding();
         }
 
         float CalculateAutomaticExtraTopPadding()

@@ -34,11 +34,7 @@ namespace Zebble
             var key = ToString();
             if (key.IsEmpty()) return 0;
 
-            return AutomaticExtraTopPaddings.GetOrAdd(key, () =>
-            {
-                return AutomaticExtraTopPaddings[key] =
-                    Thread.UI.Run(() => CalculateAutomaticExtraTopPadding());
-            });
+            return AutomaticExtraTopPaddings.GetOrAdd(key, () => Thread.UI.Run(() => CalculateAutomaticExtraTopPadding()));
         }
 
         public float GetTextWidth(string text)

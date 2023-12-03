@@ -119,7 +119,7 @@ namespace Zebble.Device
 
                 try
                 {
-                    using var client = HttpClient(url, timeoutPerAttempt.Seconds());
+                    var client = HttpClient(url, timeoutPerAttempt.Seconds());
                     var fetchTask = client.GetAsync(url);
 
                     if (await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask) != fetchTask || fetchTask.IsCanceled)

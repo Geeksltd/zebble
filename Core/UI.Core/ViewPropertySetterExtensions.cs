@@ -128,7 +128,7 @@ namespace Zebble
             void set() => view.Margin.Top.BindTo(sibling.Height, view.Height, (sh, vh) => sh - vh);
 
             if (view.IsRendered()) set();
-            else view.Rendered.HandleWith(set);
+            else view.PreRendered.HandleWith(set);
 
             return view;
         }
@@ -140,11 +140,11 @@ namespace Zebble
         {
             void set()
             {
-                view.Margin.Left.BindTo(view.parent.Width, view.Width, (pw, vw) => (pw - (vw + view.parent.HorizontalPaddingAndBorder())) / 2);
+                view.Margin.Left.BindTo(view.parent.Width, view.parent.Padding.Left, view.parent.Padding.Right, view.Width, (pw, ppl, ppr, vw) => (pw - (vw + ppl + ppr + view.parent.Effective.BorderTotalHorizontal())) / 2);
             }
 
             if (view.IsRendered()) set();
-            else view.Rendered.HandleWith(set);
+            else view.PreRendered.HandleWith(set);
 
             return view;
         }
@@ -156,11 +156,11 @@ namespace Zebble
         {
             void set()
             {
-                view.Margin.Top.BindTo(view.parent.Height, view.Height, (ph, vh) => (ph - (vh + view.parent.VerticalPaddingAndBorder())) / 2);
+                view.Margin.Top.BindTo(view.parent.Height, view.parent.Padding.Top, view.parent.Padding.Top, view.Height, (ph, ppt, ppb, vh) => (ph - (vh + ppt + ppb + view.parent.Effective.BorderTotalVertical())) / 2);
             }
 
             if (view.IsRendered()) set();
-            else view.Rendered.HandleWith(set);
+            else view.PreRendered.HandleWith(set);
 
             return view;
         }

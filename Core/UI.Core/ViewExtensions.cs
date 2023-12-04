@@ -61,7 +61,7 @@ namespace Zebble
             }
 
             if (@this.IsRendered())
-                UIWorkBatch.Publish(@this, "[REMOVE]", null);
+                @this.Renderer?.Apply("[REMOVE]", null);
 
             @this.parent.AllChildren?.Remove(@this);
             await newParent.AddAt(at, @this);

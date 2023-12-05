@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
-    <TargetFrameworks>Xamarin.iOS10;MonoAndroid13.0;net6.0</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
+    <TargetFrameworks>net8.0-android;net8.0-ios;net8.0</TargetFrameworks>
     <AssemblyName>Zebble</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
@@ -23,6 +23,8 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <Owners>Geeks Ltd</Owners>
     <Authors>Geeks Ltd</Authors>
+	  <UseMaui>true</UseMaui>
+	  <SingleProject>true</SingleProject>
     <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
     <DisableExtraReferences>true</DisableExtraReferences>
     <DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
@@ -39,14 +41,14 @@
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10.0')) ">
     <DefineConstants>$(DefineConstants);UWP</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) ">
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net8.0-android')) ">
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
     <AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('Xamarin.iOS')) ">
+  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net8.0-ios')) ">
     <DefineConstants>$(DefineConstants);IOS</DefineConstants>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net6.0')) ">
+  <PropertyGroup Condition=" $(TargetFramework.Equals('net8.0')) ">
     <DefineConstants>$(DefineConstants);NET60</DefineConstants>
   </PropertyGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('UWP')) ">
@@ -56,13 +58,12 @@
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
     <Compile Include="UWP\**\*.cs" />
   </ItemGroup>
+	
   <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
-    <Reference Include="System.Xml.Linq" />
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.0.1" />
+    
     <Compile Include="Android\**\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
-    <Reference Include="System.Xml.Linq" />
+  <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">    
     <Compile Include="iOS\**\*.cs" />
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('NET60')) ">
@@ -79,10 +80,10 @@
     <PackageReference Include="Microsoft.Extensions.Http" Version="8.0.0" />
     <PackageReference Include="Olive" Version="2.1.353" />
     <PackageReference Include="SkiaSharp" Version="2.88.6" />
-    <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.7.5" />
+	  <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
+    
   </ItemGroup>
-  <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'net6.0' " />
+  <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'net8.0' " />
   <Import Project="..\Css\Css.projitems" Label="Shared" />
   <Import Project="..\Framework\Framework.projitems" Label="Shared" />
   <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />

@@ -244,7 +244,7 @@ namespace System
             var zRot = view.Rotation.ToRadians();
 
             var result = CATransform3D.Identity;
-            result.m34 = 1.0f / 500.0f;
+            result.M34 = 1.0f / 500.0f;
 
             if (xRot != 0) result = result.Concat(CATransform3D.MakeRotation(xRot, 1, 0, 0));
             if (yRot != 0) result = result.Concat(CATransform3D.MakeRotation(yRot, 0, 1, 0));

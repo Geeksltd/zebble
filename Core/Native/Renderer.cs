@@ -8,7 +8,7 @@ namespace Zebble
     using BaseNativeType = UIKit.UIView;
 #elif ANDROID
     using BaseNativeType = Android.Views.View;
-#else
+#elif UWP
     using BaseNativeType = Windows.UI.Xaml.FrameworkElement;
 #endif
     using Olive;

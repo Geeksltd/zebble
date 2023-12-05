@@ -60,7 +60,7 @@ namespace Zebble.IOS
                     KeyPath = "contents",
                     Duration = totalDuration,
                     RepeatCount = loopCount <= 0 ? float.MaxValue : loopCount,
-                    CalculationMode = CAAnimation.AnimationDescrete,
+                    CalculationMode = CAAnimation.AnimationDiscrete,
                     Values = frames.Select(x => x.Image.ToNs()).ToArray(),
                     KeyTimes = frames.Select(x => x.StartTimePercent.ToNs()).ToArray(),
                     RemovedOnCompletion = false

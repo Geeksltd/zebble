@@ -30,8 +30,8 @@ namespace Zebble.Device
                 case Permission.Location: return CheckLocation();
                 case Permission.BackgroundLocation: return CheckBackgroundLocation();
                 case Permission.Calendar: return CheckEvents(EKEntityType.Event);
-                case Permission.Camera: return CheckMedia(AVMediaType.Video);
-                case Permission.Microphone: return CheckMedia(AVMediaType.Audio);
+                case Permission.Camera: return CheckMedia(AVAuthorizationMediaType.Video);
+                case Permission.Microphone: return CheckMedia(AVAuthorizationMediaType.Audio);
                 case Permission.Albums: return CheckPhotos();
                 case Permission.Reminders: return CheckEvents(EKEntityType.Reminder);
                 case Permission.BodyMotions: return CheckBodyMotions();
@@ -48,8 +48,8 @@ namespace Zebble.Device
             switch (permission)
             {
                 case Permission.Calendar: return await RequestEvents(EKEntityType.Event);
-                case Permission.Camera: return await RequestMedia(AVMediaType.Video);
-                case Permission.Microphone: return await RequestMedia(AVMediaType.Audio);
+                case Permission.Camera: return await RequestMedia(AVAuthorizationMediaType.Video);
+                case Permission.Microphone: return await RequestMedia(AVAuthorizationMediaType.Audio);
                 case Permission.Contacts: return await RequestContacts();
                 case Permission.Location: return await RequestLocation();
                 case Permission.Albums: return await RequestPhotos();
@@ -61,7 +61,7 @@ namespace Zebble.Device
             }
         }
 
-        static PermissionResult CheckMedia(NSString mediaType)
+        static PermissionResult CheckMedia(AVAuthorizationMediaType mediaType)
         {
             switch (AVCaptureDevice.GetAuthorizationStatus(mediaType))
             {
@@ -97,7 +97,7 @@ namespace Zebble.Device
             }
         }
 
-        static async Task<PermissionResult> RequestMedia(NSString mediaType)
+        static async Task<PermissionResult> RequestMedia(AVAuthorizationMediaType mediaType)
         {
             try
             {

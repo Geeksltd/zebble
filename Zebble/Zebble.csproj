@@ -6,7 +6,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>4.6.101.0</Version>
+    <Version>4.6.102.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <UseMaui>true</UseMaui>
     <SingleProject>true</SingleProject>
@@ -72,7 +72,7 @@
   </ItemGroup>
   <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
     <Reference Include="System.Xml.Linq" />
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.6" />
+    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.0.1" />
   </ItemGroup>
   <ItemGroup Condition="$(DefineConstants.Contains('XAMARIN'))">
     <Reference Include="System.Xml.Linq" />

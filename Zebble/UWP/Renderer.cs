@@ -260,7 +260,7 @@ namespace Zebble
 
         void DoRemove()
         {
-            if (!IsDisposing) NativeResult.RemoveFromSuperview(); // NativeContainer?.Remove(NativeResult);
+            if (!IsDisposing) NativeResult?.RemoveFromSuperview(); // NativeContainer?.Remove(NativeResult);
         }
 
         public void Dispose()

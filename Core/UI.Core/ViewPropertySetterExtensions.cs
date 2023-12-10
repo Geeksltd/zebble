@@ -140,7 +140,7 @@ namespace Zebble
         {
             void set()
             {
-                view.Margin.Left.BindTo(view.parent.Width, view.parent.Padding.Left, view.parent.Padding.Right, view.Width, (pw, ppl, ppr, vw) => (pw - (vw + ppl + ppr + view.parent.Effective.BorderTotalHorizontal())) / 2);
+                view.X.BindTo(view.parent.Width, view.Width, view.Margin.Left, (pw, vw, vml) => (pw - (vw + vml + view.parent.Effective.BorderTotalHorizontal())) / 2);
             }
 
             if (view.IsRendered()) set();
@@ -156,7 +156,7 @@ namespace Zebble
         {
             void set()
             {
-                view.Margin.Top.BindTo(view.parent.Height, view.parent.Padding.Top, view.parent.Padding.Top, view.Height, (ph, ppt, ppb, vh) => (ph - (vh + ppt + ppb + view.parent.Effective.BorderTotalVertical())) / 2);
+                view.Y.BindTo(view.parent.Height, view.Height, view.Margin.Top, (ph, vh, vmt) => (ph - (vh + vmt + view.parent.Effective.BorderTotalVertical())) / 2);
             }
 
             if (view.IsRendered()) set();

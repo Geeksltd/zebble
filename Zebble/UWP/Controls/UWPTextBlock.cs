@@ -84,7 +84,7 @@ namespace Zebble.UWP
 
         void ViewTextChanged()
         {
-            Result.Text = View.TransformedText;
+            Result.Text = View?.TransformedText;
             ViewLineHeightChanged();
         }
 

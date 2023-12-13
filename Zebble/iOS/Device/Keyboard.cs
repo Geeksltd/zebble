@@ -20,6 +20,10 @@ namespace Zebble.Device
             UIKeyboard.Notifications.ObserveWillHide(OnWillHide);
         }
 
+        public static void Show(View view) { }
+
+        public static void Hide() { }
+
         static async void OnWillShow(object _, UIKeyboardEventArgs args)
         {
             SoftKeyboardHeight = (float)args.FrameEnd.Height;

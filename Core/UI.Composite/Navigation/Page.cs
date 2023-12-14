@@ -10,10 +10,7 @@ namespace Zebble
         public IDictionary<string, object> NavParams;
         public PageTransition Transition;
 
-        protected Page()
-        {
-            Css.Height = Root.ActualHeight;
-        }
+        protected Page() => this.Size(Length.AutoStrategy.Container);
 
         public readonly AsyncEvent PulledToRefresh = new();
 

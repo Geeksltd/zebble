@@ -1,5 +1,6 @@
 namespace Zebble
 {
+    using System;
     using System.Collections.Generic;
     using System.Threading.Tasks;
     using Olive;
@@ -7,7 +8,7 @@ namespace Zebble
     public interface IDialogs
     {
         Task ShowWaiting(bool block = true);
-        Task HideWaiting();
+        Task HideWaiting(Guid? version = null);
 
         Task Toast(string message);
 
@@ -28,9 +29,9 @@ namespace Zebble
 
         protected abstract Task DoShowWaiting(bool block);
 
-        public Task HideWaiting() => DoHideWaiting();
+        public Task HideWaiting(Guid? version = null) => DoHideWaiting(version);
 
-        protected abstract Task DoHideWaiting();
+        protected abstract Task DoHideWaiting(Guid? version = null);
 
         public Task Toast(string message) => DoToast(message);
 
@@ -61,11 +62,11 @@ namespace Zebble
         protected abstract Task<string> DoPrompt(string title, string description);
     }
 
-    public class DefaultDialogs : BaseDialogs
+    class DefaultDialogs : BaseDialogs
     {
         protected override Task DoShowWaiting(bool block = true) => Waiting.Show(block);
 
-        protected override Task DoHideWaiting() => Waiting.Hide();
+        protected override Task DoHideWaiting(Guid? version = null) => Waiting.Hide(version);
 
         protected override Task DoToast(string message) => new ToastDialog(message).Show();
 

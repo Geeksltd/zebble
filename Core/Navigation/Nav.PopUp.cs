@@ -71,9 +71,7 @@ namespace Zebble
                         CachedPopups.Add(popup);
                 }
                 else if (popup != CurrentPage)
-                {
                     popup.HostPage = CurrentPage;
-                }
 
                 popup.Transition = transition;
                 popup.NavParams = SerializeToDictionary(navParams);
@@ -82,7 +80,7 @@ namespace Zebble
                     popup.OnRevisiting.RaiseOn(Thread.Pool, new RevisitingEventArgs()).RunInParallel();
 
                 await AddPopUp(popup, transition);
-                await Waiting.Hide(waitingVersion);
+                await Dialogs.Current.HideWaiting(waitingVersion);
 
                 if (revisiting)
                     await popup.OnRevisited.Raise(new RevisitingEventArgs());
@@ -90,8 +88,8 @@ namespace Zebble
 
             if (awaitResult)
                 return await ((IPopupWithResult<TResult>)popup).ResultTask.Task;
-            else
-                return default(TResult);
+
+            return default;
         }
 
         static async Task AddPopUp(PopUp popup, PageTransition transition)
@@ -195,7 +193,7 @@ namespace Zebble
             }
 
             async Task onAnimationCompleted()
-            { 
+            {
                 await Navigated.Raise(eventArgs);
 
                 if (!CacheViewAttribute.IsCacheable(popup))

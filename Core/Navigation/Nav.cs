@@ -129,32 +129,29 @@ namespace Zebble
             await RaiseNavigating(eventArgs);
 
             LatestNavigating = DateTime.UtcNow;
-            
-                var oldPage = CurrentPage;
-                CurrentPage = page;
 
-                if (CacheViewAttribute.IsCacheable(page) && GetFromCache(page.GetType()) != page)
-                {
-                    CachedPages.RemoveWhere(x => x.GetType() == page.GetType());
-                    CachedPages.Add(page);
-                }
+            var oldPage = CurrentPage;
+            CurrentPage = page;
 
-                if (oldPage is null) await View.Root.Add(page);
-                else if (oldPage != page) await oldPage.NavigateTo(page);
+            if (CacheViewAttribute.IsCacheable(page) && GetFromCache(page.GetType()) != page)
+            {
+                CachedPages.RemoveWhere(x => x.GetType() == page.GetType());
+                CachedPages.Add(page);
+            }
 
-                // Undo the past animation.
-                if (page.Transition == PageTransition.None || page.Transition == PageTransition.Fade)
-                    UIWorkBatch.RunSync(() => page.X(0).Y(0));
+            if (oldPage is null) await View.Root.Add(page);
+            else if (oldPage != page) await oldPage.NavigateTo(page);
 
-                AddToHistory(page);
-            
+            // Undo the past animation.
+            if (page.Transition == PageTransition.None || page.Transition == PageTransition.Fade)
+                UIWorkBatch.RunSync(() => page.X(0).Y(0));
 
-            await Waiting.Hide(waitingVersion);
+            AddToHistory(page);
+
+            await Dialogs.Current.HideWaiting(waitingVersion);
 
             if (revisitedArgs != null)
                 await page.OnRevisited.Raise(revisitedArgs);
-
-
 
             await RaiseNavigated(eventArgs);
         }

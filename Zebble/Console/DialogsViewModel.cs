@@ -13,7 +13,7 @@ namespace Zebble.Mvvm
 
         void DoShowWaiting(bool block) => WriteLine($"({(block ? "wait" : "loading")}...)", ConsoleColor.DarkGray);
 
-        void DoHideWaiting() { }
+        void DoHideWaiting(Guid? version = null) { }
 
         void DoToast(string message)
         {

@@ -10,8 +10,8 @@ namespace Zebble.Mvvm
         void DoShowWaiting(bool block)
             => Dialogs.Current.ShowWaiting(block).RunInParallel();
 
-        void DoHideWaiting()
-            => Dialogs.Current.HideWaiting().RunInParallel();
+        void DoHideWaiting(Guid? version = null)
+            => Dialogs.Current.HideWaiting(version).RunInParallel();
 
         void DoToast(string message)
             => Dialogs.Current.Toast(message).RunInParallel();

@@ -3,10 +3,10 @@ namespace Zebble
     using System;
     using System.Threading.Tasks;
 
-    partial class Waiting
+    class Waiting
     {
         const int TOP_MOST = 10000;
-        public readonly static Overlay Overlay = new Overlay().CssClass("waiting-overlay");
+        readonly static Overlay Overlay = new Overlay().CssClass("waiting-overlay");
 
         static View indicator;
         public static View Indicator
@@ -42,10 +42,10 @@ namespace Zebble
             });
         }
 
-        internal static Task Hide(Guid version) => ShownVersion == version ? Hide() : Task.CompletedTask;
-
-        public static async Task Hide()
+        public static async Task Hide(Guid? version = null)
         {
+            if (version is not null && ShownVersion != version) return;
+
             await Overlay.Hide();
 
             if (Indicator.Opacity != 0) Indicator.Opacity(0);

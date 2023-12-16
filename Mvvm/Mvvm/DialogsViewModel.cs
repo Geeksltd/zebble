@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 
 namespace Zebble.Mvvm
@@ -10,7 +11,7 @@ namespace Zebble.Mvvm
 
         public void ShowWaiting(bool block = true) => DoShowWaiting(block);
 
-        public void HideWaiting() => DoHideWaiting();
+        public void HideWaiting(Guid? version = null) => DoHideWaiting(version);
 
         public void Toast(string message) => DoToast(message);
 

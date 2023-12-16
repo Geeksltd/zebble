@@ -43,13 +43,13 @@ namespace Zebble
             else IsFirstTime = false;
 
             await StartingContentLoad.Raise();
-            await Waiting.Show(false);
+            await Dialogs.Current.ShowWaiting(false);
 
             foreach (var c in ChildrenToLoad) await base.Add(c);
 
             var first = ChildrenToLoad.FirstOrDefault();
-            if (first != null) await first.WhenShown(Waiting.Hide);
-            else await Waiting.Hide();
+            if (first != null) await first.WhenShown(() => Dialogs.Current.HideWaiting());
+            else await Dialogs.Current.HideWaiting();
 
             ChildrenToLoad.Clear();
         }

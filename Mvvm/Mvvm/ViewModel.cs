@@ -1,11 +1,31 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
+using System.Linq;
+using System.Reflection;
 using System.Threading.Tasks;
 using Olive;
 
 namespace Zebble.Mvvm
 {
-    public abstract partial class ViewModel
+    public abstract partial class ViewModel : INotifyPropertyChanged
     {
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected ViewModel()
+        {
+            var bindables = GetType()
+                .GetPropertiesAndFields(BindingFlags.Public | BindingFlags.Instance)
+               .Where(c => c.GetPropertyOrFieldType().IsA<Bindable>()).ToArray();
+
+            foreach (var bindableProperty in bindables)
+            {
+                dynamic bindable = bindableProperty.GetValue(this);
+                Action apply = () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(bindableProperty.Name));
+                bindable.Changed += apply;
+            }
+        }
+
         protected internal virtual Task EagerLoad() => Task.CompletedTask;
 
         #region Hide default members

@@ -20,10 +20,19 @@ namespace Zebble.Mvvm
 
             foreach (var bindableProperty in bindables)
             {
-                dynamic bindable = bindableProperty.GetValue(this);
-                Action apply = () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(bindableProperty.Name));
-                bindable.Changed += apply;
+                var bindable = bindableProperty.GetValue(this) as Bindable;
+                if (bindable is null) continue;
+                var changedEvent = bindable.GetType().GetEvent("Changed");
+                if (changedEvent is null) continue;
+                changedEvent.AddEventHandler(bindable, () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(bindableProperty.Name)));
             }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public EventHandler Call(string name)
+        {
+            var method = GetType().GetMethod(name) ?? throw new Exception("No method found named: " + name);
+            return new EventHandler((sender, args) => method.Invoke(this, null));
         }
 
         protected internal virtual Task EagerLoad() => Task.CompletedTask;

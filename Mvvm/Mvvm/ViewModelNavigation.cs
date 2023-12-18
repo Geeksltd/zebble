@@ -8,8 +8,8 @@ namespace Zebble.Mvvm
     {
         protected PageTransition Transition;
         readonly FullScreen From;
-        Func<Task> RealGo, RealBack, RealForward, RealReplace, RealShowPopup;
-        static Func<Task> RealReload;
+        public Func<Task> RealGo, RealBack, RealForward, RealReplace, RealShowPopup;
+        public static Func<Task> RealReload;
         Func<Task> RealHidePopup = () => Task.CompletedTask;
         readonly ViewModel Target;
 

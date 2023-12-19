@@ -12,22 +12,6 @@ namespace Zebble.Mvvm
         [EditorBrowsable(EditorBrowsableState.Never)]
         public event PropertyChangedEventHandler PropertyChanged;
 
-        protected ViewModel()
-        {
-            var bindables = GetType()
-                .GetPropertiesAndFields(BindingFlags.Public | BindingFlags.Instance)
-               .Where(c => c.GetPropertyOrFieldType().IsA<Bindable>()).ToArray();
-
-            foreach (var bindableProperty in bindables)
-            {
-                var bindable = bindableProperty.GetValue(this) as Bindable;
-                if (bindable is null) continue;
-                var changedEvent = bindable.GetType().GetEvent("Changed");
-                if (changedEvent is null) continue;
-                changedEvent.AddEventHandler(bindable, () => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(bindableProperty.Name)));
-            }
-        }
-
         [EditorBrowsable(EditorBrowsableState.Never)]
         public EventHandler Call(string name)
         {

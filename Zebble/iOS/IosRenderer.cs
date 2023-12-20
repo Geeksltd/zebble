@@ -44,7 +44,8 @@ namespace Zebble
 
                 ConfigureCommonSettings();
                 HandleEvents();
-                AddGestures();
+
+                if (view.HandlesGestures()) AddGestures();
 
                 if (view.Tapped.IsHandled() || view.Panning.IsHandled() || view.Swiped.IsHandled() || view.PanFinished.IsHandled()
                     || view.LongPressed.IsHandled())

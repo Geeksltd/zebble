@@ -60,6 +60,8 @@ namespace Zebble
 
         internal readonly Length[] Lengths;
 
+        protected internal virtual bool HandlesGestures() => new IAsyncEvent[] { Touched, Tapped, Swiped, LongPressed, Panning, PanFinished, Pinching, UserRotating }.Any(v => v.IsHandled());
+
         protected View()
         {
             CssReference = new CssReference(GetType());
@@ -428,7 +430,7 @@ namespace Zebble
             x.GetFields(BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy)
             .Where(v => v.FieldType.IsA<AbstractAsyncEvent>()).ToArray());
 
-            fields.Select(v => v.GetValue(this)).OfType<AbstractAsyncEvent>().Do(v => v.Dispose());            
+            fields.Select(v => v.GetValue(this)).OfType<AbstractAsyncEvent>().Do(v => v.Dispose());
         }
 
         [EscapeGCop("It's a special case, so async void is fine.")]

@@ -42,7 +42,9 @@ namespace Zebble
             NativeElement.MaxHeight = NativeElement.MaxWidth = double.MaxValue;
 
             NativeResult.Loaded += NativeResult_Loaded;
-            GestureRecognizer = new UWPGestureRecognizer(NativeResult, View);
+
+            if (View.HandlesGestures())
+                GestureRecognizer = new UWPGestureRecognizer(NativeResult, View);
 
             if (!View.IsEffectivelyVisible()) NativeResult.Visibility = xaml.Visibility.Collapsed;
             if (View.Opacity != 1) OnOpacityChanged(new UIChangedEventArgs<float>(View, View.Opacity));

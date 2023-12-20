@@ -17,10 +17,10 @@ namespace Zebble
 
             UITapGestureRecognizer tapRecognizer = null;
 
-            if (!(View is TextInput))
-            {
-                if (View.Touched.IsHandled()) HandleFirstTouch();
+            if (View.Touched.IsHandled()) HandleFirstTouch();
 
+            if (View.Tapped.IsHandled())
+            {
                 tapRecognizer = new UITapGestureRecognizer(g =>
                 {
                     if (IsDead(out var view)) return;

@@ -1,5 +1,6 @@
 namespace Zebble
 {
+    using Olive;
     using System;
     using System.Reflection;
     using System.Linq;
@@ -10,8 +11,9 @@ namespace Zebble
     using BaseNativeType = Android.Views.View;
 #elif UWP
     using BaseNativeType = Windows.UI.Xaml.FrameworkElement;
+#elif MAUIWindows
+using BaseNativeType = object;
 #endif
-    using Olive;
 
     internal interface IRenderOrchestrator : IDisposable { Task<BaseNativeType> Render(); }
 

@@ -10,6 +10,8 @@ namespace Zebble
     [Preserve]
 #elif UWP
     using BaseNativeType = Windows.UI.Xaml.FrameworkElement;
+#else
+    using BaseNativeType = object;
 #endif
 
     public interface IRenderedBy<TRenderer> : IRenderedBy where TRenderer : INativeRenderer { }

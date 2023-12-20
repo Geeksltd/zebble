@@ -94,7 +94,7 @@ namespace Zebble
 #elif ANDROID
                     return Device.Scale.ToZebble((native as Android.Views.View).TranslationX);
 #else
-                    throw new NotSupportedException();
+                    return 0f;
 #endif
                 });
             }
@@ -119,7 +119,7 @@ namespace Zebble
 #elif ANDROID
                     return Device.Scale.ToZebble((native as Android.Views.View).TranslationY);
 #else
-                    throw new NotSupportedException();
+                    return 0f;
 #endif
                 });
             }

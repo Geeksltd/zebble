@@ -10,13 +10,6 @@ namespace Zebble
 
     partial class UIRuntime
     {
-        /// <summary>
-        /// This will be called whenever a new url opens in app
-        /// </summary>
-        public static readonly AsyncEvent<Tuple<IActivatedEventArgs, Window>> OnActivated = new();
-
-        public static readonly AsyncEvent<Dictionary<string, string>> OnParameterRecieved = new();
-
         private static bool? isDevMode;
 
         /// <summary>
@@ -41,6 +34,13 @@ namespace Zebble
                 isDevMode = value;
             }
         }
+
+        /// <summary>
+        /// This will be called whenever a new url opens in app
+        /// </summary>
+        public static readonly AsyncEvent<Tuple<IActivatedEventArgs, Window>> OnActivated = new();
+
+        public static readonly AsyncEvent<Dictionary<string, string>> OnParameterRecieved = new();
 
         public static bool SkipPageRefresh = false;
     }

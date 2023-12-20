@@ -9,7 +9,6 @@ namespace Zebble
 
     partial class StartUp
     {
-
         public abstract string GetResourcesVersion();
 
         /// <summary>
@@ -47,7 +46,7 @@ namespace Zebble
 
         protected virtual bool DeleteFilesOnUpdate() => true;
 
-        void ConfigureIO()
+        protected virtual void ConfigureIO()
         {
             if (IsTestMode())
                 IO.FilesVersion = "test-" + LocalTime.UtcNow.Ticks;

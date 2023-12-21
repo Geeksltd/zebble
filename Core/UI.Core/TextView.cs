@@ -113,9 +113,15 @@ namespace Zebble
                 if (Width.currentValue == 0) return 0;
 
                 var width = (ActualWidth - this.HorizontalPaddingAndBorder()).LimitMin(0);
-                var key = Text + Font + width + "|" + this.VerticalPaddingAndBorder();
+                var key = Text + Font + width;
 
-                var currentHeight = HeightCache.GetOrAdd(key, k => Font.GetTextHeight(width, Text) + this.VerticalPaddingAndBorder());
+                if (!HeightCache.TryGetValue(key, out var currentHeight))
+                {
+                    if (Font.TryGetTextHeight(width, Text, Height, out currentHeight))
+                        HeightCache[key] = currentHeight;
+                }
+
+                currentHeight += this.VerticalPaddingAndBorder();
 
                 if (LineHeight.HasValue)
                 {

@@ -26,8 +26,8 @@
         void HandleEvents()
         {
             View.Value.ChangedByInput += OnUserTextChanged;
-            if (!View.MultiLineAutoResize) View.UserTextChangeSubmitted.Handle(() => OnControlHeightChange());
-            else View.UserTappedOnReturnKey.Handle(() => OnUserTappedOnReturnKey());
+            if (!View.MultiLineAutoResize) View.UserTextChangeSubmitted.Handle(OnControlHeightChange);
+            else View.UserTappedOnReturnKey.Handle(OnUserTappedOnReturnKey);
         }
 
         async Task MakeInputTextBigger()

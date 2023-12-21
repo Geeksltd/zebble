@@ -273,12 +273,12 @@ namespace Zebble.AndroidOS
             {
                 if (motionEvent.Action != MotionEventActions.Down) return false;
 
-                AllGestures().Do(x => x.HandleWith(DummyHandler));
+                AllGestures().Do(x => x.Event += DummyHandler);
 
                 var gestureView = view.FindContainerGestureView();
                 var newMotionEvent = GetMotionEvent(motionEvent, gestureView, View);
 
-                AllGestures().Do(x => x.RemoveActionHandler(DummyHandler));
+                AllGestures().Do(x => x.Event -= DummyHandler);
 
                 var detectedView = gestureView.DetectHandler(newMotionEvent, View);
                 if (detectedView != View)

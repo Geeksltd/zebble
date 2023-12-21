@@ -120,7 +120,7 @@ namespace Zebble
 
             async Task None()
             {
-                if (ToView == ParentView) return;                
+                if (ToView == ParentView) return;
 
                 Duration = TimeSpan.Zero;
                 EnterAnimation = await AnimatePage(x => x.X(0).Y(0), x => x.X(0));
@@ -134,7 +134,7 @@ namespace Zebble
                     void initial(View x)
                     {
                         x.Opacity(0);
-                        x.PreRendered.Handle(() => x.Y(x.Margin.Top() + DROP_RANGE));
+                        x.PreRendered.Event += () => x.Y(x.Margin.Top() + DROP_RANGE);
                         x.Y(x.Margin.Top() + DROP_RANGE);
                     }
 
@@ -152,7 +152,7 @@ namespace Zebble
                 if (ToView != ParentView)
                 {
                     Duration = Animation.DropDuration;
-                    void initial(View x) { x.Opacity(0).PreRendered.Handle(() => x.Y(x.Margin.Top() - DROP_RANGE)); }
+                    void initial(View x) { x.Opacity(0).PreRendered.Event += () => x.Y(x.Margin.Top() - DROP_RANGE); }
                     EnterAnimation = await AnimatePage(
                         initial,
                         x => x.Opacity(1).Y(x.Margin.Top()));

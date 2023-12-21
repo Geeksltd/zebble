@@ -88,7 +88,7 @@ namespace Zebble
                 if (Direction == RepeatDirection.Vertical)
                 {
                     Height.UpdateOn(child.IgnoredChanged);
-                    child.IgnoredChanged.HandleWith(RearrangeItemsVertically);
+                    child.IgnoredChanged.Event += RearrangeItemsVertically;
 
                     if (!child.ignored)
                     {
@@ -165,7 +165,7 @@ namespace Zebble
         bool IAutoContentHeightProvider.DependsOnChildren() => true;
 
         bool IAutoContentWidthProvider.DependsOnChildren() => true;
-         
+
         public void LayoutChildren()
         {
             if (Direction == RepeatDirection.Horizontal)

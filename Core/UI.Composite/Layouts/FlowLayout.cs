@@ -14,15 +14,17 @@ namespace Zebble
 
         bool IAutoContentHeightProvider.DependsOnChildren() => true;
 
-        public override async Task OnInitializing()
+        public override async Task OnPreRender()
         {
-            await base.OnInitializing();
+            await base.OnPreRender();
 
-            Width.Changed.Handle(LayoutChildren);
-            Padding.Left.Changed.Handle(LayoutChildren);
-            Padding.Top.Changed.Handle(LayoutChildren);
-            Padding.Right.Changed.Handle(LayoutChildren);
-            ParentSet.Handle(LayoutChildren);
+            Width.Changed.Event += LayoutChildren;
+            Padding.Left.Changed.Event += LayoutChildren;
+            Padding.Top.Changed.Event += LayoutChildren;
+            Padding.Right.Changed.Event += LayoutChildren;
+            ParentSet.Event += LayoutChildren;
+
+            LayoutChildren();
         }
 
         protected override async Task OnChildAdded(View view)
@@ -31,14 +33,14 @@ namespace Zebble
 
             foreach (var length in new[] { view.Width , view.Height,
                 view.Margin.Left, view.Margin.Right, view.Margin.Bottom, view.Margin.Top})
-                length.Changed.Handle(LayoutChildren);
+                length.Changed.Event += LayoutChildren;
 
-            LayoutChildren();
+            if (IsRendered()) LayoutChildren();
         }
 
         public void LayoutChildren()
         {
-            if (parent == null) return;
+            if (parent is null) return;
 
             if (UIRuntime.IsDevMode)
             {

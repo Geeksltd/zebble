@@ -29,7 +29,7 @@ namespace Zebble
             if (AllChildren.Any()) await ReAddAllChildren();
 
             if (value == HorizontalAlignment.Center)
-                Width.Changed.HandleWith(RearrangeItemsHorizontally);
+                Width.Changed.Event += RearrangeItemsHorizontally;
         }
 
         void PlaceNewHorizontalChildren(params View[] children)
@@ -37,7 +37,7 @@ namespace Zebble
             if (IsDisposing) return;
             LinkHorizontalObjectsWidths(children);
 
-            children.Do(x => x.IgnoredChanged.HandleWith(RearrangeItemsHorizontally));
+            children.Do(x => x.IgnoredChanged.Event += RearrangeItemsHorizontally);
 
             if (HorizontalAlignment == HorizontalAlignment.Left &&
                 children.IsSingle() && children[0] == AllChildren.Last() &&

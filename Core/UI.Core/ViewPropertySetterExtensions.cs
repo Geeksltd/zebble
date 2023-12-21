@@ -128,7 +128,7 @@ namespace Zebble
             void set() => view.Margin.Top.BindTo(sibling.Height, view.Height, (sh, vh) => sh - vh);
 
             if (view.IsRendered()) set();
-            else view.PreRendered.HandleWith(set);
+            else view.PreRendered.Event += set;
 
             return view;
         }
@@ -144,7 +144,7 @@ namespace Zebble
             }
 
             if (view.IsRendered()) set();
-            else view.PreRendered.HandleWith(set);
+            else view.PreRendered.Event += set;
 
             return view;
         }
@@ -160,7 +160,7 @@ namespace Zebble
             }
 
             if (view.IsRendered()) set();
-            else view.PreRendered.HandleWith(set);
+            else view.PreRendered.Event += set;
 
             return view;
         }
@@ -196,7 +196,7 @@ namespace Zebble
         /// </summary>
         public static TView Round<TView>(this TView view) where TView : View
         {
-            view.Height.Changed.Handle(() => view.BorderRadius(view.ActualHeight / 2));
+            view.Height.Changed.Event += () => view.BorderRadius(view.ActualHeight / 2);
             return view.BorderRadius(view.ActualHeight / 2);
         }
 

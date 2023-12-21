@@ -41,7 +41,7 @@ namespace Zebble
             ApplyAutoStrategy();
 
             if (Owner.parent is null)
-                Owner.ParentSet.Handle(TryAttach);
+                Owner.ParentSet.Event += TryAttach;
             else TryAttach();
 
             void TryAttach()
@@ -57,10 +57,7 @@ namespace Zebble
 
             void HeightContainer()
             {
-                if (Owner.parent is not Stack stack)
-                {
-                    return;
-                }
+                if (Owner.parent is not Stack stack) return;
 
                 void Attach(View sibling)
                 {
@@ -76,8 +73,8 @@ namespace Zebble
                 foreach (var sibling in stack.ManagedChildren.Except(Owner))
                     Attach(sibling);
 
-                stack.ChildAdded.Handle(Attach);
-                stack.ChildRemoved.RemoveHandler(Attach);
+                stack.ChildAdded.FullEvent += Attach;
+                stack.ChildRemoved.FullEvent -= Attach;
             }
 
             void WidthContainer()
@@ -101,8 +98,8 @@ namespace Zebble
                 foreach (var sibling in stack.ManagedChildren.Except(Owner))
                     Attach(sibling);
 
-                stack.ChildAdded.Handle(Attach);
-                stack.ChildRemoved.RemoveHandler(Attach);
+                stack.ChildAdded.FullEvent += Attach;
+                stack.ChildRemoved.FullEvent -= Attach;
             }
 
             void HeightContent()
@@ -126,12 +123,12 @@ namespace Zebble
                 foreach (var sibling in stack.ManagedChildren)
                     Attach(sibling);
 
-                stack.ChildAdded.Handle(Attach);
-                stack.ChildRemoved.RemoveHandler(Attach);
+                stack.ChildAdded.FullEvent += Attach;
+                stack.ChildRemoved.FullEvent -= Attach;
             }
 
             void WidthContent()
-             {
+            {
                 if (Owner is not Stack stack)
                 {
                     return;
@@ -151,8 +148,8 @@ namespace Zebble
                 foreach (var sibling in stack.ManagedChildren.Except(Owner))
                     Attach(sibling);
 
-                stack.ChildAdded.Handle(Attach);
-                stack.ChildRemoved.RemoveHandler(Attach);
+                stack.ChildAdded.FullEvent += Attach;
+                stack.ChildRemoved.FullEvent -= Attach;
             }
 
             return this;

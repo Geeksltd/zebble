@@ -78,8 +78,10 @@ namespace Zebble
             Style = new Stylesheet(this, isCss: false);
             Css = new Stylesheet(this, isCss: true);
 
-            new[] { Margin.Left, Margin.Right }.Do(x => x.Changed.HandleWith(OnHorizontalMarginChanged));
-            new[] { Margin.Top, Margin.Bottom }.Do(x => x.Changed.HandleWith(OnVerticalMarginChanged));
+            Margin.Left.Changed.Event += OnHorizontalMarginChanged;
+            Margin.Right.Changed.Event += OnHorizontalMarginChanged;
+            Margin.Top.Changed.Event += OnVerticalMarginChanged;
+            Margin.Bottom.Changed.Event += OnVerticalMarginChanged;
 
             if (UIRuntime.IsDevMode)
             {

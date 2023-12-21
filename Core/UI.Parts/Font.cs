@@ -11,10 +11,11 @@ namespace Zebble
         float EffectiveSize { get; }
         bool Bold { get; }
         bool Italic { get; }
-        float GetTextWidth(string text);
+        float GetTextWidth(string text);        
         float GetTextHeight(float width, string text);
         float GetLineHeight();
         float GetUnwantedExtraTopPadding();
+        bool TryGetTextHeight(float width, string text, Length height, out float result);
     }
 
     public partial class Font : IFont

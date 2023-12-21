@@ -233,7 +233,7 @@ namespace Zebble
         {
             Focused.ClearBindings();
             Value.ClearBindings();
-             
+
             AutoResizer = null;
             InputChanged = null;
 
@@ -261,6 +261,6 @@ namespace Zebble
             (nextField as TextInput)?.Focus();
         }
 
-        public void AddBinding(Bindable bindable) => UserTextChanged.Handle(() => (bindable as TwoWayBindable<string>).SetByInput(Text));
+        public void AddBinding(Bindable bindable) => UserTextChanged.Event += () => (bindable as TwoWayBindable<string>).SetByInput(Text);
     }
 }

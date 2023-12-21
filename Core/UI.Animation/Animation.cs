@@ -71,7 +71,7 @@
             using (await StartedLock.Lock())
             {
                 if (IsStarted) isStarted = true;
-                else NativeStarted.Handle(handler);
+                else NativeStarted.Event += handler;
             }
 
             if (isStarted) handler.Invoke();

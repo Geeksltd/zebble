@@ -109,8 +109,8 @@ namespace Zebble
                 if (UIRuntime.IsDevMode && Owner is ScrollView && value.HasValue())
                     throw new Exception("ScrollView cannot accept a background image directly. Either set it for its container or first (wrapper) child.");
 
-                Owner.Width.Changed.HandleWith(Owner.UpdateBackgroundImageIfNeeded);
-                Owner.Height.Changed.HandleWith(Owner.UpdateBackgroundImageIfNeeded);
+                Owner.Width.Changed.Event += Owner.UpdateBackgroundImageIfNeeded;
+                Owner.Height.Changed.Event += Owner.UpdateBackgroundImageIfNeeded;
 
                 Change(ref BackgroundImagePathChangeTracker, ref backgroundImagePath, value,
                     () => Owner.RaiseBackgroundImageChanged());
@@ -160,8 +160,8 @@ namespace Zebble
 
                 backgroundImageData = value;
                 Owner.RaiseBackgroundImageChanged();
-                Owner.Width.Changed.HandleWith(Owner.UpdateBackgroundImageIfNeeded);
-                Owner.Height.Changed.HandleWith(Owner.UpdateBackgroundImageIfNeeded);
+                Owner.Width.Changed.Event += Owner.UpdateBackgroundImageIfNeeded;
+                Owner.Height.Changed.Event += Owner.UpdateBackgroundImageIfNeeded;
             }
         }
 

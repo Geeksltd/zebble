@@ -97,10 +97,10 @@ namespace Zebble
             void waiter()
             {
                 completionTask.TrySetResult(result: true);
-                this.RemoveActionHandler(waiter);
+                this.Event -= waiter;
             }
 
-            this.HandleWith(waiter);
+            this.Event += waiter;
             return completionTask.Task;
         }
 

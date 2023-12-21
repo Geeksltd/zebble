@@ -172,7 +172,7 @@ namespace Zebble
             view.Height.Changed.RemoveHandler(RaiseContentSizeChanged);
             view.Width.Changed.RemoveHandler(RaiseContentSizeChanged);
 
-            RaiseContentSizeChanged();
+            RaiseContentSizeChanged().GetAwaiter();
         }
 
         float CalculateContentWidth()

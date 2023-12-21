@@ -46,7 +46,7 @@ namespace Zebble
 
             if (Type == LengthType.Y || Type == LengthType.Height)
             {
-                if (owner.parent is null) owner.ParentSet.HandleWith(UpdateNonStackParentHeight);
+                if (owner.parent is null) owner.ParentSet.Event += UpdateNonStackParentHeight;
                 else UpdateNonStackParentHeight();
             }
 

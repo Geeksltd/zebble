@@ -7,6 +7,7 @@ namespace Zebble
     {
         readonly Func<Bindable<TSource>> TypedSource;
         readonly Func<TSource, TProperty> ValueExpression;
+
         IBinding<TSource> CurrentBinding;
 
         public DynamicPropertyBinding(object target, string propertyName, Func<Bindable<TSource>> source, Func<TSource, TProperty> valueExpression)
@@ -23,10 +24,11 @@ namespace Zebble
         }
     }
 
-    class DynamicPropertyBinding : IDisposable
+    class DynamicPropertyBinding : IEquatable<DynamicPropertyBinding>, IDisposable
     {
         protected object Target;
         protected string PropertyName;
+
         Func<IBindable> Source;
         IBinding CurrentBinding;
 
@@ -53,6 +55,18 @@ namespace Zebble
             Source = null;
             CurrentBinding = null;
             Target = null;
+        }
+
+        public static bool operator ==(DynamicPropertyBinding @this, DynamicPropertyBinding that)
+            => @this.Equals(that);
+
+        public static bool operator !=(DynamicPropertyBinding @this, DynamicPropertyBinding that)
+            => @this.Equals(that) == false;
+
+        public bool Equals(DynamicPropertyBinding other)
+        {
+            if (other is null) return false;
+            return Target == other.Target && PropertyName == other.PropertyName;
         }
     }
 }

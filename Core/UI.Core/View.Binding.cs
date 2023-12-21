@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Olive;
@@ -40,6 +39,14 @@ namespace Zebble
         internal void RegisterPropertyBinding(DynamicPropertyBinding definition)
         {
             if (definition is null) return;
+
+            var existing = DynamicBindings.SingleOrDefault(x => x == definition);
+
+            if (existing is not null)
+            {
+                existing.Dispose();
+                DynamicBindings.Remove(existing);
+            }
 
             DynamicBindings.Add(definition);
             definition.Apply();

@@ -40,13 +40,13 @@ namespace Zebble
         {
             if (definition is null) return;
 
-            var existing = DynamicBindings.SingleOrDefault(x => x == definition);
-
-            if (existing is not null)
-            {
-                existing.Dispose();
-                DynamicBindings.Remove(existing);
-            }
+            DynamicBindings
+                .Where(x => x == definition)
+                .Do(x =>
+                {
+                    x.Dispose();
+                    DynamicBindings.Remove(x);
+                });
 
             DynamicBindings.Add(definition);
             definition.Apply();

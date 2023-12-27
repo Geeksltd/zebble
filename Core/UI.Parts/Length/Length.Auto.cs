@@ -40,9 +40,8 @@ namespace Zebble
             AutoOption = strategy;
             ApplyAutoStrategy();
 
-            if (Owner.parent is null)
-                Owner.ParentSet.Event += TryAttach;
-            else TryAttach();
+            if (Owner.parent is not null) TryAttach();
+            else Owner.ParentSet.Event += TryAttach;
 
             void TryAttach()
             {
@@ -57,7 +56,7 @@ namespace Zebble
 
             void HeightContainer()
             {
-                if (Owner.parent is not Stack stack) return;
+                if (Owner?.parent is not Stack stack) return;
 
                 void Attach(View sibling)
                 {
@@ -79,10 +78,7 @@ namespace Zebble
 
             void WidthContainer()
             {
-                if (Owner.parent is not Stack stack)
-                {
-                    return;
-                }
+                if (Owner?.parent is not Stack stack) return;
 
                 void Attach(View sibling)
                 {
@@ -104,10 +100,7 @@ namespace Zebble
 
             void HeightContent()
             {
-                if (Owner is not Stack stack)
-                {
-                    return;
-                }
+                if (Owner is not Stack stack) return;
 
                 void Attach(View sibling)
                 {
@@ -129,10 +122,7 @@ namespace Zebble
 
             void WidthContent()
             {
-                if (Owner is not Stack stack)
-                {
-                    return;
-                }
+                if (Owner is not Stack stack) return;
 
                 void Attach(View sibling)
                 {

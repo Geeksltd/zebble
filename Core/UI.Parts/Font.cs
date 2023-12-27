@@ -15,7 +15,6 @@ namespace Zebble
         float GetTextHeight(float width, string text);
         float GetLineHeight();
         float GetUnwantedExtraTopPadding();
-        bool TryGetTextHeight(float width, string text, Length height, out float result);
     }
 
     public partial class Font : IFont

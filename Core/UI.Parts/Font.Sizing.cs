@@ -57,48 +57,12 @@ namespace Zebble
             if (text.Sum(x => x.IsLower() ? 0.3 : 0.5) * GetLineHeight() < 0.7 * width)
                 return TextHeightCache[key] = GetLineHeight();
 
-            return Thread.UI.Run(() =>
-             {
-                 result = CalculateTextHeight(width, text.OrEmpty());
-                 if (result != 0 || EffectiveSize == 0)
-                     return TextHeightCache[key] = result;
+            result = Thread.UI.Run(() => CalculateTextHeight(width, text.OrEmpty()));
+            if (result != 0 || EffectiveSize == 0)
+                return TextHeightCache[key] = result;
 
-                 Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
-                 return 0;
-             });
-        }
-
-        public bool TryGetTextHeight(float width, string text, Length height, out float result)
-        {
-            if (width == 0) { result = 0; return true; }
-            if (text.IsEmpty()) text = "Tg";
-            var key = ToString() + "|" + text + "||" + width;
-
-            if (TextHeightCache.TryGetValue(key, out result)) return true;
-
-            var lineHeight = GetLineHeight();
-
-            // Definitely single line?
-            if (text.Sum(x => x.IsLower() ? 0.3 : 0.5) * lineHeight < 0.7 * width)
-            {
-                result = TextHeightCache[key] = lineHeight;
-                return true;
-            }
-
-            Thread.UI.Post(() =>
-            {
-                var val = CalculateTextHeight(width, text.OrEmpty());
-                if (val != 0 || EffectiveSize == 0)
-                {
-                    TextHeightCache[key] = val;
-                    height.Update();
-                    Thread.UI.Post(height.Update);
-                }
-                else Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
-            });
-            var estimatedLines = text.ToLines().Sum(line => Math.Ceiling(line.Length * 0.7 * lineHeight / width));
-            result = GetLineHeight() * (int)estimatedLines;
-            return false;
+            Debug.WriteLine("Font problem!!! Text height was calculated as zero for " + key);
+            return 0;
         }
 
         public float GetLineHeight() => LineHeightCache.GetOrAdd(ToString(), () => CalculateFontLineHeight());

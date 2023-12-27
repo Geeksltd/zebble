@@ -110,7 +110,9 @@ namespace Zebble
                 Delegate = new LongPressGestureRecognizerDelegate()
             };
 
-            longPressGestureRecognizer.ShouldBeRequiredToFailByGestureRecognizer(tapRecognizer);
+            if (tapRecognizer is not null)
+                longPressGestureRecognizer.ShouldBeRequiredToFailByGestureRecognizer(tapRecognizer);
+
             Result.AddGestureRecognizer(longPressGestureRecognizer);
         }
 

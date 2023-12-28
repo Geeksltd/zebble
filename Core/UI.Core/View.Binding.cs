@@ -34,7 +34,7 @@ namespace Zebble
 
     partial class View
     {
-        ConcurrentList<DynamicPropertyBinding> DynamicBindings = new();
+        readonly ConcurrentList<DynamicPropertyBinding> DynamicBindings = new();
 
         internal void RegisterPropertyBinding(DynamicPropertyBinding definition)
         {

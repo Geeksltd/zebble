@@ -286,7 +286,7 @@ namespace Zebble.UWP
         void AutoMoveTo(double? horizontal = null, double? vertical = null, bool animate = true)
         {
             IsMovingByCode = true;
-            Result.ChangeView(horizontal, verticalOffset: vertical, zoomFactor: null, disableAnimation: !animate);
+            Result?.ChangeView(horizontal, verticalOffset: vertical, zoomFactor: null, disableAnimation: !animate);
         }
 
         public void Dispose()

@@ -9,7 +9,7 @@ namespace Zebble
     {
         const int TAP_MOVE_THRESHHOLD = 10;
 
-        PannedEventArgs PreviousRefrence;
+        PannedEventArgs PreviousReference;
 
         void AddGestures()
         {
@@ -118,13 +118,14 @@ namespace Zebble
 
         void HandlePanning()
         {
-            var secoundPoint = new Point();
             var panGestureRecognizer = new UIPanGestureRecognizer(g =>
             {
                 if (IsDead(out var view)) return;
 
                 var nativePoint = g.LocationInView(Result.Superview);
-                Point firstPoint;
+                var firstPoint = new Point();
+                var fromPoint = new Point();
+                var toPoint = new Point();
 
                 var nativeVelocity = g.VelocityInView(g.View);
                 var velocityPoint = new Point((float)nativeVelocity.X, (float)nativeVelocity.Y);
@@ -132,16 +133,16 @@ namespace Zebble
 
                 if (g.State == UIGestureRecognizerState.Began)
                 {
-                    secoundPoint = new Point((float)nativePoint.X, (float)nativePoint.Y);
+                    firstPoint = fromPoint = toPoint = new Point((float)nativePoint.X, (float)nativePoint.Y);
                 }
 
                 if (g.State == UIGestureRecognizerState.Changed)
                 {
-                    firstPoint = secoundPoint;
-                    secoundPoint = new Point((float)nativePoint.X, (float)nativePoint.Y);
+                    fromPoint = toPoint;
+                    toPoint = new Point((float)nativePoint.X, (float)nativePoint.Y);
 
-                    var arg = new PannedEventArgs(view, firstPoint, secoundPoint, velocityPoint, touches) { PreviousEvent = PreviousRefrence };
-                    PreviousRefrence = arg;
+                    var arg = new PannedEventArgs(view, fromPoint, toPoint, velocityPoint, touches) { PreviousEvent = PreviousReference };
+                    PreviousReference = arg;
                     view.RaisePanning(arg);
 
                     g.SetTranslation(CoreGraphics.CGPoint.Empty, Result);
@@ -149,11 +150,10 @@ namespace Zebble
 
                 if (g.State == UIGestureRecognizerState.Ended)
                 {
-                    firstPoint = secoundPoint;
-                    secoundPoint = new Point((float)nativePoint.X, (float)nativePoint.Y);
+                    toPoint = new Point((float)nativePoint.X, (float)nativePoint.Y);
 
-                    var arg = new PannedEventArgs(view, firstPoint, secoundPoint, velocityPoint, touches) { PreviousEvent = PreviousRefrence };
-                    PreviousRefrence = arg;
+                    var arg = new PannedEventArgs(view, firstPoint, toPoint, velocityPoint, touches) { PreviousEvent = PreviousReference };
+                    PreviousReference = arg;
                     view.RaisePanFinished(arg);
                 }
             });

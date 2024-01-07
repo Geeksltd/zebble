@@ -118,12 +118,12 @@ namespace Zebble
 
         void HandlePanning()
         {
+            var firstPoint = new Point();
             var panGestureRecognizer = new UIPanGestureRecognizer(g =>
             {
                 if (IsDead(out var view)) return;
 
                 var nativePoint = g.LocationInView(Result.Superview);
-                var firstPoint = new Point();
                 var fromPoint = new Point();
                 var toPoint = new Point();
 

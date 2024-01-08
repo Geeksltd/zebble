@@ -89,5 +89,7 @@
                 throw new Exception($"Could not find the font '{Name}'.", ex);
             }
         }
+
+        static float GetScaledFontSize(float fontSize) => fontSize;
     }
 }

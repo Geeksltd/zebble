@@ -9,5 +9,6 @@
         public static string DefaultSystemFont => throw new NotSupportedException();
         float CalculateTextWidth(string text) => throw new NotSupportedException();
         float CalculateFontLineHeight() => throw new NotSupportedException();
+        static float GetScaledFontSize(float fontSize) => throw new NotSupportedException();
     }
 }

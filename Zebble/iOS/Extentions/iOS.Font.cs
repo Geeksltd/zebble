@@ -63,5 +63,7 @@ namespace Zebble
             if (Name == DefaultSystemFont) return UIFont.SystemFontOfSize(EffectiveSize);
             else return UIFont.FromName(GetFontName(Name), EffectiveSize);
         }
+
+        static float GetScaledFontSize(float fontSize) => (float)new UIFontMetrics(UIFontTextStyle.Body.GetConstant()).GetScaledValue(fontSize * 1.2f);
     }
 }

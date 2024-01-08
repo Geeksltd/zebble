@@ -22,7 +22,7 @@ namespace Zebble
         /// <summary>
         /// Multiplies the font size by the FontSizeScale.
         /// </summary>
-        public float EffectiveSize => FontSizeScale * Size;
+        public float EffectiveSize => GetScaledFontSize(FontSizeScale * Size);
 
         public float GetUnwantedExtraTopPadding()
         {

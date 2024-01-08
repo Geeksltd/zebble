@@ -62,7 +62,7 @@ namespace Zebble
 
         Paint CreatePaint()
         {
-            var paint = new Paint { TextSize = EffectiveSize };
+            var paint = new Paint { TextSize = EffectiveSize, };
 
             paint.SetTypeface(Render());
             paint.SetStyle(Paint.Style.Fill);
@@ -104,5 +104,7 @@ namespace Zebble
             FontCache[ToString()] = result;
             return result;
         }
+
+        static float GetScaledFontSize(float fontSize) => fontSize;
     }
 }

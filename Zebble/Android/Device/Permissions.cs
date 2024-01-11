@@ -152,7 +152,8 @@ namespace Zebble.Device
                     report(Manifest.Permission.WriteExternalStorage);
                     break;
                 case Permission.LocalNotification:
-                    report(Manifest.Permission.ReceiveBootCompleted);
+                    if (Build.VERSION.SdkInt >= BuildVersionCodes.Tiramisu)
+                        report(Manifest.Permission.PostNotifications);
                     break;
                 case Permission.RecordAudio:
                     report(Manifest.Permission.RecordAudio);

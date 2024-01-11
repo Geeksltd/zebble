@@ -151,6 +151,9 @@ namespace Zebble.Device
                     report(Manifest.Permission.ReadExternalStorage);
                     report(Manifest.Permission.WriteExternalStorage);
                     break;
+                case Permission.LocalNotification:
+                    report(Manifest.Permission.ReceiveBootCompleted);
+                    break;
                 case Permission.RecordAudio:
                     report(Manifest.Permission.RecordAudio);
                     report(Manifest.Permission.ModifyAudioSettings);

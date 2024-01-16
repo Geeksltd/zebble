@@ -26,6 +26,7 @@ namespace Zebble.IOS
 
             var nativeRoot = (await UIRuntime.Render(UIRuntime.RenderRoot)).Native();
             nativeRoot.AddGestureRecognizer(Renderer.AddHardwareBackGesture());
+            nativeRoot.AddGestureRecognizer(Renderer.AddHideKeyboardGesture(nativeRoot));
 
             // This will resize the root to full screen size on device rotation
             nativeRoot.AutoresizingMask = UIViewAutoresizing.FlexibleBottomMargin | UIViewAutoresizing.FlexibleWidth | UIViewAutoresizing.FlexibleHeight;

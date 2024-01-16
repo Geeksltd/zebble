@@ -244,6 +244,16 @@ namespace Zebble
                 Edges = UIRectEdge.Left
             };
         }
+
+        internal static UIGestureRecognizer AddHideKeyboardGesture(UIView view)
+        {
+            void HideKeyboard() => view.EndEditing(true);
+
+            return new UITapGestureRecognizer(HideKeyboard)
+            {
+                NumberOfTapsRequired = 1
+            };
+        }
     }
 
     class LongPressGestureRecognizerDelegate : UIGestureRecognizerDelegate

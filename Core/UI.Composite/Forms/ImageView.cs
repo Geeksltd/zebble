@@ -28,7 +28,7 @@ namespace Zebble
             }
         }
 
-        public string Path
+        public virtual string Path
         {
             get => BackgroundImagePath;
             set

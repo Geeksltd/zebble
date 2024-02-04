@@ -62,6 +62,20 @@ namespace Zebble.AndroidOS
             return this;
         }
 
+        protected override void OnDraw(Canvas canvas)
+        {
+            if (IsDead(out var view)) return;
+            
+            try
+            {
+                base.OnDraw(canvas);
+            }
+            catch
+            {
+                // This error occasionally happens when the bitmap is recycled.                
+            }
+        }
+
         public void Apply(string property, UIChangedEventArgs change)
         {
             if (property == "BackgroundColor") BackgroundColorChanged((UIChangedEventArgs<Zebble.Color>)change);
@@ -92,7 +106,7 @@ namespace Zebble.AndroidOS
         {
             if (View == null || View.IsDisposing || !View.IsRendered() || !View.IsShown) return;
             if (Source is null) return; // Not rendered yet.
-            
+
             if (Source != ImageService.GetSource(View))
             {
                 LoadImage();
@@ -117,7 +131,7 @@ namespace Zebble.AndroidOS
         {
             if (!this.IsAlive()) return;
             DrawnImageKey = GetDrawingKey();
-            
+
             var image = imageObj as Bitmap;
 
             if (View?.IsDisposing != false) return;
@@ -140,14 +154,14 @@ namespace Zebble.AndroidOS
             if (bm != null) DisposeDrawable();
             base.SetImageBitmap(bm);
         }
-        
+
         void LoadImage()
         {
             EventHandlerDisposer.DisposeAll();
             if (View == null || View.IsDisposing) return;
 
             var key = View.GetBackgroundImageKey();
-            if (LoadedImageKey == key) return;            
+            if (LoadedImageKey == key) return;
             LoadedImageKey = key;
 
             var oldSource = Source;

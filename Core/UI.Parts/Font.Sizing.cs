@@ -42,7 +42,7 @@ namespace Zebble
             if (text.IsEmpty()) return 0;
             var key = ToString() + "|" + text;
             return TextWidthCache.GetOrAdd(key,
-                () => Thread.UI.Run(() => CalculateTextWidth(text.OrEmpty())));
+                () => Thread.UI.Run(() => 1 + (float)Math.Ceiling(CalculateTextWidth(text.OrEmpty()))));
         }
 
         public float GetTextHeight(float width, string text)
@@ -57,7 +57,7 @@ namespace Zebble
             if (text.Sum(x => x.IsLower() ? 0.3 : 0.5) * GetLineHeight() < 0.7 * width)
                 return TextHeightCache[key] = GetLineHeight();
 
-            result = Thread.UI.Run(() => CalculateTextHeight(width, text.OrEmpty()));
+            result = Thread.UI.Run(() => 1 + (float)Math.Ceiling(CalculateTextHeight(width, text.OrEmpty())));
             if (result != 0 || EffectiveSize == 0)
                 return TextHeightCache[key] = result;
 

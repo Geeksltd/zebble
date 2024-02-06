@@ -20,7 +20,9 @@ namespace Zebble
         public override void Apply()
         {
             CurrentBinding?.Remove();
-            CurrentBinding = TypedSource.Invoke().AddBinding(Target, PropertyName, ValueExpression);
+
+            if (Target is null) Dispose();
+            else CurrentBinding = TypedSource.Invoke().AddBinding(Target, PropertyName, ValueExpression);
         }
     }
 

@@ -38,7 +38,7 @@ namespace Zebble.Device
 
         static HttpClient CreateHttpClient(string hostName, TimeSpan timeout, string scheme = "http", int port = 80)
         {
-            if (hostName.ContainsAny(new[] { "/", ":" })) throw new Exception($"Invalid host name format: {hostName}");
+            if (hostName.ContainsAny(new[] { "/", ":" })) throw new HttpRequestException($"Invalid host name format: {hostName}");
 
             var client = Context.Current.GetService<IHttpClientFactory>().CreateClient("default");
 
@@ -158,7 +158,7 @@ namespace Zebble.Device
 
             if (data is null)
             {
-                error ??= new Exception(retries + " attempts to download a URL all failed: " + url);
+                error ??= new HttpRequestException(retries + " attempts to download a URL all failed: " + url);
                 source.TrySetException(error);
             }
             else source.TrySetResult(data);

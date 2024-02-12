@@ -195,7 +195,7 @@ namespace Zebble
                 if (ignored == value) return;
                 if (Owner.IsRendered())
                 {
-                    Log.For(this).Error("DO NOT SET Ignored at runtime. Set IgnoredAsync()");
+                    if (UIRuntime.IsDevMode) Log.For(this).Error("DO NOT SET Ignored at runtime. Set IgnoredAsync()");
                     Task.Factory.RunSync(() => IgnoredAsync(value));
                 }
                 else IgnoredAsync(value).GetAwaiter();

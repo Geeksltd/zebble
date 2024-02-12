@@ -255,7 +255,7 @@ namespace Zebble.Services
             {
                 if (!File.Exists())
                 {
-                    Log.For(this).Error("Image file not found: " + Source);
+                    if (UIRuntime.IsDevMode) Log.For(this).Error("Image file not found: " + Source);
                     var result = Device.IO.File(FailedPlaceholderImagePath);
                     if (!result.Exists()) throw new Exception(FailedPlaceholderImagePath + " file must exist.");
                     return result;

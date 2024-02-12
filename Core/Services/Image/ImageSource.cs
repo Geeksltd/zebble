@@ -98,7 +98,7 @@ namespace Zebble.Services
 
                 await LoadFromFile();
 
-                if (Image is null) throw new Exception("Image is null for " + Url);
+                if (Image is null) throw new RenderException("Image is null for " + Url);
                 return Image;
             }
 
@@ -257,7 +257,7 @@ namespace Zebble.Services
                 {
                     if (UIRuntime.IsDevMode) Log.For(this).Error("Image file not found: " + Source);
                     var result = Device.IO.File(FailedPlaceholderImagePath);
-                    if (!result.Exists()) throw new Exception(FailedPlaceholderImagePath + " file must exist.");
+                    if (!result.Exists()) throw new IOException(FailedPlaceholderImagePath + " file must exist.");
                     return result;
                 }
 

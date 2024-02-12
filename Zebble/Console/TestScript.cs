@@ -165,7 +165,7 @@ namespace Zebble.Mvvm
             var assembly = assemblies.FirstOrDefault(x => x.Name.ToLower().IsAnyOf("vm", "~vm"))?.Assembly;
 
             if (assembly is null)
-                throw new Exception("VM assembly is not found. Currently loaded:\n" + assemblies.Select(v => v.Name).ToLinesString());
+                throw new InvalidStateException("VM assembly is not found. Currently loaded:\n" + assemblies.Select(v => v.Name).ToLinesString());
 
             var toRun = assembly.GetTypes()
                 .Where(t => t.IsA<TestScript>() && !t.IsAbstract)
@@ -203,7 +203,7 @@ namespace Zebble.Mvvm
             var result = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "TestFiles", name).AsFile();
 
             if (!result.Exists())
-                throw new Exception("File not found: " + result.FullName + ".\nIs the file 'build action' set as 'Content' with 'Copy to output' set as 'always'?");
+                throw new IOException("File not found: " + result.FullName + ".\nIs the file 'build action' set as 'Content' with 'Copy to output' set as 'always'?");
 
             return result;
         }

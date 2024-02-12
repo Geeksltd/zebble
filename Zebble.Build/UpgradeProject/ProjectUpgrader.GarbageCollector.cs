@@ -63,7 +63,7 @@
         static void EnsureAndroidFolderExists()
         {
             if (DirectoryContext.AndroidFolder == null)
-                throw new Exception("We're unable to find Android folder. You need to run this tool in the root of your Zebble project.");
+                throw new IOException("We're unable to find Android folder. You need to run this tool in the root of your Zebble project.");
         }
     }
 }

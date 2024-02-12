@@ -23,7 +23,7 @@
         protected void Add(Expression<Action> step)
         {
             if (!(step.Body is MethodCallExpression method))
-                throw new Exception("Passed expression isn't a method call.");
+                throw new FormatException("Passed expression isn't a method call.");
 
             var name = method.Method.Name;
 

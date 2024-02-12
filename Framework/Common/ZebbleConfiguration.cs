@@ -2,6 +2,7 @@ namespace Zebble
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
     using System.Xml.Linq;
@@ -37,7 +38,7 @@ namespace Zebble
                         return root.Elements().ToDictionary(x => x.Name.LocalName, x => x.GetValue<string>("@value").Or(x.Value));
                     }
                 }
-                catch (Exception ex) { throw new Exception("Could not read the config.xml file", ex); }
+                catch (Exception ex) { throw new IOException("Could not read the config.xml file", ex); }
 
                 Log.For<ZebbleConfigurationSource>().Error("Config file was not found.");
                 return new Dictionary<string, string>();

@@ -95,12 +95,12 @@
             }
 
             var selector = remaining.RemoveFrom("{").Trim().KeepReplacing("  ", " ");
-            if (selector.IsEmpty()) throw new Exception("Failed to find css rules from: " + remaining);
+            if (selector.IsEmpty()) throw new FormatException("Failed to find css rules from: " + remaining);
 
             remaining = remaining.TrimStart(selector).Trim();
 
             var until = remaining.IndexOf("}");
-            if (until == -1) throw new Exception("Failed to find css rules from: " + remaining);
+            if (until == -1) throw new FormatException("Failed to find css rules from: " + remaining);
 
             var body = remaining.Substring("{", "}", inclusive: false).Trim();
 

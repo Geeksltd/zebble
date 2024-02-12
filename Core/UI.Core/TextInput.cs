@@ -194,7 +194,7 @@ namespace Zebble
             get => lines;
             set
             {
-                if (value < 1) throw new Exception("Lines should be 1 or more.");
+                if (value < 1) throw new FormatException("Lines should be 1 or more.");
                 lines = value;
                 Height.Update();
             }

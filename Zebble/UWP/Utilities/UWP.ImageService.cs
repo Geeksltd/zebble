@@ -57,10 +57,10 @@ namespace Zebble.Services
         public static async Task<BitmapImage> DecodeImage(FileInfo file, Size? desiredSize, Stretch stretch = Stretch.Default)
         {
             if (file is null) throw new ArgumentNullException(nameof(file));
-            if (!await file.ExistsAsync()) throw new Exception("File not found: " + file.FullName);
+            if (!await file.ExistsAsync()) throw new IOException("File not found: " + file.FullName);
 
             var fileData = await file.ReadAllBytesAsync();
-            if (fileData.Length == 0) throw new Exception("Image file has zero bytes: " + file.FullName);
+            if (fileData.Length == 0) throw new BadDataException("Image file has zero bytes: " + file.FullName);
 
             return await Thread.UI.Run(doDecode);
 

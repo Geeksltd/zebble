@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Olive;
 using Zebble.Tooling;
 
@@ -20,7 +21,7 @@ namespace Zebble.FormatZbl
         static void Validate()
         {
             if (!DirectoryContext.AppUIFolder.Exists())
-                throw new Exception("App.UI Directory not found: " + DirectoryContext.AppUIFolder.FullName);
+                throw new IOException("App.UI Directory not found: " + DirectoryContext.AppUIFolder.FullName);
         }
 
         protected abstract string GetFileName();

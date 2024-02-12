@@ -86,7 +86,7 @@
             }
             catch (Exception ex)
             {
-                throw new Exception($"Could not find the font '{Name}'.", ex);
+                throw new RenderException($"Could not find the font '{Name}'.", ex);
             }
         }
 

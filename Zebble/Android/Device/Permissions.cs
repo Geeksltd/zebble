@@ -176,11 +176,11 @@ namespace Zebble.Device
                 var info = packageManager.GetPackageInfo(context.PackageName, Android.Content.PM.PackageInfoFlags.Permissions);
 
                 if (info?.RequestedPermissions is null)
-                    throw new Exception("Failed to get Package permissions info. Ensure the required permissions are marked in the manifest.");
+                    throw new InvalidStateException("Failed to get Package permissions info. Ensure the required permissions are marked in the manifest.");
 
                 return info.RequestedPermissions.ToArray();
             }
-            catch (Exception ex) { throw new Exception("Unable to check manifest for permission: " + ex); }
+            catch (Exception ex) { throw new InvalidStateException("Unable to check manifest for permission: " + ex); }
         }
 
         static bool IsRequestedInManifest(string permission) => ManifestPermissions.Value.Contains(permission, caseSensitive: false);

@@ -18,7 +18,7 @@ namespace Zebble
                 if (enableZooming != value)
                 {
                     if (IsRendered())
-                        throw new Exception("ScrollView's EnableZooming cannot be changed after it's rendered.");
+                        throw new RenderException("ScrollView's EnableZooming cannot be changed after it's rendered.");
                     enableZooming = value;
                     ZoomSettingsChanged.Raise();
                 }

@@ -31,7 +31,7 @@ using BaseNativeType = object;
                  .FirstOrDefault(i => i.GenericTypeArguments?.Any() == true);
 
             if (rendererType is null)
-                throw new Exception(View.GetType() + " should implement IRenderedBy<...>");
+                throw new RenderException(View.GetType() + " should implement IRenderedBy<...>");
 
             rendererType = rendererType.GenericTypeArguments.Single();
 

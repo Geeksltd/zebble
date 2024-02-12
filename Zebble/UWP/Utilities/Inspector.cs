@@ -19,14 +19,14 @@ namespace Zebble
                 {
                     var type = Config.Get("Zebble.Inspector.Type", "Zebble.UWP.Inspector, Zebble.Inspector");
                     var inspectorType = Type.GetType(type);
-                    if (inspectorType is null) throw new Exception("Type not found: " + type);
+                    if (inspectorType is null) throw new RenderException("Type not found: " + type);
                     inspector = inspectorType.CreateInstance() as IInspector;
-                    if (inspector is null) throw new Exception(inspectorType.FullName + " is not an IInspector!");
+                    if (inspector is null) throw new RenderException(inspectorType.FullName + " is not an IInspector!");
                     return inspector;
                 }
                 catch (Exception ex)
                 {
-                    throw new Exception("Failed to create the inspector: " + ex.Message);
+                    throw new RenderException("Failed to create the inspector: " + ex.Message);
                 }
             }
         }

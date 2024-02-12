@@ -70,7 +70,7 @@ namespace Zebble
             var templateType = GetType();
 
             var modelMember = templateType.GetPropertyOrField("Model")
-                ?? throw new Exception(templateType.GetProgrammingName() + " does not define a property or field named Model.");
+                ?? throw new RenderException(templateType.GetProgrammingName() + " does not define a property or field named Model.");
 
             var type = modelMember.GetPropertyOrFieldType();
             if (type.IsA<IBindable>())
@@ -102,7 +102,7 @@ namespace Zebble
             var templateType = GetType();
 
             var modelMember = templateType.GetPropertyOrField("Model")
-                ?? throw new Exception(templateType.GetProgrammingName() + " does not define a property or field named Model.");
+                ?? throw new RenderException(templateType.GetProgrammingName() + " does not define a property or field named Model.");
 
             var result = modelMember.GetValue(this);
 

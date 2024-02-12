@@ -87,7 +87,7 @@ namespace Zebble
             if (child is null) throw new ArgumentNullException("child cannot be null.");
 
             var index = AllChildren.IndexOf(sibling);
-            if (index == -1) throw new Exception($"'{sibling.GetFullPath()} is not a child of '{GetFullPath()}'");
+            if (index == -1) throw new RenderException($"'{sibling.GetFullPath()} is not a child of '{GetFullPath()}'");
 
             return AddAt(index, child);
         }
@@ -110,7 +110,7 @@ namespace Zebble
             if (child is null) throw new ArgumentNullException("child cannot be null.");
 
             var index = AllChildren.IndexOf(sibling);
-            if (index == -1) throw new Exception($"'{sibling.GetFullPath()} is not a child of '{GetFullPath()}'");
+            if (index == -1) throw new RenderException($"'{sibling.GetFullPath()} is not a child of '{GetFullPath()}'");
 
             return AddAt(index + 1, child);
         }
@@ -168,13 +168,13 @@ namespace Zebble
 
         void ValidateChildAdding(int index, View child)
         {
-            if (child is null) throw new Exception("Cannot add NULL to this view: " + GetFullPath());
-            if (child.IsDisposing) throw new ArgumentException("A disposed object cannot be added.");
+            if (child is null) throw new InvalidStateException("Cannot add NULL to this view: " + GetFullPath());
+            if (child.IsDisposing) throw new InvalidStateException("A disposed object cannot be added.");
 
             if (index < 0 || index > AllChildren.Count)
-                throw new ArgumentException($"Index {index} is invalid. I have {AllChildren.Count} children.");
+                throw new InvalidStateException($"Index {index} is invalid. I have {AllChildren.Count} children.");
 
-            if (child == this) throw new ArgumentException("You cannot add a view as its own child.");
+            if (child == this) throw new InvalidStateException("You cannot add a view as its own child.");
 
             if (child.IsAnyOf(GetAllParents()))
                 throw new ArgumentException($"The specified child view ({child}) is already a parent of this view ({this}).");
@@ -209,7 +209,7 @@ namespace Zebble
         public Task RemoveAt(int childIndex, bool awaitNative = false)
         {
             if (childIndex < 0 || childIndex >= AllChildren.Count)
-                throw new Exception("Invalid child index specified for removing.");
+                throw new InvalidStateException("Invalid child index specified for removing.");
 
             return Remove(AllChildren[childIndex], awaitNative);
         }
@@ -295,7 +295,7 @@ namespace Zebble
             }
             catch (Exception ex)
             {
-                throw new Exception("Error rendering and adding child view: " + child + ": " + ex, ex);
+                throw new RenderException("Error rendering and adding child view: " + child + ": " + ex, ex);
             }
         }
 

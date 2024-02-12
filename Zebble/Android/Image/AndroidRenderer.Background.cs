@@ -81,7 +81,7 @@
                 if (Result is FrameLayout frame)
                     frame.AddView(new AndroidGifImageView(view as ImageView));
                 else
-                    throw new Exception("Gif images can only be used as Canvas Background.");
+                    throw new RenderException("Gif images can only be used as Canvas Background.");
             }
             else
             {

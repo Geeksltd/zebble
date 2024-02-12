@@ -109,7 +109,7 @@ namespace Zebble.UWP
         void FontChanged()
         {
             if (View.Font is null)
-                throw new Exception("Font is not supported for " + View.GetType().FullName);
+                throw new RenderException("Font is not supported for " + View.GetType().FullName);
 
             Result.RenderFont(View.Font);
 

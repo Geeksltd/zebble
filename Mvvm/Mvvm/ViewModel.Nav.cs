@@ -40,7 +40,7 @@ namespace Zebble.Mvvm
 
         public static Task Back(PageTransition transition = PageTransition.SlideBack)
         {
-            if (Stack.None()) throw new Exception("There is no previous page in the stack to go back to.");
+            if (Stack.None()) throw new InvalidStateException("There is no previous page in the stack to go back to.");
 
             return new ViewModelNavigation((FullScreen)Stack.Pop(), transition).Back();
         }
@@ -61,7 +61,7 @@ namespace Zebble.Mvvm
 
         public static Task Replace(FullScreen target, PageTransition transition = PageTransition.SlideForward)
         {
-            if (Stack.None()) throw new Exception("There is no previous page in the stack to be peeked out.");
+            if (Stack.None()) throw new InvalidStateException("There is no previous page in the stack to be peeked out.");
             Page = (FullScreen)Stack.Peek();
 
             return new ViewModelNavigation(target, transition).Replace();

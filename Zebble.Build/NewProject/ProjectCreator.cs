@@ -22,7 +22,7 @@
             ProjectName = projectName;
 
             if (Root.GetSubDirectory(projectName).Exists())
-                throw new Exception($"A directory with name {projectName} already exists. Please try again with another name.");
+                throw new IOException($"A directory with name {projectName} already exists. Please try again with another name.");
 
             ProjectDir = Root.CreateSubdirectory(projectName);
 

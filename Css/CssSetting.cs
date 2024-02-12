@@ -421,21 +421,21 @@ namespace Zebble
                 return $"new Border {{ Top = {numberParts[0]}, Right = {numberParts[1]}, Bottom = {numberParts[2]}, Left = {numberParts[3]} }}";
             }
 
-            throw new Exception("Unrecognized border setting: " + text);
+            throw new FormatException("Unrecognized border setting: " + text);
         }
 
         void ProcessBoxShadow()
         {
             if (CssValue.Contains(",") && CssValue.Lacks("rgb"))
-                throw new Exception("Multiple box shadows aren't supported.");
+                throw new FormatException("Multiple box shadows aren't supported.");
 
             if (CssValue.Contains("inset"))
-                throw new Exception("Inner box shadow (inset) isn't supported.");
+                throw new FormatException("Inner box shadow (inset) isn't supported.");
 
             var valueParts = CssValue.Split(' ').Select(x => x.TrimEnd("px")).ToArray();
 
             if (valueParts.Length < 3)
-                throw new Exception("To construct a box shadow, at least 3 parameters, v-offset, h-offset, and color are required.");
+                throw new FormatException("To construct a box shadow, at least 3 parameters, v-offset, h-offset, and color are required.");
 
             var xOffset = valueParts[0];
             var yOffset = valueParts[1];

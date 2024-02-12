@@ -59,7 +59,7 @@ namespace Zebble
             Result = null;
 
             try { RenderResult(); }
-            catch (Exception ex) { throw new Exception("Failed to render " + view, ex); }
+            catch (Exception ex) { throw new RenderException("Failed to render " + view, ex); }
 
             if (UIRuntime.IsDebuggerAttached)
                 Result.Tag = new JavaWrapper(view);

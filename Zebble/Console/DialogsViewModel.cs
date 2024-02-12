@@ -84,7 +84,7 @@ namespace Zebble.Mvvm
                 Console.ShowError("Invalid choice.");
             }
 
-            throw new Exception("Impossible line");
+            throw new NotImplementedException("Impossible line");
         }
 
         string DoPrompt(string title, string description)

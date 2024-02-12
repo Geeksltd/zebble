@@ -151,7 +151,7 @@ namespace Zebble
                     else if (top is IPopupWithResult untyped)
                     {
                         if (result.ToStringOrEmpty() == false.ToString()) untyped.SetDefaultResult();
-                        else throw new Exception("The expected result type of " + top.GetType().GetProgrammingName() +
+                        else throw new InvalidStateException("The expected result type of " + top.GetType().GetProgrammingName() +
                             " is not " + typeof(TResult).GetProgrammingName());
                     }
 

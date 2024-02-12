@@ -26,7 +26,7 @@ namespace Zebble
             try { await CreateNativeElement(); }
             catch (Exception ex)
             {
-                throw new Exception("Failed to create native object for " + View, ex);
+                throw new RenderException("Failed to create native object for " + View, ex);
             }
 
             ResultWrapper = await new UWPControlWrapper(this).Render();
@@ -241,7 +241,7 @@ namespace Zebble
             {
                 if (nativeParent is controls.Panel panel) NativeContainer = panel.Children;
                 else if (nativeParent is controls.ScrollViewer scroller) NativeContainer = (scroller.Content as controls.Panel)?.Children;
-                else throw new Exception($"{nativeParent.GetType().Name} is not a supported container for rendering.");
+                else throw new RenderException($"{nativeParent.GetType().Name} is not a supported container for rendering.");
 
                 if (NativeContainer?.None(x => x == nativeChild) == true)
                     NativeContainer?.Add(nativeChild);

@@ -180,7 +180,7 @@ namespace Zebble
             var relevantChildren = CurrentChildren.Except(x => x.absolute).ToList();
 
             if (UIRuntime.IsDevMode && relevantChildren.Any(x => x.Width.PercentageValue.HasValue))
-                throw new Exception("Children of a horizontal scroll view should not have percentage based width.");
+                throw new RenderException("Children of a horizontal scroll view should not have percentage based width.");
 
             return relevantChildren.Sum(x => x.CalculateTotalWidth());
         }
@@ -190,7 +190,7 @@ namespace Zebble
             var relevantChildren = CurrentChildren.Except(x => x.absolute).ToList();
 
             if (UIRuntime.IsDevMode && relevantChildren.Any(x => x.Height.PercentageValue.HasValue))
-                throw new Exception("Children of a vertical scroll view should not have percentage based height.");
+                throw new RenderException("Children of a vertical scroll view should not have percentage based height.");
 
             return relevantChildren.Sum(x => x.CalculateTotalHeight());
         }

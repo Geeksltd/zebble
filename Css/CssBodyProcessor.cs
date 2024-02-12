@@ -19,7 +19,7 @@ namespace Zebble
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to process the CSS body: " + cssBody, ex);
+                throw new FormatException("Failed to process the CSS body: " + cssBody, ex);
             }
         }
 

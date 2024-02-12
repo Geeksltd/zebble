@@ -45,7 +45,7 @@
 			if (@this is null || steps.None()) return;
 
 			if (steps.Any(x => x.IsStarted))
-				throw new Exception("Animations provided to a multi-step animation should not be started already.");
+				throw new RenderException("Animations provided to a multi-step animation should not be started already.");
 
 			var nextSteps = steps.ExceptFirst().ToArray();
 

@@ -45,10 +45,10 @@ namespace Zebble
             if (UIRuntime.IsDevMode)
             {
                 if (CurrentChildren.Any(v => v.Width.AutoOption == Length.AutoStrategy.Container))
-                    throw new Exception("Width of a child of FlowLayout cannot be based on Container.");
+                    throw new RenderException("Width of a child of FlowLayout cannot be based on Container.");
 
                 if (CurrentChildren.Any(v => v.Height.AutoOption == Length.AutoStrategy.Container))
-                    throw new Exception("Height of a child of FlowLayout cannot be based on Container.");
+                    throw new RenderException("Height of a child of FlowLayout cannot be based on Container.");
             }
 
             var paddingLeft = Padding.Left.CurrentValue;

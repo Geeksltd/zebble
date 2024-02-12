@@ -11,7 +11,7 @@ namespace Zebble.Services
     {
         public static async Task<Bitmap> DecodeImage(byte[] data, Size? desiredSize = null, Stretch stretch = Stretch.Default)
         {
-            if (data.None()) throw new Exception("Failed to decode an image from null or empty byte[].");
+            if (data.None()) throw new BadDataException("Failed to decode an image from null or empty byte[].");
 
             Bitmap result;
 
@@ -30,7 +30,7 @@ namespace Zebble.Services
                 });
             }
 
-            if (result is null) throw new Exception($"Failed to decode the specified byte[{data.Length}] into an Image.");
+            if (result is null) throw new BadDataException($"Failed to decode the specified byte[{data.Length}] into an Image.");
 
             return result;
         }
@@ -52,7 +52,7 @@ namespace Zebble.Services
 
             result = await BitmapFactory.DecodeFileAsync(file.FullName, options);
 
-            if (result is null) throw new Exception($"Failed to decode the specified image file: {file.FullName}");
+            if (result is null) throw new BadDataException($"Failed to decode the specified image file: {file.FullName}");
 
             return result;
         }
@@ -60,7 +60,7 @@ namespace Zebble.Services
         public static async Task<Bitmap> DecodeImage(FileInfo file, Size? desiredSize = null, Stretch stretch = Stretch.Default)
         {
             if (file is null) throw new ArgumentNullException(nameof(file));
-            if (!await file.ExistsAsync()) throw new Exception($"File not found: {file.FullName}");
+            if (!await file.ExistsAsync()) throw new IOException($"File not found: {file.FullName}");
 
             for (var retry = 3; retry > 0; retry--)
             {
@@ -68,7 +68,7 @@ namespace Zebble.Services
                 catch (Exception ex)
                 {
                     if (retry == 1)
-                        throw new Exception($"Failed to decode the image: {file.FullName}\n{ex.Message}", ex);
+                        throw new BadDataException($"Failed to decode the image: {file.FullName}\n{ex.Message}", ex);
                     else
                     {
                         Nav.DisposeCache();
@@ -79,7 +79,7 @@ namespace Zebble.Services
                 }
             }
 
-            throw new Exception("This line will never run.");
+            throw new InvalidStateException("This line will never run.");
         }
 
         public static Size FindImageSize(FileInfo file)
@@ -119,7 +119,7 @@ namespace Zebble.Services
             using (var stream = destination.OpenWrite())
             {
                 if (!await bitMap.CompressAsync(GetFormat(destination.Extension), jpegQuality, stream))
-                    throw new Exception("Failed to compress the image!!");
+                    throw new BadDataException("Failed to compress the image!!");
                 await stream.FlushAsync();
 
                 bitMap.Recycle();

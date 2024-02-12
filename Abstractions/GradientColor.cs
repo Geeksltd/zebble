@@ -62,7 +62,7 @@ namespace Zebble
                         case "bottom": angle = "Down"; break;
                         case "top right": angle = "DiagonalUp"; break;
                         case "bottom right": angle = "DiagonalDown"; break;
-                        default: throw new Exception("Angle " + angle + " is not supported.");
+                        default: throw new NotSupportedException("Angle " + angle + " is not supported.");
                     }
                 }
                 else angle = null;
@@ -84,7 +84,7 @@ namespace Zebble
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to parse '" + text + "' to a GradientColor: " + ex.Message);
+                throw new FormatException("Failed to parse '" + text + "' to a GradientColor: " + ex.Message);
             }
         }
 

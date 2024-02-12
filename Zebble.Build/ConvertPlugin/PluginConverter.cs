@@ -62,11 +62,11 @@
         {
             var nuspecFile = Root.GetFiles("*.nuspec", SearchOption.AllDirectories)[0];
             if (nuspecFile == null)
-                throw new Exception("Couldn't find any .nuspec file.");
+                throw new IOException("Couldn't find any .nuspec file.");
 
             var metadata = XDocument.Parse(nuspecFile.ReadAllText()).GetElement("package/metadata");
             if (metadata == null)
-                throw new Exception("Couldn't find metadata tag");
+                throw new FormatException("Couldn't find metadata tag");
 
             ProjectName = metadata.GetElement("id")?.Value.Remove("Zebble.").ToPascalCaseId();
             Version = metadata.GetElement("version")?.Value;

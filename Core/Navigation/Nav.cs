@@ -425,7 +425,7 @@ namespace Zebble
         /// </summary>
         public static async Task Back()
         {
-            if (Stack.None()) throw new Exception("There is no previous page in the stack to go back to.");
+            if (Stack.None()) throw new InvalidStateException("There is no previous page in the stack to go back to.");
 
             var previousPage = Stack.Pop();
 

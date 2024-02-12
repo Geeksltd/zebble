@@ -11,8 +11,8 @@ namespace Zebble.Tooling
         static DirectoryContext()
         {
             RootFolder = Environment.CurrentDirectory.AsDirectory();
-
-            if (RunFolder == null) throw new Exception("The Run folder was not found.");
+            
+            if (RunFolder == null) throw new IOException("The Run folder was not found.");
         }
 
         public static DirectoryInfo AppDomainFolder => RootFolder.GetSubDirectory("App.Domain");

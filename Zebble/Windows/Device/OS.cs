@@ -19,7 +19,7 @@ namespace Zebble.Device
         public static string GetAppRatingUrl()
         {
             var id = Config.Get("Application.Windows.ID");
-            if (id.IsEmpty()) throw new Exception("'Application.Windows.ID' was not found in the config file.");
+            if (id.IsEmpty()) throw new InvalidStateException("'Application.Windows.ID' was not found in the config file.");
 
             return "https:" + "//www.microsoft.com/en-gb/store/p/a/" + id;
         }

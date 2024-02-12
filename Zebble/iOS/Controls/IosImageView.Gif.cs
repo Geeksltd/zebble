@@ -33,7 +33,7 @@ namespace Zebble.IOS
         CAKeyFrameAnimation CreateGifAnimationLayers(CGImageSource imageSource)
         {
             var frameCount = imageSource.ImageCount;
-            if (frameCount == 0) throw new Exception("Gif has no image frames!");
+            if (frameCount == 0) throw new BadDataException("Gif has no image frames!");
 
             var frames = new List<GifFrameInfo>();
 

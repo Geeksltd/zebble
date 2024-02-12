@@ -59,7 +59,7 @@ namespace Zebble.Device
         public static FileInfo File(string relative)
         {
             try { return new FileInfo(AbsolutePath(relative)); }
-            catch (Exception ex) { throw new Exception($"Failed to convert '{relative}' to FileInfo.", ex); }
+            catch (Exception ex) { throw new FormatException($"Failed to convert '{relative}' to FileInfo.", ex); }
         }
 
         public static DirectoryInfo Directory(string relative) => new(AbsolutePath(relative));
@@ -85,7 +85,7 @@ namespace Zebble.Device
         /// </summary>
         public static string AbsolutePath(string relative)
         {
-            if (Root == null) throw new Exception("Device.IO.Root is null!");
+            if (Root == null) throw new InvalidStateException("Device.IO.Root is null!");
             var root = Root.FullName;
 
             if (relative.IsEmpty()) return root;

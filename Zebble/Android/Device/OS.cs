@@ -42,7 +42,7 @@ namespace Zebble.Device
         static string GetAppId()
         {
             var id = Config.Get("Application.Android.ID");
-            if (id.IsEmpty()) throw new Exception("'Application.Android.ID' was not found in the config file.");
+            if (id.IsEmpty()) throw new InvalidStateException("'Application.Android.ID' was not found in the config file.");
             return id;
         }
 

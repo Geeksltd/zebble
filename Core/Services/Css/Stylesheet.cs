@@ -107,7 +107,7 @@ namespace Zebble
                 if (backgroundImagePath == value) return;
 
                 if (UIRuntime.IsDevMode && Owner is ScrollView && value.HasValue())
-                    throw new Exception("ScrollView cannot accept a background image directly. Either set it for its container or first (wrapper) child.");
+                    throw new RenderException("ScrollView cannot accept a background image directly. Either set it for its container or first (wrapper) child.");
 
                 Owner.Width.Changed.Event += Owner.UpdateBackgroundImageIfNeeded;
                 Owner.Height.Changed.Event += Owner.UpdateBackgroundImageIfNeeded;
@@ -138,11 +138,11 @@ namespace Zebble
                 else if (transformOrigin == "bottom right") transformOrigin = "1 1";
 
                 var parts = transformOrigin.Split(' ');
-                if (parts.Length != 2) throw new Exception("Invalid transform-origin value: " + transformOrigin);
+                if (parts.Length != 2) throw new RenderException("Invalid transform-origin value: " + transformOrigin);
 
                 parts = parts.Select(x => x.EndsWith("%") ? "0." + x.TrimEnd("%") : x).ToArray();
                 foreach (var p in parts)
-                    if (!p.Is<float>()) throw new Exception("Invalid transform-origin value: " + transformOrigin);
+                    if (!p.Is<float>()) throw new RenderException("Invalid transform-origin value: " + transformOrigin);
 
                 Owner.RaiseTransformationChanged();
             }
@@ -156,7 +156,7 @@ namespace Zebble
                 if (backgroundImageData == value) return;
 
                 if (UIRuntime.IsDevMode && Owner is ScrollView && value?.Any() == true)
-                    throw new Exception("ScrollView cannot accept a background image directly. Either set it for its container or first (wrapper) child.");
+                    throw new RenderException("ScrollView cannot accept a background image directly. Either set it for its container or first (wrapper) child.");
 
                 backgroundImageData = value;
                 Owner.RaiseBackgroundImageChanged();

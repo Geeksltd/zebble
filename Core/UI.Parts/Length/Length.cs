@@ -61,7 +61,7 @@ namespace Zebble
                 else if (value.TryParseAs<AutoStrategy>().HasValue) Set(value.To<AutoStrategy>());
                 else if (value.EndsWith("%") && value.TrimEnd("%").Is<double>())
                     Set(value.TrimEnd("%").To<float>().Percent());
-                else throw new Exception("Cannot interpreset the specified text as a length: " + value);
+                else throw new FormatException("Cannot interpreset the specified text as a length: " + value);
             }
         }
 
@@ -438,7 +438,7 @@ namespace Zebble
         void ApplyNewValue(float newValue)
         {
             if (UIRuntime.IsDevMode && float.IsInfinity(newValue))
-                throw new Exception("Infinity is not a valid value for " + Type + " of: " + Owner?.GetFullPath());
+                throw new FormatException("Infinity is not a valid value for " + Type + " of: " + Owner?.GetFullPath());
 
             IsUnknown = false;
 

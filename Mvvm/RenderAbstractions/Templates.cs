@@ -26,10 +26,10 @@ namespace Zebble.Mvvm
                       .ToArray();
 
                 if (interfaces.None())
-                    throw new Exception(type.FullName + " should implement ITemplate<Model> rather than ITemplate.");
+                    throw new RenderException(type.FullName + " should implement ITemplate<Model> rather than ITemplate.");
 
                 if (interfaces.HasMany())
-                    throw new Exception(type.FullName + " should implement a single ITemplate<Model>.");
+                    throw new RenderException(type.FullName + " should implement a single ITemplate<Model>.");
 
                 var modelType = interfaces.Single().GetGenericArguments().Single();
 
@@ -41,7 +41,7 @@ namespace Zebble.Mvvm
                     {
                         if (existing.TemplateType == tp) continue;
 
-                        throw new Exception("More than one template is defined for " + modelType.FullName
+                        throw new InvalidStateException("More than one template is defined for " + modelType.FullName
                             + Environment.NewLine + existing.TemplateType.FullName +
                             Environment.NewLine + type.FullName);
                     }

@@ -29,7 +29,7 @@ namespace Zebble
             }
             catch (Exception ex)
             {
-                throw new Exception($"Failed to parse '{text}' to Polygon.Point.", ex);
+                throw new FormatException($"Failed to parse '{text}' to Polygon.Point.", ex);
             }
         }
 

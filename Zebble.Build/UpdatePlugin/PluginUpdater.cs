@@ -31,7 +31,7 @@
 
             _csProjFile = _root.GetFiles("*.csproj").ElementAtOrDefault(0);
             if (_csProjFile == null)
-                throw new Exception(
+                throw new IOException(
                     "Couldn't find .csproj file. Ensure you're calling this tool in the root folder of your plugin."
                 );
 
@@ -71,12 +71,12 @@
 
             var projectNode = pluginDocument.GetElement("Project");
             if (projectNode == null)
-                throw new Exception("Couldn't find the Project node. Is this a .NET Core project?");
+                throw new FormatException("Couldn't find the Project node. Is this a .NET Core project?");
 
             var versionAttr = projectNode.GetElement("PropertyGroup/Version") ??
                               projectNode.GetElement("PropertyGroup/PackageVersion");
             if (versionAttr == null)
-                throw new Exception("Couldn't determine the plugin version");
+                throw new FormatException("Couldn't determine the plugin version");
 
             var currentVersion = Version.Parse(versionAttr.Value);
             var updatedVersion = new Version(currentVersion.Major, currentVersion.Minor, currentVersion.Build + 1, 0);

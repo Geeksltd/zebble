@@ -108,7 +108,7 @@ namespace Zebble
             }
             catch (Exception ex)
             {
-                throw new Exception("Failed to parse the color: '" + text + "'", ex);
+                throw new FormatException("Failed to parse the color: '" + text + "'", ex);
             }
         }
 

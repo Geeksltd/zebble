@@ -24,7 +24,7 @@ namespace Zebble.Services
         // resize the image (without trying to maintain aspect ratio)
         public static async Task<UIImage> DecodeImage(byte[] source, Size? desiredSize, Stretch stretch = Stretch.Default)
         {
-            if (source.None()) throw new Exception("The provided image byte[] is empty.");
+            if (source.None()) throw new BadDataException("The provided image byte[] is empty.");
             var originalImage = await DecodeImage(source);
 
             if (originalImage == null || originalImage.CGImage == null)
@@ -58,7 +58,7 @@ namespace Zebble.Services
                 var imageData = NSData.FromArray(data);
                 return Task.FromResult(UIImage.LoadFromData(imageData, Device.Screen.HardwareDensity));
             }
-            catch (Exception ex) { throw new Exception("Image Data is not valid." + ex); }
+            catch (Exception ex) { throw new BadDataException("Image Data is not valid." + ex); }
         }
 
         public static async Task Resize(FileInfo source, FileInfo destination, Size pixelSize,

@@ -106,7 +106,7 @@ namespace Zebble
             try { return value.ToString().To(type); }
             catch (Exception ex)
             {
-                throw new Exception($"The value of '{value}' cannot be converted to type '{type.Name}'.", ex);
+                throw new RenderException($"The value of '{value}' cannot be converted to type '{type.Name}'.", ex);
             }
         }
 

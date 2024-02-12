@@ -18,7 +18,7 @@ namespace Zebble
         {
             if (node is null) return null;
 
-            if (node.Parent != null) throw new Exception("Root tree nodes should not have a parent.");
+            if (node.Parent != null) throw new RenderException("Root tree nodes should not have a parent.");
 
             RootNodes.Add(node);
             await node.GenerateView(this);

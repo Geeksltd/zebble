@@ -15,7 +15,7 @@ namespace Zebble.Mvvm
         [EditorBrowsable(EditorBrowsableState.Never)]
         public EventHandler Call(string name)
         {
-            var method = GetType().GetMethod(name) ?? throw new Exception("No method found named: " + name);
+            var method = GetType().GetMethod(name) ?? throw new RenderException("No method found named: " + name);
             return new EventHandler((sender, args) => method.Invoke(this, null));
         }
 

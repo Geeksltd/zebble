@@ -10,7 +10,7 @@ namespace Zebble
     using System.Collections.Concurrent;
     using System.Reflection;
 
-    public abstract partial class View : IDisposable
+    public abstract partial class View : IDisposable, Olive.IMortal
     {
         bool IsInitialized, IsFlashing, enabled = true;
         internal bool ignored, absolute;
@@ -61,6 +61,8 @@ namespace Zebble
         internal readonly Length[] Lengths;
 
         protected internal virtual bool HandlesGestures() => new IAsyncEvent[] { Touched, Tapped, Swiped, LongPressed, Panning, PanFinished, Pinching, UserRotating }.Any(v => v.IsHandled());
+
+        bool IMortal.IsDead() => IsDisposing;
 
         protected View()
         {

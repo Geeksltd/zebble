@@ -44,7 +44,7 @@
     <None Remove="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive" Version="2.1.358" />
+    <PackageReference Include="Olive" Version="2.1.360" />
     <PackageReference Include="SkiaSharp" Version="2.88.6" />
   </ItemGroup>
   <Import Project="..\Zebble.Tooling\Zebble.Tooling.projitems" Label="Shared" />

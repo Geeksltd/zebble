@@ -95,6 +95,7 @@ namespace Zebble
         {
             Visible = true;
             await Overlay.Default.Show();
+            await Overlay.Default.BringToFront();
             await BringToFront();
         }
     }

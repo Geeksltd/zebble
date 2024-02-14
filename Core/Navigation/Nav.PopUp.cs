@@ -1,7 +1,6 @@
 namespace Zebble
 {
     using System;
-    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.Linq;
     using System.Threading.Tasks;
@@ -10,6 +9,7 @@ namespace Zebble
     partial class Nav
     {
         static readonly AsyncLock PopupLock = new();
+        static readonly AsyncLock TransitionLock = new();
         static readonly List<PopUp> CachedPopups = new();
 
         internal static ConcurrentList<PopUp> PopUps { get; } = new ConcurrentList<PopUp>();
@@ -163,6 +163,12 @@ namespace Zebble
 
                     if (CurrentPage?.IsDisposing == true)
                         Log.For<Nav>().Warning("Current page is disposing!!! " + CurrentPage.GetType().Name);
+
+                    if (CurrentPage is PopUp)
+                    {
+                        await Overlay.Default.Show();
+                        await CurrentPage.BringToFront();
+                    }
                 }
 
                 return result;
@@ -177,7 +183,7 @@ namespace Zebble
 
             PageTransition transition;
 
-            lock (TransitionStack)
+            using (await TransitionLock.Lock())
             {
                 PopUps.Remove(popup);
                 transition = TransitionStack.Any() ? TransitionStack.Pop().GetReverse() : CurrentPage.Transition.GetReverse();
@@ -189,6 +195,12 @@ namespace Zebble
                     CurrentPage = popup.HostPage;
                     if (CurrentPage?.IsDisposing == true)
                         Log.For<Nav>().Warning("Current page is disposing!!! " + CurrentPage.GetType().Name);
+
+                    if (CurrentPage is PopUp)
+                    {
+                        await Overlay.Default.Show();
+                        await CurrentPage.BringToFront();
+                    }
                 }
             }
 

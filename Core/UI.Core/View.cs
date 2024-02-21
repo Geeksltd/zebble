@@ -352,6 +352,22 @@ namespace Zebble
             return Visible && !Ignored && (!includingOpacity || Opacity > 0);
         }
 
+        public Point TopLeft => new(CalculateAbsoluteX(), CalculateAbsoluteY());
+        public Point TopRight => new(CalculateAbsoluteRight(), CalculateAbsoluteY());
+        public Point BottomRight => new(CalculateAbsoluteRight(), CalculateAbsoluteBottom());
+        public Point BottomLeft => new(CalculateAbsoluteX(), CalculateAbsoluteBottom()); 
+
+        internal bool IsPointVisibleOnScreen(Point point)
+        {
+            if (point.Y >= Root.ActualHeight) return false;
+            if (point.X >= Root.ActualWidth) return false;
+
+            if (point.X <= -ActualWidth) return false;
+            if (point.Y <= -ActualHeight) return false;
+
+            return true;
+        }
+
         /// <summary>
         /// Determines if this element is practically visible considering the Size,
         /// Position, Visible, Ignored and opacity settings of itself and its parents.
@@ -368,16 +384,41 @@ namespace Zebble
 
             if (ActualWidth == 0 || ActualHeight == 0) return false;
 
-            var absoluteX = CalculateAbsoluteX();
-            var absoluteY = CalculateAbsoluteY();
+            return IsPointVisibleOnScreen(TopLeft);
+        }
 
-            if (absoluteY >= Root.ActualHeight) return false;
-            if (absoluteX >= Root.ActualWidth) return false;
+        public bool IsCompletelyVisibleOnScreen()
+        {
+            if (!IsVisibleOnScreen())
+                return false;
 
-            if (absoluteX <= -ActualWidth) return false;
-            if (absoluteY <= -ActualHeight) return false;
+            if (this == Root)
+                return true;
 
-            return true;
+            return IsPointVisibleOnScreen(TopRight) && IsPointVisibleOnScreen(BottomRight) && IsPointVisibleOnScreen(BottomLeft);
+        }
+
+        private double CalculateDistance(Point p1, Point p2)
+        {
+            return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
+        }
+
+        public double GetVisibilePercentage()
+        {
+            if (this == Root)
+                return 100;
+
+            var visibleTopLeft = IsPointVisibleOnScreen(TopLeft) ? TopLeft : Root.TopLeft;
+            var visibleTopRight = IsPointVisibleOnScreen(TopRight) ? TopRight : Root.TopRight;
+            var visibleBottomLeft = IsPointVisibleOnScreen(BottomLeft) ? BottomLeft : Root.BottomLeft;
+
+            var visibleWidth = CalculateDistance(visibleTopLeft, visibleTopRight);
+            var visibleHeight = CalculateDistance(visibleTopLeft, visibleBottomLeft);
+            var visibleArea = visibleWidth * visibleHeight;
+
+            var totalArea = ActualWidth * ActualHeight;
+
+            return (visibleArea / totalArea) * 100;
         }
 
         public virtual async Task Initialize()

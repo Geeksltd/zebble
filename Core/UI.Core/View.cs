@@ -355,7 +355,7 @@ namespace Zebble
         public Point TopLeft => new(CalculateAbsoluteX(), CalculateAbsoluteY());
         public Point TopRight => new(CalculateAbsoluteRight(), CalculateAbsoluteY());
         public Point BottomRight => new(CalculateAbsoluteRight(), CalculateAbsoluteBottom());
-        public Point BottomLeft => new(CalculateAbsoluteX(), CalculateAbsoluteBottom()); 
+        public Point BottomLeft => new(CalculateAbsoluteX(), CalculateAbsoluteBottom());
 
         internal bool IsPointVisibleOnScreen(Point point)
         {
@@ -387,26 +387,25 @@ namespace Zebble
             return IsPointVisibleOnScreen(TopLeft);
         }
 
+        /// <summary>
+        /// Determines if this element is completely visible considering the Size,
+        /// Position, Visible, Ignored and opacity settings of itself and its parents.
+        /// </summary>
         public bool IsCompletelyVisibleOnScreen()
         {
-            if (!IsVisibleOnScreen())
-                return false;
+            if (IsVisibleOnScreen() == false) return false;
 
             if (this == Root)
                 return true;
 
-            return IsPointVisibleOnScreen(TopRight) && IsPointVisibleOnScreen(BottomRight) && IsPointVisibleOnScreen(BottomLeft);
+            if (IsPointVisibleOnScreen(TopRight) == false) return false;
+            if (IsPointVisibleOnScreen(BottomRight) == false) return false;
+            return IsPointVisibleOnScreen(BottomLeft);
         }
 
-        private double CalculateDistance(Point p1, Point p2)
+        public double GetVisiblePercentage()
         {
-            return Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
-        }
-
-        public double GetVisibilePercentage()
-        {
-            if (this == Root)
-                return 100;
+            if (this == Root) return 100;
 
             var visibleTopLeft = IsPointVisibleOnScreen(TopLeft) ? TopLeft : Root.TopLeft;
             var visibleTopRight = IsPointVisibleOnScreen(TopRight) ? TopRight : Root.TopRight;
@@ -419,6 +418,9 @@ namespace Zebble
             var totalArea = ActualWidth * ActualHeight;
 
             return (visibleArea / totalArea) * 100;
+
+            static double CalculateDistance(Point p1, Point p2)
+                => Math.Sqrt(Math.Pow(p2.X - p1.X, 2) + Math.Pow(p2.Y - p1.Y, 2));
         }
 
         public virtual async Task Initialize()

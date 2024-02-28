@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>zebble-build</ToolCommandName>
     <Company>Geeks Ltd</Company>
@@ -15,9 +15,9 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>0.0.51.0</Version>
+    <Version>2.0.1.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-build</RepositoryUrl>
-    <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
+    <Copyright>Geeks Ltd 2024, All rights reserved.</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;FX46</DefineConstants>
@@ -39,7 +39,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive" Version="2.1.360" />
+    <PackageReference Include="Olive" Version="2.1.361" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon.png" Pack="true" PackagePath="" />

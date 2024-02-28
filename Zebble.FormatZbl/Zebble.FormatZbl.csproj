@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <AssemblyName>zebble-format-zbl</AssemblyName>
     <PackAsTool>true</PackAsTool>
     <Company>Geeks Ltd</Company>
@@ -14,9 +14,9 @@
     <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
-    <Version>1.0.11.0</Version>
+    <Version>2.0.1.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-format-zbl</RepositoryUrl>
-    <Copyright>Geeks Ltd 2023, All rights reserved.</Copyright>
+    <Copyright>Geeks Ltd 2024, All rights reserved.</Copyright>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
     <DefineConstants>TRACE;FX46</DefineConstants>
@@ -44,8 +44,8 @@
     <None Remove="README.md" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive" Version="2.1.360" />
-    <PackageReference Include="SkiaSharp" Version="2.88.6" />
+    <PackageReference Include="Olive" Version="2.1.361" />
+    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.2.1" />
   </ItemGroup>
   <Import Project="..\Zebble.Tooling\Zebble.Tooling.projitems" Label="Shared" />
   <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />

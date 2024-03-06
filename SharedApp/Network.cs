@@ -15,11 +15,13 @@ namespace Zebble.Device
         const int DEFAULT_TIME_OUT = 5000;
         public static readonly AsyncEvent<bool> ConnectivityChanged = new(ConcurrentEventRaisePolicy.Queue);
         static readonly List<Task> AllDownloads = new();
+        static Dictionary<string, HttpClient> HttpClients = new();
 
         static Network()
         {
 #if ANDROID || IOS
             ServicePointManager.ServerCertificateValidationCallback += (_, _, _, _) => true;
+            ServicePointManager.DefaultConnectionLimit = 256;            
 #endif
             Init();
         }
@@ -38,14 +40,21 @@ namespace Zebble.Device
 
         static HttpClient CreateHttpClient(string hostName, TimeSpan timeout, string scheme = "http", int port = 80)
         {
-            if (hostName.ContainsAny(new[] { "/", ":" })) throw new HttpRequestException($"Invalid host name format: {hostName}");
+            if (hostName.ContainsAny(["/", ":"])) throw new HttpRequestException($"Invalid host name format: {hostName}");
+            var baseAddress = $"{scheme}://{hostName}:{port}";
 
-            var client = Context.Current.GetService<IHttpClientFactory>().CreateClient("default");
 
-            client.BaseAddress = new Uri($"{scheme}://{hostName}:{port}");
-            client.Timeout = timeout;
+            if (HttpClients.TryGetValue(baseAddress, out var result))
+                return result;
 
-            return client;
+            var handler = new HttpClientHandler
+            {
+                ClientCertificateOptions = ClientCertificateOption.Manual,
+                ServerCertificateCustomValidationCallback = (_, _, _, _) => true
+            };
+
+            result = new HttpClient(handler) { BaseAddress = baseAddress.AsUri(), Timeout = timeout };
+            return HttpClients[baseAddress] = result;
         }
 
         /// <summary>
@@ -122,9 +131,15 @@ namespace Zebble.Device
                     var client = HttpClient(url, timeoutPerAttempt.Seconds());
                     var fetchTask = client.GetAsync(url);
 
-                    if (await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask) != fetchTask || fetchTask.IsCanceled)
+                    var completedFirst = await Task.WhenAny(Task.Delay(timeoutPerAttempt.Seconds()), fetchTask);
+
+                    if (completedFirst != fetchTask)
+                    {
+                        // Mark the exception as observed so it does not crash the whole thing.
+                        fetchTask.ContinueWith(x => { }).GetAwaiter();                        
                         Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
-                    else if (fetchTask.Status == TaskStatus.Faulted)
+                    }
+                    else if (fetchTask.Status == TaskStatus.Faulted || fetchTask.Status == TaskStatus.Canceled)
                         Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url);
                     else
                     {

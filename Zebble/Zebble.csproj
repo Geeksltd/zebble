@@ -7,9 +7,9 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.2.0</Version>
+    <Version>5.0.3.0</Version>
     <PackOnBuild>true</PackOnBuild>
-    <UseMaui>true</UseMaui>
+    <UseMaui>true</UseMaui> 
     <SingleProject>true</SingleProject>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>

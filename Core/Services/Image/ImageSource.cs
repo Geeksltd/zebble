@@ -79,6 +79,14 @@ namespace Zebble.Services
                 return $"{Source} ({Size}) {Stretch}" + " Downloading...".OnlyWhen(IsDownloading);
             }
 
+            internal bool IsFast()
+            {
+                if (Image != null) return true;
+                if (Url.IsEmpty()) return true;
+                if (GetFile(Url).Exists) return true;
+                return false;
+            }
+
             public async Task<object> Result()
             {
                 if (Image != null) return Image;

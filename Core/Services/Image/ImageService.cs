@@ -176,7 +176,8 @@ namespace Zebble.Services
             var provider = GetSource(view);
             if (provider == null) return;
             provider.RegisterViewer();
-            Thread.Pool.RunAction(async () =>
+
+            async Task doLoad()
             {
                 try
                 {
@@ -188,7 +189,10 @@ namespace Zebble.Services
                     });
                 }
                 catch (Exception ex) { Log.For(typeof(ImageService)).Error(ex); }
-            });
+            }
+
+            if (provider.IsFast()) await doLoad();
+            else Thread.Pool.Run(doLoad).GetAwaiter();
         }
     }
 }

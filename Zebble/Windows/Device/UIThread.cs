@@ -8,6 +8,9 @@ namespace Zebble
         public static Windows.UI.Core.CoreDispatcher Dispatcher;
         internal static int UIThreadID;
 
+        // iOS does not like more than 45,000 dispatches per 5 minute window
+        static int Dispatches;
+
         /// <summary>Schedules a specified action to be done on the UI thread, and returns immediately.
         /// If the current thread is already the UI thread, then the action will be posted to run when the UI thread is done doing current tasks.</summary>
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -15,6 +18,7 @@ namespace Zebble
         {
             if (action is null) return;
             Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => RunAction(action)).AsTask();
+            Dispatches++;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -25,6 +29,7 @@ namespace Zebble
         {
 #pragma warning disable CS4014 
             Dispatcher.RunAsync(Windows.UI.Core.CoreDispatcherPriority.Normal, () => action());
+            Dispatches++;
 #pragma warning restore CS4014
         }
 

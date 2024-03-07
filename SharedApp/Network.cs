@@ -145,7 +145,7 @@ namespace Zebble.Device
                     {
                         using var httpResponse = fetchTask.GetAlreadyCompletedResult();
 
-                        if (httpResponse.StatusCode == HttpStatusCode.OK)
+                        if (httpResponse.StatusCode.IsAnyOf(HttpStatusCode.OK, HttpStatusCode.Created))
                         {
                             data = await httpResponse.Content.ReadAsByteArrayAsync();
 

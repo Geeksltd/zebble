@@ -47,11 +47,13 @@ namespace Zebble.Device
             if (HttpClients.TryGetValue(baseAddress, out var result))
                 return result;
 
-            var handler = new HttpClientHandler
-            {
-                ClientCertificateOptions = ClientCertificateOption.Manual,
-                ServerCertificateCustomValidationCallback = (_, _, _, _) => true
-            };
+#if IOS
+            var handler = new NSUrlSessionHandler();
+#elif ANDROID
+            var handler = new Xamarin.Android.Net.AndroidClientHandler();
+#else
+            var handler = new HttpClientHandler();
+#endif
 
             result = new HttpClient(handler) { BaseAddress = baseAddress.AsUri(), Timeout = timeout };
             return HttpClients[baseAddress] = result;

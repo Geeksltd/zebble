@@ -2,6 +2,7 @@
 namespace Zebble.Device
 {
     using System;
+    using System.Collections.Concurrent;
     using System.Collections.Generic;
     using System.IO;
     using System.Linq;
@@ -15,13 +16,13 @@ namespace Zebble.Device
         const int DEFAULT_TIME_OUT = 5000;
         public static readonly AsyncEvent<bool> ConnectivityChanged = new(ConcurrentEventRaisePolicy.Queue);
         static readonly List<Task> AllDownloads = new();
-        static Dictionary<string, HttpClient> HttpClients = new();
+        static ConcurrentDictionary<string, HttpClient> HttpClients = new();
 
         static Network()
         {
 #if ANDROID || IOS
             ServicePointManager.ServerCertificateValidationCallback += (_, _, _, _) => true;
-            ServicePointManager.DefaultConnectionLimit = 256;            
+            ServicePointManager.DefaultConnectionLimit = 256;
 #endif
             Init();
         }
@@ -43,20 +44,20 @@ namespace Zebble.Device
             if (hostName.ContainsAny(["/", ":"])) throw new HttpRequestException($"Invalid host name format: {hostName}");
             var baseAddress = $"{scheme}://{hostName}:{port}";
 
+            return HttpClients.GetOrAdd(baseAddress, CreateClient);
 
-            if (HttpClients.TryGetValue(baseAddress, out var result))
-                return result;
-
+            HttpClient CreateClient()
+            {
 #if IOS
-            var handler = new NSUrlSessionHandler();
+                var handler = new NSUrlSessionHandler();
 #elif ANDROID
-            var handler = new Xamarin.Android.Net.AndroidClientHandler();
+                var handler = new Xamarin.Android.Net.AndroidClientHandler();
 #else
-            var handler = new HttpClientHandler();
+                var handler = new HttpClientHandler();
 #endif
 
-            result = new HttpClient(handler) { BaseAddress = baseAddress.AsUri(), Timeout = timeout };
-            return HttpClients[baseAddress] = result;
+                return new HttpClient(handler) { BaseAddress = baseAddress.AsUri(), Timeout = timeout };
+            }
         }
 
         /// <summary>
@@ -138,7 +139,7 @@ namespace Zebble.Device
                     if (completedFirst != fetchTask)
                     {
                         // Mark the exception as observed so it does not crash the whole thing.
-                        fetchTask.ContinueWith(x => { }).GetAwaiter();                        
+                        fetchTask.ContinueWith(x => { }).GetAwaiter();
                         Log.For(typeof(Network)).Warning("Attempt #" + retry + " timed out for downloading " + url);
                     }
                     else if (fetchTask.Status == TaskStatus.Faulted || fetchTask.Status == TaskStatus.Canceled)

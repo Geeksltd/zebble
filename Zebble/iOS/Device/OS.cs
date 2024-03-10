@@ -6,6 +6,11 @@ namespace Zebble.Device
     using System.Threading.Tasks;
     using UIKit;
     using Olive;
+    #if XAMARIN
+    using Xamarin.Essentials;
+    #else
+    using Microsoft.Maui.Devices;
+    #endif
 
     partial class OS
     {
@@ -343,8 +348,10 @@ namespace Zebble.Device
 
             if (hardware == "i386" || hardware == "x86_64") return "Simulator";
 
-            return hardware == "" ? "Unknown" : hardware;
+            return hardware.Or("Unknown");
         }
+
+        static string DetectOSVersion() => DeviceInfo.VersionString;
         #endregion
     }
 }

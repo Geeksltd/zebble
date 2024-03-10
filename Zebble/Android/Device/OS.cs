@@ -6,6 +6,11 @@ namespace Zebble.Device
     using Android.Content;
     using Android.OS;
     using AndroidOS;
+    #if XAMARIN
+    using Xamarin.Essentials;
+    #else
+    using Microsoft.Maui.Devices;
+    #endif
     using Olive;
 
     partial class OS
@@ -79,6 +84,8 @@ namespace Zebble.Device
 
             return new[] { manufacturer?.ToProperCase(), model?.ToProperCase() }.Trim().ToString(" ");
         }
+        
+        static string DetectOSVersion() => DeviceInfo.VersionString;
 
         public static bool IsAtLeast(BuildVersionCodes version) => Build.VERSION.SdkInt >= version;
 

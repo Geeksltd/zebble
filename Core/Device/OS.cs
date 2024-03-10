@@ -14,8 +14,6 @@ namespace Zebble.Device
         public static readonly DevicePlatform Platform = DevicePlatform.Windows;
 #endif  
 
-        static string hardwareModel;
-
         public static async Task<bool> OpenBrowser(string url, OnError errorAction = OnError.Toast)
         {
             try
@@ -42,6 +40,7 @@ namespace Zebble.Device
             }
         }
 
+        static string hardwareModel;
         public static string HardwareModel
         {
             get
@@ -52,6 +51,26 @@ namespace Zebble.Device
                 {
                     hardwareModel = DetectHardwareModel();
                     return hardwareModel.Or("UNKNOWN");
+                }
+                catch (Exception ex)
+                {
+                    Log.For(typeof(OS)).Error(ex, "Failed to detect device model.");
+                    return "UNKNOWN";
+                }
+            }
+        }
+
+        static string version;
+        public static string Version
+        {
+            get
+            {
+                if (version.HasValue()) return version;
+
+                try
+                {
+                    version = DetectOSVersion();
+                    return version.Or("UNKNOWN");
                 }
                 catch (Exception ex)
                 {

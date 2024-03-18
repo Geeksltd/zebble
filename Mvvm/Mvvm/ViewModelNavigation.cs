@@ -11,6 +11,7 @@ namespace Zebble.Mvvm
         public Func<Task> RealGo, RealBack, RealForward, RealReplace, RealShowPopup;
         public static Func<Task> RealReload;
         Func<Task> RealHidePopup = () => Task.CompletedTask;
+        public static Action RealPop;
         readonly ViewModel Target;
 
         public ViewModelNavigation(ViewModel target, PageTransition transition)
@@ -38,6 +39,8 @@ namespace Zebble.Mvvm
         public static Task Reload() => RealReload();
 
         public Task Back() => RunFullPage(RealBack);
+
+        public static void Pop() => RealPop();
 
         public async Task HidePopUp()
         {

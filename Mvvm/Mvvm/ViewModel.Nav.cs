@@ -38,6 +38,24 @@ namespace Zebble.Mvvm
 
         public static bool CanGoBack() => Stack.Any();
 
+        public static Task Back<TDestination>(PageTransition transition = PageTransition.SlideBack)
+            where TDestination : FullScreen
+        {
+            return Back(The<TDestination>(), transition);
+        }
+
+        public static async Task Back(FullScreen target, PageTransition transition = PageTransition.SlideBack)
+        {
+            if (Stack.None()) throw new InvalidStateException("There is no previous page in the stack to go back to.");
+
+            if (Stack.Lacks(target)) throw new InvalidStateException("Stack lacks the provided page.");
+
+            while (Stack.Pop() != target)
+                ViewModelNavigation.Pop();
+            
+            await new ViewModelNavigation(target, transition).Back();
+        }
+
         public static Task Back(PageTransition transition = PageTransition.SlideBack)
         {
             if (Stack.None()) throw new InvalidStateException("There is no previous page in the stack to go back to.");

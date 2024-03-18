@@ -451,6 +451,18 @@ namespace Zebble
         }
 
         /// <summary>
+        /// Removes the current page from the stack.
+        /// </summary>
+        public static void Pop()
+        {
+            if (Stack.None()) throw new InvalidStateException("There is no previous page in the stack to pop.");
+
+            Stack.Pop();
+            lock (TransitionLock)
+                TransitionStack.Pop();
+        }
+
+        /// <summary>
         /// Warmp-up cachable target page to enable to navigate faster.
         /// </summary>
         public static async Task WarmUp<TPage>() where TPage : Page

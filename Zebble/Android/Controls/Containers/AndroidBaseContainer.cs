@@ -4,12 +4,12 @@ namespace Zebble.AndroidOS
     using Android.Runtime;
     using Android.Widget;
 
-    public class AndroidBaseContainer : FrameLayout
+    public class AndroidBaseContainer<TView> : FrameLayout where TView : View
     {
-        View View;
+        protected TView View;
         protected bool IsDisposed;
 
-        public AndroidBaseContainer(View view) : base(Renderer.Context)
+        public AndroidBaseContainer(TView view) : base(Renderer.Context)
         {
             View = view;
             this.ConfigureLayout();

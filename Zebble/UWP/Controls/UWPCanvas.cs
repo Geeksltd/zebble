@@ -4,16 +4,18 @@ namespace Zebble.UWP
     using controls = Windows.UI.Xaml.Controls;
     using Olive;
 
-    public class UWPCanvas : controls.Canvas, IDisposable, UIChangeCommand.IHandler
+    public abstract class UWPCanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
     {
         readonly WeakReference<Renderer> RendererRef;
-        readonly WeakReference<View> ViewRef;
-        View View => ViewRef?.GetTargetOrDefault();
+        readonly WeakReference<TView> ViewRef;
 
-        public UWPCanvas(Renderer renderer)
+        protected bool IsDisposed;
+        protected TView View => ViewRef?.GetTargetOrDefault();
+
+        public UWPCanvasBase(Renderer renderer, TView view)
         {
             RendererRef = renderer.GetWeakReference();
-            ViewRef = renderer?.View.GetWeakReference();
+            ViewRef = view.GetWeakReference();
             Configure();
         }
 
@@ -53,10 +55,19 @@ namespace Zebble.UWP
             else Background = view.BackgroundColor.RenderBrush();
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
-            ViewRef?.SetTarget(null);
-            RendererRef?.SetTarget(null);
+            if (!IsDisposed)
+            {
+                IsDisposed = true;
+                ViewRef?.SetTarget(null);
+                RendererRef?.SetTarget(null);
+            }
         }
+    }
+
+    public class UWPCanvas : UWPCanvasBase<View>
+    {
+        public UWPCanvas(Renderer renderer, View view) : base(renderer, view) { }
     }
 }

@@ -70,7 +70,8 @@ namespace Zebble
                 NativeElement = await (RenderOrchestrator = new UWPImageView(image)).Render();
             else if (View is ScrollView scroll)
                 NativeElement = await (RenderOrchestrator = new UWPScrollView(scroll)).Render();
-            else NativeElement = new UWPCanvas(this);
+            else if (View is Stack stack) NativeElement = new UWPStack(this, stack);
+            else NativeElement = new UWPCanvas(this, View);
         }
 
         internal void Apply(string property, UIChangedEventArgs change)

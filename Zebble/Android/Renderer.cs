@@ -78,7 +78,8 @@ namespace Zebble
             else if (view is TextInput) Result = new AndroidTextInput(view as TextInput);
             else if (view is ImageView) Result = AndroidImageFactory.Create(view as ImageView);
             else if (view is ScrollView) Result = ScrollViewFactory.Render(view as ScrollView);
-            else if (view == UIRuntime.RenderRoot || (view as Overlay)?.BlocksGestures == true) Result = new AndroidGestureView(view);
+            else if (view == UIRuntime.RenderRoot || view is Overlay { BlocksGestures: true }) Result = new AndroidGestureView(view);
+            else if (view is Stack stack) Result = new AndroidBlurredContainer(stack);
             else Result = new AndroidCustomContainer(view);
         }
 

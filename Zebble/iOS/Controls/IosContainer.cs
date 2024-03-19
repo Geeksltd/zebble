@@ -2,22 +2,28 @@ namespace Zebble.IOS
 {
     using UIKit;
 
-    public class IosContainer : UIView
+    public abstract class IosContainerBase<TView> : UIView where TView : View
     {
-        bool IsDisposing;
+        protected TView View;
+        protected bool IsDisposed;
 
-        public IosContainer(View view) { }
+        public IosContainerBase(TView view) => View = view;
 
         protected override void Dispose(bool disposing)
         {
-            if (disposing && !IsDisposing)
+            if (disposing && !IsDisposed)
             {
-                IsDisposing = true;
+                IsDisposed = true;
                 try { foreach (var subview in Subviews) subview?.Dispose(); }
                 catch { /* No loggins is needed */ }
             }
 
             base.Dispose(disposing);
         }
+    }
+
+    public class IosContainer : IosContainerBase<View>
+    {
+        public IosContainer(View view) : base(view) { }
     }
 }

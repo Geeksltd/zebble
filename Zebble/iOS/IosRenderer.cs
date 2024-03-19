@@ -33,6 +33,7 @@ namespace Zebble
                 else
                 {
                     if (view is ScrollView sc) Result = await new IosScrollView(sc).GetResult();
+                    else if (view is Stack stack) Result = new IosBlurredContainer(stack);
                     else Result = new IosContainer(view);
 
                     Result.ResignFirstResponder();
@@ -199,6 +200,9 @@ namespace Zebble
             // The second reason is because it was setting the Frame prop which we'll consider as a bad practice from now on
             // As gradient color is a sublayer, sync its size.
             // Layer.SyncBackgroundFrame(Result.Frame);
+
+            if (Result is IosBlurredContainer blurred)
+                blurred.OnBoundsChanged();
 
             RenderBorder();
         }

@@ -70,7 +70,7 @@ namespace Zebble
                 NativeElement = await (RenderOrchestrator = new UWPImageView(image)).Render();
             else if (View is ScrollView scroll)
                 NativeElement = await (RenderOrchestrator = new UWPScrollView(scroll)).Render();
-            else if (View is Stack stack) NativeElement = new UWPStack(this, stack);
+            else if (View is BlurBox blurBox) NativeElement = new UWPBlurBox(this, blurBox);
             else NativeElement = new UWPCanvas(this, View);
         }
 

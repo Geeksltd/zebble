@@ -79,7 +79,17 @@ namespace Zebble
             else if (view is ImageView) Result = AndroidImageFactory.Create(view as ImageView);
             else if (view is ScrollView) Result = ScrollViewFactory.Render(view as ScrollView);
             else if (view == UIRuntime.RenderRoot || view is Overlay { BlocksGestures: true }) Result = new AndroidGestureView(view);
-            else if (view is Stack stack) Result = new AndroidBlurredContainer(stack);
+            else if (view is BlurBox blurBox)
+            {
+#if MONOANDROID
+                if (OS.IsAtLeast(Android.OS.BuildVersionCodes.S) == false)
+                {
+                    Result = new AndroidLegacyBlurBox(blurBox);
+                    return;
+                }
+#endif
+                Result = new AndroidBlurBox(blurBox);
+            }
             else Result = new AndroidCustomContainer(view);
         }
 

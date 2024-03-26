@@ -174,18 +174,5 @@ namespace Zebble
                 RearrangeItemsVertically();
         }
 
-        public readonly AsyncEvent BlurredChanged = new();
-
-        bool blurred;
-        public bool Blurred
-        {
-            get => blurred;
-            set
-            {
-                if (blurred == value) return;
-                blurred = value;
-                BlurredChanged.Raise();
-            }
-        }
     }
 }

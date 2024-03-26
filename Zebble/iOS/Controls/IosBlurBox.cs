@@ -3,12 +3,12 @@
     using System;
     using UIKit;
 
-    public class IosBlurredContainer : IosContainerBase<Stack>
+    public class IosBlurBox : IosContainerBase<BlurBox>
     {
         UIVisualEffectView BlurSubview;
         bool IsSubviewAdded;
 
-        public IosBlurredContainer(Stack view) : base(view)
+        public IosBlurBox(BlurBox view) : base(view)
         {
             View.BlurredChanged.HandleOnUI(MaintainBlur);
             CreateBlur();
@@ -48,7 +48,7 @@
             BringSubviewToFront(BlurSubview);
         }
 
-        bool IsDead(out Stack result)
+        bool IsDead(out BlurBox result)
         {
             result = View;
             if (result is null || result.IsDisposing) return true;

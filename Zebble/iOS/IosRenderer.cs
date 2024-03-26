@@ -33,7 +33,7 @@ namespace Zebble
                 else
                 {
                     if (view is ScrollView sc) Result = await new IosScrollView(sc).GetResult();
-                    else if (view is Stack stack) Result = new IosBlurredContainer(stack);
+                    else if (view is BlurBox blurBox) Result = new IosBlurBox(blurBox);
                     else Result = new IosContainer(view);
 
                     Result.ResignFirstResponder();
@@ -201,8 +201,7 @@ namespace Zebble
             // As gradient color is a sublayer, sync its size.
             // Layer.SyncBackgroundFrame(Result.Frame);
 
-            if (Result is IosBlurredContainer blurred)
-                blurred.OnBoundsChanged();
+            (Result as IosBlurBox)?.OnBoundsChanged();
 
             RenderBorder();
         }

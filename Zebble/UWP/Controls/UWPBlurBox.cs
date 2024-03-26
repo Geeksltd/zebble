@@ -1,8 +1,8 @@
 namespace Zebble.UWP
 {
-    public class UWPStack : UWPCanvasBase<Stack>
+    public class UWPBlurBox : UWPCanvasBase<BlurBox>
     {
-        public UWPStack(Renderer renderer, Stack view) : base(renderer, view)
+        public UWPBlurBox(Renderer renderer, BlurBox view) : base(renderer, view)
         {
             view.BlurredChanged.Handle(MaintainBlur);
             CreateBlur();
@@ -18,7 +18,7 @@ namespace Zebble.UWP
             // View.BackgroundColor(view.Blurred ? Colors.Black.WithAlpha(100) : null);
         }
 
-        bool IsDead(out Stack result)
+        bool IsDead(out BlurBox result)
         {
             result = View;
             if (result is null || result.IsDisposing) return true;

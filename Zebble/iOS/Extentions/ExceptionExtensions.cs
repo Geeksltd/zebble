@@ -11,6 +11,7 @@ namespace System
             var crashInfo = new Dictionary<object, object>
             {
                 [NSError.LocalizedDescriptionKey] = exception.Message,
+                [NSError.DebugDescriptionErrorKey] = exception.Message,
                 ["StackTrace"] = exception.StackTrace
             };
 

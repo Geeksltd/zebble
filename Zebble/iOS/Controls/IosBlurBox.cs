@@ -40,11 +40,10 @@
             }
         }
 
-        public override void SubviewAdded(UIView uiview)
+        public override void LayoutSubviews()
         {
-            base.SubviewAdded(uiview);
+            base.LayoutSubviews();
             if (IsSubviewAdded == false) return;
-            if (uiview == BlurSubview) return;
             BringSubviewToFront(BlurSubview);
         }
 

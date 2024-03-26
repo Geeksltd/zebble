@@ -146,7 +146,11 @@ namespace Zebble.Device
                         Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url);
                     else
                     {
-                        using var httpResponse = fetchTask.GetAlreadyCompletedResult();
+                        // Do not dispose the response and let the GC do it
+                        // The reason is in some scenarios, iOS may reuse the instances
+                        // https://github.com/xamarin/xamarin-macios/blob/c32c925eb52239e1cef8b6e708bcbff7f015ec9f/src/Foundation/NSUrlSessionHandler.cs#L876
+                        // https://github.com/xamarin/xamarin-macios/blob/c32c925eb52239e1cef8b6e708bcbff7f015ec9f/src/Foundation/NSUrlSessionHandler.cs#L1398
+                        var httpResponse = fetchTask.GetAlreadyCompletedResult();
 
                         if (httpResponse.StatusCode.IsAnyOf(HttpStatusCode.OK, HttpStatusCode.Created))
                         {

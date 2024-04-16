@@ -77,6 +77,7 @@
                 if (BackgroundColor == null) return;
 
                 UIRuntime.CurrentActivity.Window.SetStatusBarColor(BackgroundColor.Render());
+                UIRuntime.CurrentActivity.Window.SetNavigationBarColor(BackgroundColor.Render());
             }
 
             static void DoSetForegroundColor()
@@ -91,11 +92,15 @@
             static void DoSetTransparency()
             {
                 if (IsTransparent)
+                {
                     UIRuntime.CurrentActivity.Window.AddFlags(WindowManagerFlags.TranslucentStatus);
+                    UIRuntime.CurrentActivity.Window.AddFlags(WindowManagerFlags.TranslucentNavigation);
+                }
                 else
                 {
                     UIRuntime.CurrentActivity.Window.AddFlags(WindowManagerFlags.DrawsSystemBarBackgrounds);
                     UIRuntime.CurrentActivity.Window.ClearFlags(WindowManagerFlags.TranslucentStatus);
+                    UIRuntime.CurrentActivity.Window.ClearFlags(WindowManagerFlags.TranslucentNavigation);
                 }
             }
 
@@ -110,7 +115,7 @@
             static void DoSetHasLightContent()
             {
                 if (Build.VERSION.SdkInt < BuildVersionCodes.M) return;
-                UIRuntime.CurrentActivity.Window.DecorView.SystemUiVisibility = HasLightContent ? (StatusBarVisibility)SystemUiFlags.LightStatusBar : 0;
+                UIRuntime.CurrentActivity.Window.DecorView.SystemUiVisibility = HasLightContent ? (StatusBarVisibility)(SystemUiFlags.LightStatusBar ^ SystemUiFlags.LightNavigationBar) : 0;
             }
         }
 

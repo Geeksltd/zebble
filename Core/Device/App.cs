@@ -19,7 +19,7 @@ namespace Zebble.Device
 
         /// <summary>
         /// Use this method to release shared resources, save user data, invalidate timers and store the application state.
-        /// If your application supports background exection this method is called instead of WillTerminate when the user quits.
+        /// If your application supports background execution this method is called instead of WillTerminate when the user quits.
         /// Warning: This is invoked on the UI thread. Your code must also run on the UI thread.
         /// </summary>
         public static event Action WentIntoBackground;

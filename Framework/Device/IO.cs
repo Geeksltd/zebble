@@ -79,9 +79,9 @@ namespace Zebble.Device
 
         /// <summary>
         /// It takes a relative path as input, and returns the physical path on the device. 
-        /// It assumes that the file / folder is inside the Resources directory. 
+        /// It assumes that the file / folder is inside the AppResources directory. 
         /// It's case insensitive as all files are turned into lowercase.
-        /// Example: For Images/Abc.png it returns (...)/Resources/Images/Abc.png.
+        /// Example: For Images/Abc.png it returns (...)/AppResources/Images/Abc.png.
         /// </summary>
         public static string AbsolutePath(string relative)
         {

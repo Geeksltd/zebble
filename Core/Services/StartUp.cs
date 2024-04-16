@@ -78,9 +78,9 @@ namespace Zebble
             {
                 var resource = item.Key;
 
-                if (resource.Lacks(".Resources.")) continue;
+                if (resource.Lacks(".AppResources.")) continue;
 
-                var parts = resource.RemoveBeforeAndIncluding(".Resources.").Split('.');
+                var parts = resource.RemoveBeforeAndIncluding(".AppResources.").Split('.');
                 var extension = parts.Last();
                 parts = parts.ExceptLast().ToArray();
                 var fileName = parts.Last();

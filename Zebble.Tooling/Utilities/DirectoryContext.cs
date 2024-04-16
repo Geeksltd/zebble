@@ -17,7 +17,7 @@ namespace Zebble.Tooling
 
         public static DirectoryInfo AppDomainFolder => RootFolder.GetSubDirectory("App.Domain");
         public static DirectoryInfo AppUIFolder => RootFolder.GetSubDirectory("App.UI");
-        internal static DirectoryInfo AppUIResourcesFolder => AppUIFolder.GetSubDirectory("Resources");
+        internal static DirectoryInfo AppUIResourcesFolder => AppUIFolder.GetSubDirectory("AppResources");
         public static DirectoryInfo AppUIStylesFolder => AppUIFolder.GetSubDirectory("Styles");
         public static DirectoryInfo RunFolder => RootFolder.GetSubDirectory("Run");
         public static DirectoryInfo AndroidFolder => RunFolder.GetSubDirectory("Android");

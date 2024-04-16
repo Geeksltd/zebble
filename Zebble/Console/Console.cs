@@ -21,7 +21,7 @@ namespace Zebble
             IO.Root.Delete(recursive: true);
             IO.Root.EnsureExists();
             AppDomain.CurrentDomain.GetBaseDirectory().Parent.Parent.Parent.Parent.Parent
-               .GetSubDirectory($"App.UI{Path.DirectorySeparatorChar}Resources").ExistsOrThrow().CopyTo(IO.Root.FullName);
+               .GetSubDirectory($"App.UI{Path.DirectorySeparatorChar}AppResources").ExistsOrThrow().CopyTo(IO.Root.FullName);
 
             IO.Root.GetFile("Installation.Token").WriteAllText(Guid.NewGuid().ToString());
         }

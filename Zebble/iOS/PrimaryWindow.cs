@@ -1,5 +1,10 @@
 namespace Zebble.IOS
 {
+#if MAUI
+    using Microsoft.Maui.ApplicationModel;
+#else
+    using Xamarin.Essentials;
+#endif
     using System.Threading.Tasks;
     using UIKit;
 
@@ -10,6 +15,9 @@ namespace Zebble.IOS
         public PrimaryWindow(UIViewController rootScreen) : base(UIScreen.MainScreen.Bounds)
         {
             RootScreen = rootScreen;
+
+            Platform.Init(() => rootScreen);
+
             Device.Screen.DarkMode = rootScreen.TraitCollection.UserInterfaceStyle == UIUserInterfaceStyle.Dark;
         }
 

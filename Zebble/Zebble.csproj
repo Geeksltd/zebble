@@ -7,10 +7,8 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.18.0</Version>
+    <Version>5.0.19.0</Version>
     <PackOnBuild>true</PackOnBuild>
-    <UseMaui>true</UseMaui>
-    <SingleProject>true</SingleProject>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
     <DefineConstants>$(DefineConstants)</DefineConstants>
@@ -61,6 +59,9 @@
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('net8.0-')) ">
     <DefineConstants>$(DefineConstants);MAUI</DefineConstants>
+    <SingleProject>true</SingleProject>
+    <UseMaui>true</UseMaui>
+    <UseMauiEssentials>true</UseMauiEssentials>
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.Equals('net8.0-ios')) ">
     <DefineConstants>$(DefineConstants);MAUI_IOS</DefineConstants>

@@ -20,11 +20,15 @@ namespace System
 
         public static SuspendGC Start()
         {
+#if MAUI_IOS
+            return null;
+#else
             lock (SyncLock)
             {
                 if (Current != null) return null;
                 return Current = new SuspendGC();
             }
+#endif
         }
 
         public void Dispose() => GCSettings.LatencyMode = Original;

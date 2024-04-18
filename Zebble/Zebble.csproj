@@ -7,7 +7,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.19.0</Version>
+    <Version>5.0.20.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
@@ -42,7 +42,7 @@
     <DefineConstants>$(DefineConstants);UWP</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.StartsWith('net8.0-windows10')) ">
-    <DefineConstants>$(DefineConstants);MAUIWindows</DefineConstants>
+    <DefineConstants>$(DefineConstants);MAUI_Windows</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.Contains('droid')) ">
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
@@ -94,7 +94,10 @@
   <ItemGroup Condition=" $(DefineConstants.Contains('NET80')) ">
     <Compile Include="Console\**\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('MAUIWindows')) ">
+  <ItemGroup Condition=" $(DefineConstants.Contains('MAUI')) ">
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="8.0.20" />
+  </ItemGroup>
+  <ItemGroup Condition=" $(DefineConstants.Contains('MAUI_Windows')) ">
     <Compile Include="MAUIWindows\**\*.cs" />
     <Compile Include="Windows\**\*.cs" />
   </ItemGroup>

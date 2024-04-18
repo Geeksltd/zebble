@@ -11,7 +11,7 @@ namespace Zebble
     using BaseNativeType = Android.Views.View;
 #elif UWP
     using BaseNativeType = Windows.UI.Xaml.FrameworkElement;
-#elif MAUIWindows
+#elif MAUI_Windows
 using BaseNativeType = object;
 #endif
 

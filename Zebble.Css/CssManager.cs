@@ -1,7 +1,6 @@
 ﻿namespace Zebble.Css
 {
-    using DartSassHost;
-    using JavaScriptEngineSwitcher.V8;
+    using LibSassHost;
     using Olive;
     using System;
     using System.Collections.Generic;
@@ -53,8 +52,7 @@
         (string, string) CompileToCss(string path, string text)
         {
             var options = new CompilationOptions { SourceMap = true, IncludePaths = new[] { path } };
-            var compiler = new SassCompiler(new V8JsEngineFactory());
-            var result = compiler.Compile(
+            var result = SassCompiler.Compile(
                 text, "input.scss", "output.css", "output.css.map", options
             );
             return (result.CompiledContent, result.SourceMap);

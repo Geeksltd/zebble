@@ -62,10 +62,24 @@ namespace Zebble
         }
 
         [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncEvent<TArg> InsertHandler(Action<TArg> handler, int index,
+            [CallerFilePath] string callerFile = null, [CallerLineNumber] int line = 0)
+        {
+            return DoHandleOn<TArg, AsyncEvent<TArg>>(null, null, handler, callerFile, line, index);
+        }
+
+        [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
         public AsyncEvent<TArg> InsertHandlerOn(BaseThread thread, Func<TArg, Task> handler, int index,
             [CallerFilePath] string callerFile = null, [CallerLineNumber] int line = 0)
         {
             return DoHandleOn<TArg, AsyncEvent<TArg>>(thread, handler, null, callerFile, line, index);
+        }
+
+        [DebuggerStepThrough, MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public AsyncEvent<TArg> InsertHandlerOn(BaseThread thread, Action<TArg> handler, int index,
+            [CallerFilePath] string callerFile = null, [CallerLineNumber] int line = 0)
+        {
+            return DoHandleOn<TArg, AsyncEvent<TArg>>(thread, null, handler, callerFile, line, index);
         }
 
         protected AsyncEvent<TArg> DoHandleOn(BaseThread thread, Func<TArg, Task> handlerTask, Action<TArg> handlerAction,

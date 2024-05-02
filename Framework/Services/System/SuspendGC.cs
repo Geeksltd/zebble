@@ -20,7 +20,7 @@ namespace System
 
         public static SuspendGC Start()
         {
-#if MAUI_IOS
+#if MAUI_IOS || MAUI_ANDROID
             return null;
 #else
             lock (SyncLock)

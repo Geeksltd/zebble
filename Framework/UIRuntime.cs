@@ -49,7 +49,9 @@ namespace Zebble
                         .ConfigureLogging(x => x.ClearProviders().AddZebbleLogging());
 
 #if IOS || ANDROID
-            builder.UseContentRoot(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+            var contentRoot = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+            contentRoot.AsDirectory().EnsureExists();
+            builder.UseContentRoot(contentRoot);
 #endif
 
             config?.Invoke(builder);
@@ -67,5 +69,5 @@ return Host.CreateDefaultBuilder();
 #endif
         }
     }
-    
+
 }

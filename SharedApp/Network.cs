@@ -50,6 +50,8 @@ namespace Zebble.Device
             {
 #if IOS
                 var handler = new NSUrlSessionHandler();
+#elif MAUI_ANDROID
+                var handler = new Xamarin.Android.Net.AndroidMessageHandler();
 #elif ANDROID
                 var handler = new Xamarin.Android.Net.AndroidClientHandler();
 #else

@@ -21,7 +21,7 @@ namespace Zebble.AndroidOS
             var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
             ViewCompat.SetFitsSystemWindows(view, true);
 
-            await new Device.Screen.WindowInstetsApplierListener().WaitForCompletion(view);
+            await new Device.Screen.WindowInsetsApplierListener().WaitForCompletion(view);
 
             await AddRootView();
 
@@ -35,7 +35,7 @@ namespace Zebble.AndroidOS
 
             var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
 
-            await new Device.Screen.WindowInstetsConsumerListener().WaitForCompletion(view);
+            await new Device.Screen.WindowInsetsConsumerListener().WaitForCompletion(view);
 
             (RootView.Parent as ViewGroup)?.RemoveView(RootView);
             rootScreen.AddView(RootView);

@@ -15,7 +15,7 @@ namespace Zebble.Device
             protected readonly TaskCompletionSource<bool> CompletionSource = new();
         }
 
-        internal class WindowInstetsConsumerListener : AwaitableListener, IOnApplyWindowInsetsListener
+        internal class WindowInsetsConsumerListener : AwaitableListener, IOnApplyWindowInsetsListener
         {
             public virtual WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {
@@ -27,11 +27,12 @@ namespace Zebble.Device
             public async Task WaitForCompletion(Android.Views.View view)
             {
                 ViewCompat.SetOnApplyWindowInsetsListener(view, this);
+                ViewCompat.RequestApplyInsets(view);
                 await CompletionSource.Task;
             }
         }
 
-        internal class WindowInstetsApplierListener : WindowInstetsConsumerListener
+        internal class WindowInsetsApplierListener : WindowInsetsConsumerListener
         {
             public override WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {

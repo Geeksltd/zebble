@@ -26,8 +26,6 @@ namespace Zebble
             ConfigureCommonSettings();
             Result.Visibility = ViewStates.Gone;
 
-            // if (!view.Shown.IsHandled()) view.IsShown = true;
-            // else
             Result.ViewAttachedToWindow += Result_ViewAttachedToWindow;
 
             if (nativeParent is IScrollView scrollview)
@@ -81,14 +79,9 @@ namespace Zebble
             else if (view == UIRuntime.RenderRoot || view is Overlay { BlocksGestures: true }) Result = new AndroidGestureView(view);
             else if (view is BlurBox blurBox)
             {
-#if MONOANDROID
-                if (OS.IsAtLeast(Android.OS.BuildVersionCodes.S) == false)
-                {
-                    Result = new AndroidLegacyBlurBox(blurBox);
-                    return;
-                }
-#endif
-                Result = new AndroidBlurBox(blurBox);
+                if (OS.IsAtLeast(Android.OS.BuildVersionCodes.S))
+                    Result = new AndroidBlurBox(blurBox);
+                else Result = new AndroidLegacyBlurBox(blurBox);
             }
             else Result = new AndroidCustomContainer(view);
         }

@@ -2,12 +2,11 @@
 using Android.Runtime;
 using System;
 
-#if MONOANDROID
 using Android.Content;
 using Android.Renderscripts;
 using AndroidCanvas = Android.Graphics.Canvas;
 using AndroidView = Android.Views.View;
-#endif
+using Zebble.Device;
 
 namespace Zebble.AndroidOS
 {
@@ -25,12 +24,17 @@ namespace Zebble.AndroidOS
         [Preserve]
         protected AndroidBlurBox(IntPtr handle, JniHandleOwnership transfer) : base(handle, transfer) { }
 
-        void CreateBlur() => BlurEffect = RenderEffect.CreateBlurEffect(15, 15, Shader.TileMode.Clamp);
+        void CreateBlur()
+        {
+            if (OS.IsAtLeast(Android.OS.BuildVersionCodes.S))
+                BlurEffect = RenderEffect.CreateBlurEffect(15, 15, Shader.TileMode.Clamp);
+        }
 
         void MaintainBlur()
         {
             if (IsDead(out var view)) return;
-            SetRenderEffect(view.Blurred ? BlurEffect : null);
+            if (OS.IsAtLeast(Android.OS.BuildVersionCodes.S))
+                SetRenderEffect(view.Blurred ? BlurEffect : null);
         }
 
         bool IsDead(out BlurBox result)
@@ -45,7 +49,7 @@ namespace Zebble.AndroidOS
             if (disposing && !IsDisposed)
             {
                 View?.BlurredChanged.RemoveActionHandler(MaintainBlur);
-                BlurEffect.Dispose();
+                BlurEffect?.Dispose();
                 BlurEffect = null;
             }
 
@@ -53,8 +57,6 @@ namespace Zebble.AndroidOS
         }
     }
 
-#if MONOANDROID
-    [Obsolete]
     public class AndroidLegacyBlurBox : AndroidBaseContainer<BlurBox>
     {
         RenderScriptBlur Algorithm;
@@ -259,5 +261,4 @@ namespace Zebble.AndroidOS
             }
         }
     }
-#endif
 }

@@ -2,7 +2,6 @@ namespace Zebble.AndroidOS
 {
     using System.Threading.Tasks;
     using Android.Views;
-    using AndroidX.Core.View;
     using Zebble;
 
     public class Setup
@@ -18,14 +17,13 @@ namespace Zebble.AndroidOS
 
             Device.Screen.PreLoadConfiguration();
 
-            var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
-            ViewCompat.SetFitsSystemWindows(view, true);
+            var rootHost = UIRuntime.CurrentActivity.Window?.DecorView as ViewGroup ?? rootScreen;
 
-            await new Device.Screen.WindowInsetsApplierListener().WaitForCompletion(view);
+            await new Device.Screen.WindowInsetsApplierListener().WaitForCompletion(rootHost);
 
             await AddRootView();
 
-            rootScreen.AddView(RootView);
+            rootHost.AddView(RootView);
             UIRuntime.CurrentActivity.Window.SetSoftInputMode(SoftInput.AdjustResize);
         }
 
@@ -33,12 +31,12 @@ namespace Zebble.AndroidOS
         {
             UIRuntime.NativeRootScreen = rootViewController;
 
-            var view = UIRuntime.CurrentActivity.Window?.DecorView ?? rootScreen;
+            var rootHost = UIRuntime.CurrentActivity.Window?.DecorView as ViewGroup ?? rootScreen;
 
-            await new Device.Screen.WindowInsetsConsumerListener().WaitForCompletion(view);
+            await new Device.Screen.WindowInsetsConsumerListener().WaitForCompletion(rootHost);
 
-            (RootView.Parent as ViewGroup)?.RemoveView(RootView);
-            rootScreen.AddView(RootView);
+            rootHost.RemoveView(RootView);
+            rootHost.AddView(RootView);
         }
 
         static void ConfigureAnimationDurations()

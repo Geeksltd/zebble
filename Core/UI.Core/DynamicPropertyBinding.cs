@@ -5,7 +5,7 @@ namespace Zebble
 {
     class DynamicPropertyBinding<TSource, TProperty> : DynamicPropertyBinding
     {
-        readonly Func<Bindable<TSource>> TypedSource;
+        Func<Bindable<TSource>> TypedSource;
         readonly Func<TSource, TProperty> ValueExpression;
 
         IBinding<TSource> CurrentBinding;
@@ -21,8 +21,15 @@ namespace Zebble
         {
             CurrentBinding?.Remove();
 
-            if (Target is null) Dispose();
+            if (TypedSource is null) Dispose();
+            else if (Target is null) Dispose();
             else CurrentBinding = TypedSource.Invoke().AddBinding(Target, PropertyName, ValueExpression);
+        }
+
+        public override void Dispose()
+        {
+            TypedSource = null;
+            base.Dispose();
         }
     }
 
@@ -45,13 +52,12 @@ namespace Zebble
         {
             CurrentBinding?.Remove();
 
-            if (Source is null) return;
-            if (Target is null) return;
-
-            CurrentBinding = Source.Invoke().AddBinding(Target, PropertyName);
+            if (Source is null) Dispose();
+            else if (Target is null) Dispose();
+            else CurrentBinding = Source.Invoke().AddBinding(Target, PropertyName);
         }
 
-        public void Dispose()
+        public virtual void Dispose()
         {
             CurrentBinding?.Remove();
             Source = null;

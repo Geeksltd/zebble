@@ -7,20 +7,6 @@
 
     partial class ViewExtensions
     {
-        // public static TView Bind<TView, TSource>(this TView @this, Func<TView, AbstractAsyncEvent> @event,
-        //     Bindable<TSource> bindable, Action<TSource> handler)
-        // where TView : View
-        // {
-        //    @event(@this).Handle(() =>
-        //    {
-        //        if (bindable.Value == null) return Task.CompletedTask;
-        //        // var handler = handlerExpression(bindable);
-        //        handler(bindable.Value);
-        //        return Task.CompletedTask;
-        //    });
-        //    return @this;
-        // }
-
         #region Bindable
 
         public static TView On<TView, THandlerTarget>(this TView @this, Func<TView, AsyncEvent> @event,

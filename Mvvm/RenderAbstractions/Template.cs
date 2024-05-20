@@ -16,12 +16,14 @@ namespace Zebble.Mvvm
         internal View GetOrCreate(ViewModel model)
         {
             if (View == null || View.IsDisposing)
+            {
                 View = (View)TemplateType.CreateInstance();
-
 #if UWP || ANDROID || IOS
-            View.SetViewModelValue(model);
-            View.RefreshBindings();
+                View.SetViewModelValue(model);
+                View.RefreshBindings();
 #endif
+            }
+
             return View;
         }
     }

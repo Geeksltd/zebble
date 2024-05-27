@@ -2,7 +2,7 @@ namespace Zebble
 {
     using System;
     using System.Linq;
-    using System.Collections.Generic;
+    using System.Collections.Concurrent;
     using System.Diagnostics;
     using Olive;
 
@@ -14,10 +14,10 @@ namespace Zebble
         /// </summary>
         public static float FontSizeScale { get; set; } = 1;
 
-        static readonly Dictionary<string, float> TextWidthCache = new();
-        static readonly Dictionary<string, float> TextHeightCache = new();
-        static readonly Dictionary<string, float> LineHeightCache = new();
-        static readonly Dictionary<string, float> AutomaticExtraTopPaddings = new();
+        static readonly ConcurrentDictionary<string, float> TextWidthCache = new();
+        static readonly ConcurrentDictionary<string, float> TextHeightCache = new();
+        static readonly ConcurrentDictionary<string, float> LineHeightCache = new();
+        static readonly ConcurrentDictionary<string, float> AutomaticExtraTopPaddings = new();
 
         /// <summary>
         /// Multiplies the font size by the FontSizeScale.
@@ -65,6 +65,6 @@ namespace Zebble
             return 0;
         }
 
-        public float GetLineHeight() => LineHeightCache.GetOrAdd(ToString(), () => CalculateFontLineHeight());
+        public float GetLineHeight() => LineHeightCache.GetOrAdd(ToString(), CalculateFontLineHeight);
     }
 }

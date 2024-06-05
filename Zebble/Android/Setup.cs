@@ -35,7 +35,7 @@ namespace Zebble.AndroidOS
 
             await new Device.Screen.WindowInsetsConsumerListener().WaitForCompletion(rootHost);
 
-            rootHost.RemoveView(RootView);
+            ((ViewGroup)RootView.Parent ?? rootHost).RemoveView(RootView);
             rootHost.AddView(RootView);
         }
 

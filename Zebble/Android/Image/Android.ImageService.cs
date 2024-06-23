@@ -69,13 +69,7 @@ namespace Zebble.Services
                 {
                     if (retry == 1)
                         throw new BadDataException($"Failed to decode the image: {file.FullName}\n{ex.Message}", ex);
-                    else
-                    {
-                        Nav.DisposeCache();
-                        DisposeCache();
-                        GC.Collect();
-                        await Task.Delay(150);
-                    }
+                    await Task.Delay(150);
                 }
             }
 

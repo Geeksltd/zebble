@@ -15,7 +15,6 @@ namespace Zebble.AndroidOS
     public class BaseActivity : AppCompatActivity
     {
         protected static bool IsFirstRun = true;
-        public static Android.Views.View RootView = null;
 
         public static BaseActivity Current => (BaseActivity)UIRuntime.CurrentActivity;
 
@@ -36,8 +35,6 @@ namespace Zebble.AndroidOS
             ActionBar?.Hide();
 
             OnNewIntent(Intent);
-
-            DetectSoftKeyboardHeight();
         }
 
         public override void OnConfigurationChanged(Configuration newConfig)
@@ -131,29 +128,6 @@ namespace Zebble.AndroidOS
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
             UIRuntime.OnActivityResult.Raise(new Tuple<int, Result, Intent>(requestCode, resultCode, data));
-        }
-
-        public void DetectSoftKeyboardHeight()
-        {
-            RootView = this.FindViewById(Android.Resource.Id.Content);
-            if (RootView != null)
-                RootView.ViewTreeObserver.AddOnGlobalLayoutListener(new MyLayoutListener());
-        }
-    }
-
-    public class MyLayoutListener : Java.Lang.Object, ViewTreeObserver.IOnGlobalLayoutListener
-    {
-        public void OnGlobalLayout()
-        {
-            const int KeyboardVisibilityValue = 150;
-
-            if (BaseActivity.RootView == null) return;
-            var diff = BaseActivity.RootView.RootView.Height - BaseActivity.RootView.Height;
-            if (diff > KeyboardVisibilityValue)
-            {
-                Device.Keyboard.SoftKeyboardHeight = diff;
-                Device.Keyboard.RaiseShown();
-            }
         }
     }
 }

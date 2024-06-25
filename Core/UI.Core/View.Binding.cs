@@ -1,7 +1,7 @@
-﻿using System;
+﻿using Olive;
+using System;
+using System.Collections.Concurrent;
 using System.ComponentModel;
-using System.Linq;
-using Olive;
 
 namespace Zebble
 {
@@ -34,21 +34,13 @@ namespace Zebble
 
     partial class View
     {
-        readonly ConcurrentList<DynamicPropertyBinding> DynamicBindings = new();
+        readonly ConcurrentDictionary<string, DynamicPropertyBinding> DynamicBindings = [];
 
         internal void RegisterPropertyBinding(DynamicPropertyBinding definition)
         {
             if (definition is null) return;
-
-            DynamicBindings
-                .Where(x => x == definition)
-                .Do(x =>
-                {
-                    x.Dispose();
-                    DynamicBindings.Remove(x);
-                });
-
-            DynamicBindings.Add(definition);
+            DynamicBindings.TryGet(definition.Key)?.Dispose();
+            DynamicBindings[definition.Key] = definition;
             definition.Apply();
         }
 
@@ -56,11 +48,11 @@ namespace Zebble
         /// Reapplies the bindings on the properties of this view.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void RefreshBindings() => UIWorkBatch.RunSync(RefreshAllBindings);
+        public void RefreshBindings() => Thread.UI.Run(RefreshAllBindings).RunInParallel();
 
         void RefreshAllBindings()
         {
-            DynamicBindings.Do(x => x.Apply());
+            DynamicBindings.Values.Do(x => x.Apply());
 
             foreach (var c in AllChildren.ToArray())
                 c.RefreshAllBindings();

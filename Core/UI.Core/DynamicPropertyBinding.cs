@@ -41,6 +41,8 @@ namespace Zebble
         Func<IBindable> Source;
         IBinding CurrentBinding;
 
+        public string Key => Target.GetHashCode() + PropertyName;
+
         public DynamicPropertyBinding(object target, string propertyName, Func<IBindable> source)
         {
             Target = target ?? throw new ArgumentNullException(nameof(target));

@@ -488,7 +488,7 @@ namespace Zebble
                 IsDisposing = true;
 
                 DisposeEvents();
-                DynamicBindings.Do(x => x.Dispose());
+                DynamicBindings.Values.Do(x => x.Dispose());
                 DynamicBindings.Clear();
 
                 Width?.Dispose();

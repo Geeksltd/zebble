@@ -25,8 +25,11 @@ namespace Zebble.Device
             // TODO: How to implement section?
 
             if (Device.OS.IsBeforeiOS(8)) return Task.FromResult(result: false);
-
-            UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+            
+            if (section == "Network")
+                UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"));
+            else
+                UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
             return Task.FromResult(result: true);
         }
 

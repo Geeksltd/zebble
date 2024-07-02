@@ -28,8 +28,13 @@ namespace Zebble.Device
         {
             // TODO: How to implement section?
 
-            var intent = new Intent()
-                .SetAction(Android.Provider.Settings.ActionApplicationDetailsSettings)
+            var intent = new Intent();
+
+            if (section == "Network")
+                intent.SetAction(Android.Provider.Settings.ActionWifiSettings)
+                .AddFlags(ActivityFlags.NewTask | ActivityFlags.NoHistory | ActivityFlags.ExcludeFromRecents);
+            else
+                intent.SetAction(Android.Provider.Settings.ActionApplicationDetailsSettings)
                 .AddCategory(Intent.CategoryDefault)
                 .SetData(Android.Net.Uri.Parse("package:" + UIRuntime.CurrentActivity.PackageName))
                 .AddFlags(ActivityFlags.NewTask | ActivityFlags.NoHistory | ActivityFlags.ExcludeFromRecents);

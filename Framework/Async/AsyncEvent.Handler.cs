@@ -48,7 +48,7 @@ namespace Zebble
 
         public abstract void RemoveSelf();
 
-        public abstract void Dispose();
+        public virtual void Dispose() => GC.SuppressFinalize(this);
     }
 
     public abstract class AsyncEventHandler<TActionFunction> : AsyncEventHandler, IAsyncEventHandler
@@ -78,6 +78,7 @@ namespace Zebble
             Action = null;
             Thread = null;
             Caller = null;
+			base.Dispose();
         }
     }
 

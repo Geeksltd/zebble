@@ -180,7 +180,10 @@ namespace Zebble.UWP
             Result.IsTabStop = isTabStop;
         }
 
-        public virtual void Dispose() => Result = null;
+        public virtual void Dispose() {
+			Result = null;
+			GC.SuppressFinalize(this);
+		}
     }
 
     public class UWPTextBox : UWPTextBoxBase<TextBox>

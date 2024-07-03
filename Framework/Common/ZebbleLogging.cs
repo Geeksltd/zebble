@@ -17,7 +17,7 @@
 
         public ILogger CreateLogger(string categoryName) => new ZebbleLogger(Options, categoryName);
 
-        public void Dispose() { }
+        public void Dispose() => GC.SuppressFinalize(this);
 
         class ZebbleLogger : ILogger<string>
         {

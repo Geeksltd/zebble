@@ -168,6 +168,8 @@ namespace Zebble.UWP
 
             BackgroundImage?.Dispose(); 
             BackgroundImage = null;
+			
+			GC.SuppressFinalize(this);
         }
     }
 }

@@ -115,10 +115,11 @@ namespace Zebble.Services
                 var bmp = Image as UIImage;
 
                 Image = null;
-                if (bmp is null) return;
 
-                bmp.Dispose();
+                bmp?.Dispose();
                 bmp = null;
+				
+				GC.SuppressFinalize(this);
             }
         }
     }

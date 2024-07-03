@@ -457,6 +457,7 @@ namespace Zebble
             IsDisposing = true;
             Changed?.Dispose();
             Owner = null;
+			GC.SuppressFinalize(this);
         }
     }
 }

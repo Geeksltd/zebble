@@ -172,6 +172,7 @@
         {
             Screen.OnKeyboardHeightChanged -= OnKeyboardHeightChanged;
             View.FocusChange -= FocusChange;
+			GC.SuppressFinalize(this);
         }
     }
 }

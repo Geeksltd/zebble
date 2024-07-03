@@ -305,6 +305,8 @@ namespace Zebble.UWP
 
             ElementRef?.SetTarget(null);
             ViewRef?.SetTarget(null);
+			
+			GC.SuppressFinalize(this);
         }
     }
 }

@@ -483,6 +483,9 @@ namespace Zebble
         [EscapeGCop("It's a special case, so async void is fine.")]
         public virtual async void Dispose()
         {
+			if (IsDisposing) return;
+			if (IsDisposed) return;
+			
             using (await DomLock.Lock())
             {
                 IsDisposing = true;
@@ -519,6 +522,8 @@ namespace Zebble
 
                 IsDisposed = true;
             }
+
+			GC.SuppressFinalize(this);
         }
     }
 }

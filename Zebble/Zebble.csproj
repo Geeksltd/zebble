@@ -1,13 +1,13 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
-    <TargetFrameworks>Xamarin.iOS10;MonoAndroid13.0;net8.0;net8.0-android;net8.0-ios</TargetFrameworks>
+    <TargetFrameworks>net8.0;net8.0-android;net8.0-ios</TargetFrameworks>
     <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
     <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
     <AssemblyName>Zebble</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.34.0</Version>
+    <Version>5.0.35.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
@@ -48,9 +48,6 @@
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
     <AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('MonoAndroid')) OR $(TargetFramework.Contains('Xamarin'))">
-    <DefineConstants>$(DefineConstants);XAMARIN</DefineConstants>
-  </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.Contains('iOS')) OR $(TargetFramework.Contains('ios')) ">
     <DefineConstants>$(DefineConstants);IOS</DefineConstants>
   </PropertyGroup>
@@ -80,14 +77,6 @@
   <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
     <Compile Include="Android\**\*.cs" />
   </ItemGroup>
-  <ItemGroup Condition="$(TargetFramework.StartsWith('MonoAndroid'))">
-    <Reference Include="System.Xml.Linq" />
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.6.1.7" />
-  </ItemGroup>
-  <ItemGroup Condition="$(DefineConstants.Contains('XAMARIN'))">
-    <Reference Include="System.Xml.Linq" />
-    <PackageReference Include="Xamarin.Essentials" Version="1.8.1" />
-  </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
     <Compile Include="iOS\**\*.cs" />
   </ItemGroup>
@@ -95,7 +84,7 @@
     <Compile Include="Console\**\*.cs" />
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('MAUI')) ">
-    <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.0-preview.3.10457" />
+    <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.0-preview.5.24307.10" />
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('MAUI_Windows')) ">
     <Compile Include="MAUIWindows\**\*.cs" />
@@ -108,9 +97,9 @@
     <None Remove="Zebble-LicenseAgreement.txt" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.3.24172.9" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-preview.3.24172.9" />
-    <PackageReference Include="Olive" Version="2.1.365" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.5.24306.7" />
+    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-preview.5.24306.7" />
+    <PackageReference Include="Olive" Version="2.1.374" />
     <PackageReference Include="SkiaSharp" Version="3.0.0-preview.3.1" />
     <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
   </ItemGroup>

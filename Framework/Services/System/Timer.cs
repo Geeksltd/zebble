@@ -53,6 +53,7 @@ namespace Zebble.Services
         {
             Stopped = true;
             Action = null;
+			GC.SuppressFinalize(this);
         }
 
         async Task StartTicking()

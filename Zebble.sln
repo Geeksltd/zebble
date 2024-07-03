@@ -173,7 +173,6 @@ Global
 		Abstractions\Abstractions.projitems*{5cd545f4-9853-405c-bb5a-f21998048099}*SharedItemsImports = 13
 		SharedApp\SharedApp.projitems*{61d7c55f-f99b-44ef-92ba-032209b2d5b1}*SharedItemsImports = 13
 		Abstractions\Abstractions.projitems*{692a8f08-37f4-4633-b626-d3ae56d0117c}*SharedItemsImports = 5
-		Core\Core.projitems*{692a8f08-37f4-4633-b626-d3ae56d0117c}*SharedItemsImports = 5
 		Css\Css.projitems*{692a8f08-37f4-4633-b626-d3ae56d0117c}*SharedItemsImports = 5
 		Framework\Framework.projitems*{692a8f08-37f4-4633-b626-d3ae56d0117c}*SharedItemsImports = 5
 		Mvvm\Mvvm.projitems*{692a8f08-37f4-4633-b626-d3ae56d0117c}*SharedItemsImports = 5

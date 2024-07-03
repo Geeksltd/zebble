@@ -237,6 +237,8 @@ namespace Zebble.Services
 
                 bmp.Recycle();
                 bmp.Dispose();
+				
+				GC.SuppressFinalize(this);
             }
         }
     }

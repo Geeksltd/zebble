@@ -63,6 +63,7 @@ namespace Zebble.UWP
                 ViewRef?.SetTarget(null);
                 RendererRef?.SetTarget(null);
             }
+			GC.SuppressFinalize(this);
         }
     }
 

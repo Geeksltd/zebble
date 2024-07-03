@@ -284,6 +284,8 @@ namespace Zebble
 
             (NativeElement as IDisposable)?.Dispose();
             NativeElement = null;
+			
+			GC.SuppressFinalize(this);
         }
     }
 }

@@ -90,6 +90,8 @@ namespace Zebble.UWP
             Result.Set(x => x.Loading -= Result_Loading);
             EventHandlerDisposer.DisposeAll();
             Result = null;
+			
+			GC.SuppressFinalize(this);
         }
     }
 }

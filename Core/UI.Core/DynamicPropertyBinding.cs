@@ -65,6 +65,7 @@ namespace Zebble
             Source = null;
             CurrentBinding = null;
             Target = null;
+			GC.SuppressFinalize(this);
         }
 
         public static bool operator ==(DynamicPropertyBinding @this, DynamicPropertyBinding that)

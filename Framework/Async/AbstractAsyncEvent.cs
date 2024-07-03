@@ -153,6 +153,7 @@ namespace Zebble
             DeclaringFile = EventName = null;
             OwnerReference?.SetTarget(null);
             ClearHandlers();
+			GC.SuppressFinalize(this);
         }
     }
 }

@@ -24,6 +24,7 @@ namespace Zebble
             Right?.Dispose();
             Top?.Dispose();
             Bottom?.Dispose();
+			GC.SuppressFinalize(this);
         }
 
         internal void Update()

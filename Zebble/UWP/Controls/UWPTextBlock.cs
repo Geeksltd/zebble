@@ -129,6 +129,8 @@ namespace Zebble.UWP
             }
 
             ViewRef?.SetTarget(null);
+			
+			GC.SuppressFinalize(this);
         }
     }
 }

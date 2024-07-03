@@ -221,6 +221,7 @@ namespace Zebble
             Result?.Dispose();
             Result = null;
             View = null;
+			GC.SuppressFinalize(this);
         }
     }
 }

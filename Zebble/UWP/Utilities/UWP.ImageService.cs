@@ -178,7 +178,10 @@ namespace Zebble.Services
 
         partial class ImageSource
         {
-            public void Dispose() => Image = null;
+            public void Dispose() {
+				Image = null;
+				GC.SuppressFinalize(this);
+			}
         }
     }
 }

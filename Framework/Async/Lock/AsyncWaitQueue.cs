@@ -45,6 +45,8 @@ namespace Zebble
                     Task.Run(() => s.TrySetResult(Result));
                     s.Task.Wait();
                 }
+
+				GC.SuppressFinalize(this);
             }
         }
     }

@@ -5,7 +5,8 @@ namespace Zebble
 
     partial class Renderer
     {
-        public void Dispose() { }
+        public void Dispose() => GC.SuppressFinalize(this);
+		
         public async Task<object> Render() => throw new NotSupportedException();
 
         internal void Apply(string property, UIChangedEventArgs change) => throw new NotSupportedException();

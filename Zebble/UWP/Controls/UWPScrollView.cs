@@ -302,6 +302,8 @@ namespace Zebble.UWP
             });
 
             Result = null;
+			
+			GC.SuppressFinalize(this);
         }
     }
 }

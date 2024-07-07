@@ -33,8 +33,11 @@ namespace Zebble
         {
             await base.OnPreRender();
             if (BlocksGestures) BlockGestures();
+            Default.On(x => x.Tapped, OnDefaultTapped);
         }
 
+        void OnDefaultTapped() => Default.Hide().GetAwaiter();
+        
         public async Task Show()
         {
             if (parent == null) await Root.Add(this);

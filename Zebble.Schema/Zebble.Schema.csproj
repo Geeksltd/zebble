@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>zebble-schema</ToolCommandName>
     <Company>Geeks Ltd</Company>
@@ -15,7 +15,7 @@
     <PackageRequireLicenseAcceptance>False</PackageRequireLicenseAcceptance>
     <RunPostBuildEvent>OnOutputUpdated</RunPostBuildEvent>
     <LangVersion>preview</LangVersion>
-    <Version>2.0.3.0</Version>
+    <Version>2.0.4.0</Version>
     <RepositoryUrl>https://github.com/Geeksltd/zebble-schema</RepositoryUrl>
     <Copyright>Geeks Ltd 2024, All rights reserved.</Copyright>
   </PropertyGroup>

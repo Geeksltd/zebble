@@ -1,10 +1,6 @@
 namespace Zebble.IOS
 {
-#if MAUI
     using Microsoft.Maui.ApplicationModel;
-#else
-    using Xamarin.Essentials;
-#endif
     using System.Threading.Tasks;
     using UIKit;
 

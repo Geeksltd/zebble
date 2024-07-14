@@ -1,7 +1,6 @@
 ﻿using Olive;
 using System;
 using System.Collections;
-using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -16,8 +15,6 @@ namespace Zebble.Mvvm
 
     public static class BindableExtensions
     {
-        static readonly ConcurrentDictionary<string, IBindable> Dependents = new();
-
         public static BindableCollection<TTarget> Get<TValue, TTarget>(this Bindable<TValue> @this, Func<TValue, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0)
         {
             return Get(@this, null, valueProvider, callerFile, callerLine);
@@ -29,13 +26,12 @@ namespace Zebble.Mvvm
         //     instance.
         public static BindableCollection<TTarget> Get<TValue, TTarget>(this Bindable<TValue> @this, string uniqueIdentifier, Func<TValue, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0)
         {
-            string key = $"{callerFile}|{callerLine}|{uniqueIdentifier}";
-            return (BindableCollection<TTarget>)Dependents.GetOrAdd(key, delegate
+            return @this.GetDependent(uniqueIdentifier, _ =>
             {
                 var collectionBindable = new BindableCollection<TTarget>();
                 collectionBindable.Bind(@this, source => valueProvider(source).ToList());
                 return collectionBindable;
-            });
+            }, callerFile, callerLine);
         }
 
         public static BindableCollection<TTarget> Get<TValue, TTarget>(this BindableCollection<TValue> @this, Func<IEnumerable<TValue>, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0)
@@ -49,13 +45,12 @@ namespace Zebble.Mvvm
         //     instance.
         public static BindableCollection<TTarget> Get<TValue, TTarget>(this BindableCollection<TValue> @this, string uniqueIdentifier, Func<IEnumerable<TValue>, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0)
         {
-            string key = $"{callerFile}|{callerLine}|{uniqueIdentifier}";
-            return (BindableCollection<TTarget>)Dependents.GetOrAdd(key, delegate
+            return @this.GetDependent(uniqueIdentifier, _ =>
             {
                 var collectionBindable = new BindableCollection<TTarget>();
                 collectionBindable.Bind(@this, source => valueProvider(source).ToList());
                 return collectionBindable;
-            });
+            }, callerFile, callerLine);
         }
 
         public static CollectionViewModel<TViewModel> Get<TValue, TTarget, TViewModel>(this Bindable<TValue> @this, Func<TValue, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel, IViewModelOf<TTarget>, new()
@@ -69,13 +64,12 @@ namespace Zebble.Mvvm
         //     instance.
         public static CollectionViewModel<TViewModel> Get<TValue, TTarget, TViewModel>(this Bindable<TValue> @this, string uniqueIdentifier, Func<TValue, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel, IViewModelOf<TTarget>, new()
         {
-            string key = $"{callerFile}|{callerLine}|{uniqueIdentifier}";
-            return (CollectionViewModel<TViewModel>)Dependents.GetOrAdd(key, delegate
+            return @this.GetDependent(uniqueIdentifier, _ =>
             {
                 var collectionBindable = new CollectionViewModel<TViewModel>();
                 collectionBindable.Bind(@this, source => valueProvider(source).Select(v => new TViewModel().Set(x => x.Source.Set(v))).ToList());
                 return collectionBindable;
-            });
+            }, callerFile, callerLine);
         }
 
         public static CollectionViewModel<TViewModel> Get<TValue, TTarget, TViewModel>(this BindableCollection<TValue> @this, Func<IEnumerable<TValue>, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel, IViewModelOf<TTarget>, new()
@@ -89,13 +83,12 @@ namespace Zebble.Mvvm
         //     instance.
         public static CollectionViewModel<TViewModel> Get<TValue, TTarget, TViewModel>(this BindableCollection<TValue> @this, string uniqueIdentifier, Func<IEnumerable<TValue>, IEnumerable<TTarget>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel, IViewModelOf<TTarget>, new()
         {
-            string key = $"{callerFile}|{callerLine}|{uniqueIdentifier}";
-            return (CollectionViewModel<TViewModel>)Dependents.GetOrAdd(key, delegate
+            return @this.GetDependent(uniqueIdentifier, _ =>
             {
                 var collectionBindable = new CollectionViewModel<TViewModel>();
                 collectionBindable.Bind(@this, source => valueProvider(source).Select(v => new TViewModel().Set(x => x.Source.Set(v))).ToList());
                 return collectionBindable;
-            });
+            }, callerFile, callerLine);
         }
 
         public static CollectionViewModel<TViewModel> Get<TViewModel>(this CollectionViewModel<TViewModel> @this, Func<IEnumerable<TViewModel>, IEnumerable<TViewModel>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel
@@ -109,13 +102,12 @@ namespace Zebble.Mvvm
         //     instance.
         public static CollectionViewModel<TViewModel> Get<TViewModel>(this CollectionViewModel<TViewModel> @this, string uniqueIdentifier, Func<IEnumerable<TViewModel>, IEnumerable<TViewModel>> valueProvider, [CallerFilePath] string callerFile = null, [CallerLineNumber] int callerLine = 0) where TViewModel : ViewModel
         {
-            string key = $"{callerFile}|{callerLine}|{uniqueIdentifier}";
-            return (CollectionViewModel<TViewModel>)Dependents.GetOrAdd(key, delegate
+            return @this.GetDependent(uniqueIdentifier, _ =>
             {
                 var collectionBindable = new CollectionViewModel<TViewModel>();
                 collectionBindable.Bind(@this, source => valueProvider(source).ToList());
                 return collectionBindable;
-            });
+            }, callerFile, callerLine);
         }
     }
 }

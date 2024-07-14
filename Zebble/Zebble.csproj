@@ -7,7 +7,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.41.0</Version>
+    <Version>5.0.42.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
@@ -102,7 +102,7 @@
   <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-preview.5.24306.7" />
     <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-preview.5.24306.7" />
-    <PackageReference Include="Olive" Version="2.1.374" />
+    <PackageReference Include="Olive" Version="2.1.376" />
     <PackageReference Include="SkiaSharp" Version="3.0.0-preview.3.1" />
     <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
   </ItemGroup>

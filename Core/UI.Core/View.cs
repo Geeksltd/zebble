@@ -217,7 +217,7 @@ namespace Zebble
             set
             {
                 Style.BackgroundImageData = value;
-                BackgroundImageDataHash = (value.Take(2000) ?? []).ToString();
+                BackgroundImageDataHash = value.Take(1000).Concat(value.TakeLast(1000)).Or([]).ToString(",");
             }
         }
 

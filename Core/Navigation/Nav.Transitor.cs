@@ -13,7 +13,7 @@ namespace Zebble
             readonly PageTransition Transition;
             readonly TaskCompletionSource<bool> ExitAnimationCompleted = new();
             readonly TaskCompletionSource<bool> EnterAnimationCompleted = new();
-
+            
             public Transitor(View parentView, View fromView, View toView, PageTransition transition)
             {
                 ParentView = parentView;
@@ -59,7 +59,7 @@ namespace Zebble
                     else await NavigationAnimationStarted.Raise(navArgs);
                 }
 
-                await Await().ConfigureAwait(continueOnCapturedContext: false);
+                await DoExit().ConfigureAwait(continueOnCapturedContext: false);
             }
 
             async Task<Animation> AnimatePage(Action<View> initial, Action<View> change = null)
@@ -163,7 +163,7 @@ namespace Zebble
                         x => x.Opacity(0).Y(x.Margin.Top() - DROP_RANGE));
             }
 
-            async Task Await()
+            async Task DoExit()
             {
                 if (ExitAnimation == null) ExitAnimationCompleted.TrySetResult(true);
                 else ExitAnimation.OnCompleted(() => ExitAnimationCompleted.TrySetResult(true));
@@ -177,7 +177,8 @@ namespace Zebble
                     else EnterAnimation.OnNativeStart(() => FromView.StartAnimation(ExitAnimation));
                 }
 
-                await Task.WhenAll(EnterAnimationCompleted.Task, ExitAnimationCompleted.Task);
+                var removalTask = ParentView.Remove(FromView);
+                await Task.WhenAll(removalTask, EnterAnimationCompleted.Task, ExitAnimationCompleted.Task);
             }
         }
     }

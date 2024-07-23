@@ -41,7 +41,7 @@ namespace Zebble
 
         public virtual Task NavigateTo(Page page)
         {
-            return new Nav.Transitor(Root, this, page, page.Transition).Run().ContinueWith(x => Root.Remove(this));
+            return new Nav.Transitor(Root, this, page, page.Transition).Run();
         }
 
         public override async Task OnInitialized()

@@ -217,7 +217,13 @@ namespace Zebble
             set
             {
                 Style.BackgroundImageData = value;
-                BackgroundImageDataHash = value.Take(1000).Concat(value.TakeLast(1000)).Or([]).ToString(",");
+                byte[] bytes = value switch
+                {
+                    null => [],
+                    { Length: <= 2000 } => value,
+                    _ => [.. value?.Take(1000), .. value?.TakeLast(1000)]
+                };
+                BackgroundImageDataHash = bytes.ToString(",");
             }
         }
 
@@ -483,9 +489,9 @@ namespace Zebble
         [EscapeGCop("It's a special case, so async void is fine.")]
         public virtual async void Dispose()
         {
-			if (IsDisposing) return;
-			if (IsDisposed) return;
-			
+            if (IsDisposing) return;
+            if (IsDisposed) return;
+
             using (await DomLock.Lock())
             {
                 IsDisposing = true;
@@ -523,7 +529,7 @@ namespace Zebble
                 IsDisposed = true;
             }
 
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
     }
 }

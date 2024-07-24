@@ -48,14 +48,14 @@ namespace Zebble
         /// Reapplies the bindings on the properties of this view.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void RefreshBindings() => BatchStyleChange(RefreshAllBindings);
-
-        void RefreshAllBindings()
+        public void RefreshBindings()
         {
-            DynamicBindings.Values.Do(x => x.Apply());
-
-            foreach (var c in AllChildren.ToArray())
-                c.RefreshAllBindings();
+            UIWorkBatch.RunSync(() => BatchStyleChange(() =>
+            {
+                DynamicBindings.Values.Do(x => x.Apply());
+                foreach (var c in AllChildren.ToArray())
+                    c.RefreshBindings();
+            }));
         }
 
         [EditorBrowsable(EditorBrowsableState.Never)]

@@ -49,7 +49,8 @@ namespace Zebble
                 if (!pseudoCssState.ContainsWholeWord(state))
                     await SetPseudoCssState(pseudoCssState.WithSuffix(" ") + state);
             }
-            else if (pseudoCssState.ContainsWholeWord(state)) {
+            else if (pseudoCssState.ContainsWholeWord(state))
+            {
                 await SetPseudoCssState(pseudoCssState.OrEmpty().ReplaceWholeWord(state, " ")
                      .KeepReplacing("  ", " ").Trim());
             }
@@ -136,6 +137,25 @@ namespace Zebble
 
                 Lengths.Do(b => b.Suspend());
                 await change();
+                StyleApplyingContext?.ApplyChanges();
+                Lengths.Do(x => x.Resume());
+
+                StyleApplyingContext = null;
+            }
+        }
+
+        [EditorBrowsable(EditorBrowsableState.Never)]
+        public void BatchStyleChange(Action change)
+        {
+            if (change is null) return;
+
+            if (StyleApplyingContext != null) change();
+            else
+            {
+                StyleApplyingContext = new BatchUIChangeContext();
+
+                Lengths.Do(b => b.Suspend());
+                change();
                 StyleApplyingContext?.ApplyChanges();
                 Lengths.Do(x => x.Resume());
 

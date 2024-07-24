@@ -48,7 +48,7 @@ namespace Zebble
         /// Reapplies the bindings on the properties of this view.
         /// </summary>
         [EditorBrowsable(EditorBrowsableState.Never)]
-        public void RefreshBindings() => Thread.Pool.RunActionOnNewThread(RefreshAllBindings);
+        public void RefreshBindings() => BatchStyleChange(RefreshAllBindings);
 
         void RefreshAllBindings()
         {

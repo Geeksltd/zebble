@@ -52,39 +52,49 @@ namespace Zebble.IOS
 
         void SetPaging()
         {
-            PagingEnabled = ZoomScale <= 1 && View.PagingEnabled;
+            if (IsDead(out var view)) return;
+
+            PagingEnabled = ZoomScale <= 1 && view.PagingEnabled;
             DirectionalLockEnabled = PagingEnabled;
         }
 
         void SetHorizontalScrolling()
         {
-            var allowed = View.Direction == RepeatDirection.Horizontal || ZoomScale > 1;
+            if (IsDead(out var view)) return;
+
+            var allowed = view.Direction == RepeatDirection.Horizontal || ZoomScale > 1;
             ShowsHorizontalScrollIndicator = allowed;
             AlwaysBounceHorizontal = false;
         }
 
         void SetVerticalScrolling()
         {
-            var allowed = View.Direction == RepeatDirection.Vertical || ZoomScale > 1;
+            if (IsDead(out var view)) return;
+
+            var allowed = view.Direction == RepeatDirection.Vertical || ZoomScale > 1;
             ShowsVerticalScrollIndicator = allowed;
             AlwaysBounceVertical = false;
         }
 
         void SetZooming()
         {
-            if (View.EnableZooming)
+            if (IsDead(out var view)) return;
+
+            if (view.EnableZooming)
             {
-                MinimumZoomScale = View.MinZoomScale;
-                MaximumZoomScale = View.MaxZoomScale;
+                MinimumZoomScale = view.MinZoomScale;
+                MaximumZoomScale = view.MaxZoomScale;
             }
             else MinimumZoomScale = MaximumZoomScale = 1;
         }
 
         void SetContentSize()
         {
-            var size = View.CalculateContentSize();
+            if (IsDead(out var view)) return;
 
-            if (View.Refresh.Enabled && (View.Direction == RepeatDirection.Vertical))
+            var size = view.CalculateContentSize();
+
+            if (view.Refresh.Enabled && (view.Direction == RepeatDirection.Vertical))
                 // Content size should be large enough to necessiate actual scrolling:
                 size.Height = size.Height.LimitMin((float)Frame.Size.Height + 2);
 
@@ -110,12 +120,14 @@ namespace Zebble.IOS
 
         void IosScrollView_DidZoom(object _, EventArgs __)
         {
+            if (IsDead(out var view)) return;
+
             SetHorizontalScrolling();
             SetVerticalScrolling();
 
             var scale = (float)ZoomScale;
 
-            View.RaiseUserZoomed(scale);
+            view.RaiseUserZoomed(scale);
         }
 
         void IosScrollView_ZoomingEnded(object _, ZoomingEndedEventArgs __)
@@ -126,8 +138,10 @@ namespace Zebble.IOS
 
         void IosScrollView_DecelerationEnded(object _, EventArgs __)
         {
+            if (IsDead(out var view)) return;
+
             OnPartilaPagingEnded();
-            View.ScrollEnded.SignalRaiseOn(Thread.Pool);
+            view.ScrollEnded.SignalRaiseOn(Thread.Pool);
         }
 
         void IosScrollView_DraggingEnded(object _, DraggingEventArgs args)
@@ -137,7 +151,9 @@ namespace Zebble.IOS
 
         void IosScrollView_Scrolled(object _, EventArgs __)
         {
-            if (View.Direction == RepeatDirection.Vertical)
+            if (IsDead(out var view)) return;
+
+            if (view.Direction == RepeatDirection.Vertical)
             {
                 if (DateTime.UtcNow > AssumeScrollingHeightIsValidUntil)
                 {
@@ -149,17 +165,19 @@ namespace Zebble.IOS
             var xOffset = (float)ContentOffset.X;
             var yOffset = (float)ContentOffset.Y;
 
-            View.SetUserScrolledX(xOffset);
-            View.SetUserScrolledY(yOffset);
+            view.SetUserScrolledX(xOffset);
+            view.SetUserScrolledY(yOffset);
         }
 
         async Task CreatePullToRefresh()
         {
-            if (!View.Refresh.Enabled) return;
+            if (IsDead(out var view)) return;
+
+            if (!view.Refresh.Enabled) return;
 
             Refresh = new UIRefreshControl();
 
-            var refreshContent = (await View.Refresh.Indicator.Render()).Native();
+            var refreshContent = (await view.Refresh.Indicator.Render()).Native();
 
             refreshContent.Frame = Refresh.Bounds;
             refreshContent.AutoresizingMask = UIViewAutoresizing.All;
@@ -170,7 +188,7 @@ namespace Zebble.IOS
             {
                 if (Refresh.Refreshing)
                 {
-                    View.Refresh.Requested.SignalRaiseOn(Thread.Pool);
+                    view.Refresh.Requested.SignalRaiseOn(Thread.Pool);
                     await Task.Delay(100);
                     Refresh.EndRefreshing();
                 }
@@ -179,18 +197,23 @@ namespace Zebble.IOS
             AddSubview(Refresh);
         }
 
-        bool IsPartialPagingEnabled() => ZoomScale <= 1 && View.PartialPagingEnabled;
+        bool IsPartialPagingEnabled()
+        {
+            if (IsDead(out var view)) return false;
+            return ZoomScale <= 1 && view.PartialPagingEnabled;
+        }
 
         void OnPartilaPagingEnded()
         {
+            if (IsDead(out var view)) return;
             if (!IsPartialPagingEnabled()) return;
 
-            var pageSize = View.PartialPagingSize;
+            var pageSize = view.PartialPagingSize;
 
             var addingOffset = 0f;
             CGPoint correctOffset;
 
-            if (View.Direction == RepeatDirection.Vertical)
+            if (view.Direction == RepeatDirection.Vertical)
             {
                 if (ContentOffset.Y % pageSize >= pageSize / 2)
                     addingOffset = pageSize;
@@ -202,7 +225,7 @@ namespace Zebble.IOS
                 correctOffset = new CGPoint((((int)(ContentOffset.X / pageSize)) * pageSize) + addingOffset, 0);
             }
 
-            if (correctOffset != null) ScrollTo((float)correctOffset.X, (float)correctOffset.Y, animated: true);
+            ScrollTo((float)correctOffset.X, (float)correctOffset.Y, animated: true);
         }
 
         void ScrollTo(float xOffset, float yOffset, bool animated)
@@ -222,6 +245,13 @@ namespace Zebble.IOS
         {
             if (Device.Keyboard.IsOpen && IsContentOffsetSetManually) return;
             base.SetContentOffset(contentOffset, animated);
+        }
+
+        bool IsDead(out ScrollView result)
+        {
+            result = View;
+            if (result is null || result.IsDisposing) return true;
+            return result.IsDisposing;
         }
 
         protected override void Dispose(bool disposing)

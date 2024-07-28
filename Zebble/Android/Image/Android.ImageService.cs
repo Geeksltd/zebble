@@ -49,12 +49,9 @@ namespace Zebble.Services
             var options = CreateOptions(file);
             options.InDensity = options.InScreenDensity = options.InTargetDensity = 1;
             options.InSampleSize = FindInSampleSize(originalSize, newSize).LimitMin(1);
-            
-            var content = await file.ReadAllBytesAsync();
-            result = await BitmapFactory.DecodeByteArrayAsync(content, 0, content.Length, options);
-            
-            if (result is null)
-                throw new BadDataException($"Failed to decode the specified image file: {file.FullName}");
+
+            result = await BitmapFactory.DecodeFileAsync(file.FullName, options);
+            if (result is null) throw new BadDataException($"Failed to decode the specified image file: {file.FullName}");
 
             return result;
         }
@@ -64,9 +61,11 @@ namespace Zebble.Services
             if (file is null) throw new ArgumentNullException(nameof(file));
             if (!await file.ExistsAsync()) throw new IOException($"File not found: {file.FullName}");
 
+            var content = await file.ReadAllBytesAsync();
+
             for (var retry = 3; retry > 0; retry--)
             {
-                try { return await DoDecodeImage(file, desiredSize, stretch); }
+                try { return await DecodeImage(content, desiredSize, stretch); }
                 catch (Exception ex)
                 {
                     if (retry == 1)

@@ -15,10 +15,14 @@ namespace Zebble.Device
             protected readonly TaskCompletionSource<bool> CompletionSource = new();
         }
 
-        internal class WindowInsetsConsumerListener : AwaitableListener, IOnApplyWindowInsetsListener
+        internal class WindowInsetsApplierListener : AwaitableListener, IOnApplyWindowInsetsListener
         {
-            public virtual WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
+            public WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
             {
+                SafeAreaInsets.DoUpdateValues(insets);
+                UpdateKeyboardState(insets);
+                PostLoadConfiguration();
+
                 CompletionSource.TrySetResult(true);
 
                 return WindowInsetsCompat.Consumed;
@@ -29,18 +33,6 @@ namespace Zebble.Device
                 ViewCompat.SetOnApplyWindowInsetsListener(view, this);
                 ViewCompat.RequestApplyInsets(view);
                 await CompletionSource.Task;
-            }
-        }
-
-        internal class WindowInsetsApplierListener : WindowInsetsConsumerListener
-        {
-            public override WindowInsetsCompat OnApplyWindowInsets(Android.Views.View view, WindowInsetsCompat insets)
-            {
-                SafeAreaInsets.DoUpdateValues(insets);
-                UpdateKeyboardState(insets);
-                PostLoadConfiguration();
-
-                return base.OnApplyWindowInsets(view, insets);
             }
 
             void UpdateKeyboardState(WindowInsetsCompat insets)

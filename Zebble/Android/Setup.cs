@@ -33,7 +33,7 @@ namespace Zebble.AndroidOS
 
             var rootHost = UIRuntime.CurrentActivity.Window?.DecorView as ViewGroup ?? rootScreen;
 
-            await new Device.Screen.WindowInsetsConsumerListener().WaitForCompletion(rootHost);
+            await new Device.Screen.WindowInsetsApplierListener().WaitForCompletion(rootHost);
 
             ((ViewGroup)RootView.Parent ?? rootHost).RemoveView(RootView);
             rootHost.AddView(RootView);

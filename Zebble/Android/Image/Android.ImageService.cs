@@ -35,9 +35,9 @@ namespace Zebble.Services
             return result;
         }
 
-        static async Task<Bitmap> DoDecodeImage(FileInfo file, Size? desiredSize, Stretch stretch)
+        static async Task<Bitmap> DoDecodeImage(FileInfo file, byte[] data, Size? desiredSize, Stretch stretch)
         {
-            Bitmap result;
+            Bitmap result = null;
 
             var originalSize = GetPixelSize(file);
 
@@ -50,8 +50,7 @@ namespace Zebble.Services
             options.InDensity = options.InScreenDensity = options.InTargetDensity = 1;
             options.InSampleSize = FindInSampleSize(originalSize, newSize).LimitMin(1);
 
-            result = await BitmapFactory.DecodeFileAsync(file.FullName, options);
-
+            result = await BitmapFactory.DecodeByteArrayAsync(data, 0, data.Length, options);
             if (result is null) throw new BadDataException($"Failed to decode the specified image file: {file.FullName}");
 
             return result;
@@ -62,9 +61,11 @@ namespace Zebble.Services
             if (file is null) throw new ArgumentNullException(nameof(file));
             if (!await file.ExistsAsync()) throw new IOException($"File not found: {file.FullName}");
 
+            var content = await file.ReadAllBytesAsync();
+
             for (var retry = 3; retry > 0; retry--)
             {
-                try { return await DoDecodeImage(file, desiredSize, stretch); }
+                try { return await DoDecodeImage(file, content, desiredSize, stretch); }
                 catch (Exception ex)
                 {
                     if (retry == 1)

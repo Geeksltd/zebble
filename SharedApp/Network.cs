@@ -16,7 +16,10 @@ namespace Zebble.Device
         const int DEFAULT_TIME_OUT = 5000;
         public static readonly AsyncEvent<bool> ConnectivityChanged = new(ConcurrentEventRaisePolicy.Queue);
         static readonly List<Task> AllDownloads = new();
-        static ConcurrentDictionary<string, HttpClient> HttpClients = new();
+        static readonly ConcurrentDictionary<string, HttpClient> HttpClients = [];
+        static readonly HttpStatusCode[] OkStatuses = [HttpStatusCode.OK, HttpStatusCode.Created];
+        static readonly HttpStatusCode[] BlacklistStatuses = [HttpStatusCode.NotFound, HttpStatusCode.Forbidden];
+        static readonly ConcurrentList<Uri> Blacklist = [];
 
         static Network()
         {
@@ -123,6 +126,12 @@ namespace Zebble.Device
 
         static async void TryDownload(Uri url, int retries, int timeoutPerAttempt, TaskCompletionSource<byte[]> source, FileInfo saveOutput = null)
         {
+            if (Blacklist.Contains(url))
+            {
+                source.TrySetCanceled();
+                return;
+            }
+
             byte[] data = null;
             Exception error = null;
 
@@ -154,13 +163,19 @@ namespace Zebble.Device
                         // https://github.com/xamarin/xamarin-macios/blob/c32c925eb52239e1cef8b6e708bcbff7f015ec9f/src/Foundation/NSUrlSessionHandler.cs#L1398
                         var httpResponse = fetchTask.GetAlreadyCompletedResult();
 
-                        if (httpResponse.StatusCode.IsAnyOf(HttpStatusCode.OK, HttpStatusCode.Created))
+                        if (OkStatuses.Contains(httpResponse.StatusCode))
                         {
                             data = await httpResponse.Content.ReadAsByteArrayAsync();
 
                             if (saveOutput != null)
                                 await saveOutput.WriteAllBytesAsync(data);
 
+                            break;
+                        }
+                        else if (BlacklistStatuses.Contains(httpResponse.StatusCode))
+                        {
+                            Blacklist.Add(url);
+                            Log.For(typeof(Network)).Warning("Attempt #" + retry + " failed for " + url + " >> " + httpResponse.StatusCode);
                             break;
                         }
                         else

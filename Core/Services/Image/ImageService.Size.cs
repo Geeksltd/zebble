@@ -57,17 +57,22 @@ namespace Zebble.Services
 
                 if (!file.Exists()) return;
 
-                foreach (var item in file.ReadAllText().To<XDocument>().Root.Elements().Where(e => e.Name == "image"))
+                try
                 {
-                    var imagePath = Device.IO.NormalizePath(item.GetValue<string>("@path"));
-                    var size = new Size(item.GetValue<int>("@width"), item.GetValue<int>("@height"));
-                    SizeCache.TryAdd(imagePath, size);
+                    foreach (var item in file.ReadAllText().To<XDocument>().Root.Elements().Where(e => e.Name == "image"))
+                    {
+                        var imagePath = Device.IO.NormalizePath(item.GetValue<string>("@path"));
+                        var size = new Size(item.GetValue<int>("@width"), item.GetValue<int>("@height"));
+                        SizeCache.TryAdd(imagePath, size);
 
-                    // Also add the full version:
-                    SizeCache.TryAdd(Device.IO.File(imagePath).FullName.ToLower(), size);
+                        // Also add the full version:
+                        SizeCache.TryAdd(Device.IO.File(imagePath).FullName.ToLower(), size);
+
+                        IsMetaLoaded = true;
+                    }
                 }
-
-                IsMetaLoaded = true;
+                // XDocument.Parse causes FNFE on the first try
+                catch (FileNotFoundException) { }
             }
         }
     }

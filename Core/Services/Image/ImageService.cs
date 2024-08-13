@@ -181,7 +181,7 @@ namespace Zebble.Services
             {
                 try
                 {
-                    var img = await provider.GetImageResult();
+                    var img = await provider.GetImageResult((view as ImageView).FailedPlaceholderImagePath);
                     Thread.UI.RunAction(() =>
                     {
                         try { drawer(img); }

@@ -82,9 +82,9 @@ namespace Zebble.Device
 
                 Download(url, attempts, DEFAULT_TIME_OUT / 1000).ContinueWith(d =>
                 {
-                    if (d.IsFaulted)
+                    if (d.IsFaulted || d.IsCanceled)
                     {
-                        errorAction.Apply(d.Exception.InnerException, "Failed to download the file: " + url)
+                        errorAction.Apply(d.Exception?.InnerException, "Failed to download the file: " + url)
                         .ContinueWith(v => result.TrySetResult(result: false));
                     }
                     else

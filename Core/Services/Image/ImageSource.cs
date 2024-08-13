@@ -47,6 +47,7 @@ namespace Zebble.Services
         {
             internal string CacheKey, Url;
             internal int Viewers;
+            internal string LastFailedPath;
             public string Source;
             public readonly FileInfo File;
             public Size Size;
@@ -110,8 +111,9 @@ namespace Zebble.Services
                 return Image;
             }
 
-            public async Task<object> GetImageResult()
+            public async Task<object> GetImageResult(string lastFailedPath)
             {
+                LastFailedPath = lastFailedPath;
                 await Result().OrCompleted();
                 return Image;
             }
@@ -264,7 +266,7 @@ namespace Zebble.Services
                 if (!File.Exists())
                 {
                     if (UIRuntime.IsDevMode) Log.For(this).Error("Image file not found: " + Source);
-                    var result = Device.IO.File(FailedPlaceholderImagePath);
+                    var result = Device.IO.File(LastFailedPath ?? FailedPlaceholderImagePath);
                     if (!result.Exists()) throw new IOException(FailedPlaceholderImagePath + " file must exist.");
                     return result;
                 }

@@ -108,7 +108,7 @@ namespace Zebble
             }
 
             (NativeResult as UIChangeCommand.IHandler)?.Apply(property, change);
-            (NativeElement as UIChangeCommand.IHandler)?.Apply(property, change);
+            (NativeElement as UIChangeCommand.IHandler ?? RenderOrchestrator as UIChangeCommand.IHandler)?.Apply(property, change);
         }
 
         void NativeResult_Loaded(object _, xaml.RoutedEventArgs __)

@@ -7,6 +7,7 @@ namespace Zebble
     using Android.Util;
     using Zebble.Device;
     using Olive;
+    using System.Collections.Concurrent;
 
     partial interface IFont { Typeface Render(); }
 
@@ -15,7 +16,7 @@ namespace Zebble
         static Android.Widget.TextView Sample;
         static readonly Rect SampleRectangle = new();
         static readonly TextPaint SamplePaint = new();
-        static readonly Dictionary<string, Typeface> FontCache = new();
+        static readonly ConcurrentDictionary<string, Typeface> FontCache = new();
 
         const float TEXT_WIDTH_ERROR = 3;
 
@@ -86,24 +87,17 @@ namespace Zebble
             return Scale.ToZebble(SampleRectangle.Right + SampleRectangle.Left + Scale.ToDevice(TEXT_WIDTH_ERROR));
         }
 
-        public Typeface Render()
+        public Typeface Render() => FontCache.GetOrAdd(ToString(), key =>
         {
-            if (FontCache.TryGetValue(ToString(), out var result)) return result;
+            if (Name.ContainsAny([".ttf", ".otf"], caseSensitive: false))
+                return Typeface.CreateFromAsset(UIRuntime.CurrentActivity.Assets, Name.RemoveFrom("#"));
 
-            if (Name.ContainsAny(new string[] { ".ttf", ".otf" }, caseSensitive: false))
-                result = Typeface.CreateFromAsset(UIRuntime.CurrentActivity.Assets, Name.RemoveFrom("#"));
-            else
-            {
-                var fontStyle = TypefaceStyle.Normal;
-                if (Bold && Italic) fontStyle = TypefaceStyle.BoldItalic;
-                else if (Bold) fontStyle = TypefaceStyle.Bold;
-                else if (Italic) fontStyle = TypefaceStyle.Italic;
-                result = Typeface.Create(Name, fontStyle);
-            }
-
-            FontCache[ToString()] = result;
-            return result;
-        }
+            var fontStyle = TypefaceStyle.Normal;
+            if (Bold && Italic) fontStyle = TypefaceStyle.BoldItalic;
+            else if (Bold) fontStyle = TypefaceStyle.Bold;
+            else if (Italic) fontStyle = TypefaceStyle.Italic;
+            return Typeface.Create(Name, fontStyle);
+        });
 
         static float GetScaledFontSize(float fontSize) => fontSize;
     }

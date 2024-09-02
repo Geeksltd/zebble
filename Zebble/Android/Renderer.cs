@@ -185,6 +185,7 @@ namespace Zebble
             if (IsDead(out var view)) return;
 
             view.BorderChanged.HandleOnUI(SetBackgroundAndBorder);
+            view.BorderRadiusChanged.HandleOnUI(SetBackgroundAndBorder);
             view.BackgroundImageChanged.HandleOnUI(SetBackgroundImage);
 
             if (Result is IPaddableControl)

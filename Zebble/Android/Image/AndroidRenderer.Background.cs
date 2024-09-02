@@ -7,7 +7,6 @@
     using layout = Android.Views.ViewGroup.LayoutParams;
     using Olive;
     using Zebble.Device;
-    using System.Linq;
 
     partial class Renderer
     {
@@ -15,28 +14,18 @@
 
         class CustomViewOutlineProvider : Android.Views.ViewOutlineProvider
         {
-            readonly View View;
+            float BorderRadius;
 
-            public CustomViewOutlineProvider(View view) => View = view;
+            public CustomViewOutlineProvider(float borderRadius) => BorderRadius = borderRadius;
 
             public override void GetOutline(Android.Views.View view, Android.Graphics.Outline outline)
             {
-                if (View is null) return;
                 if (view is null) return;
                 if (outline is null) return;
 
-                var left = 0;
-                var top = 0;
-                var right = Scale.ToDevice(View.ActualWidth);
-                var bottom = Scale.ToDevice(View.ActualHeight);
-
-                var borderRadius = View.Effective.BorderRadius;
-                var corners = borderRadius.GetEffectiveRadiusCorners(View);
-                var radius = Scale.ToDevice(corners[0]);
-
-                view.ClipToOutline = true;
                 outline.Alpha = 0;
-                outline.SetRoundRect(left, top, right, bottom, radius);
+                outline.SetRoundRect(0, 0, view.Width, view.Height, BorderRadius);
+                view.ClipToOutline = true;
             }
         }
 
@@ -63,7 +52,12 @@
                 Result.Background = colorLayer;
 
             if (hasBorderRadius && View is Canvas canvas && canvas.ClipChildren)
-                Result.OutlineProvider = new CustomViewOutlineProvider(view);
+            {
+                var borderRadius = View.Effective.BorderRadius;
+                var corners = borderRadius.GetEffectiveRadiusCorners(View);
+                var radius = Scale.ToDevice(corners[0]);
+                Result.OutlineProvider = new CustomViewOutlineProvider(radius);
+            }
         }
 
         void SetBackgroundImage()

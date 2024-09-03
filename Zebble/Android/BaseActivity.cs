@@ -115,6 +115,8 @@ namespace Zebble.AndroidOS
 
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, [GeneratedEnum] Permission[] grantResults)
         {
+            base.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+
             Device.Permissions.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
 
@@ -127,6 +129,8 @@ namespace Zebble.AndroidOS
 
         protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
         {
+            base.OnActivityResult(requestCode, resultCode, data);
+
             UIRuntime.OnActivityResult.Raise(new Tuple<int, Result, Intent>(requestCode, resultCode, data));
         }
     }

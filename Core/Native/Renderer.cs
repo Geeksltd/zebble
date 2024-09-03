@@ -19,6 +19,7 @@ using BaseNativeType = object;
 
     public partial class Renderer : IDisposable
     {
+        INativeRenderer NativeRenderer;
         public View View { get; private set; }
         public Renderer(View view) => View = view;
         IRenderOrchestrator RenderOrchestrator;
@@ -35,9 +36,9 @@ using BaseNativeType = object;
 
             rendererType = rendererType.GenericTypeArguments.Single();
 
-            var renderer = (INativeRenderer)rendererType.CreateInstance();
+            NativeRenderer = (INativeRenderer)rendererType.CreateInstance();
 
-            return renderer.Render(this).GetAlreadyCompletedResult();
+            return NativeRenderer.Render(this).GetAlreadyCompletedResult();
         }
 
         /// <summary>

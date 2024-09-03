@@ -282,7 +282,9 @@ namespace Zebble
             NativeContainer = null;
             View = null;
 
+            NativeRenderer?.Dispose();
             (NativeElement as IDisposable)?.Dispose();
+            NativeRenderer = null;
             NativeElement = null;
 			
 			GC.SuppressFinalize(this);

@@ -85,7 +85,7 @@ namespace Zebble
                 return Thread.UI.Run(() =>
                 {
 #if WINUI
-                    return (float)Windows.UI.Xaml.Controls.Canvas.GetLeft((Windows.UI.Xaml.UIElement)native);
+                    return (float)Microsoft.UI.Xaml.Controls.Canvas.GetLeft((Microsoft.UI.Xaml.UIElement)native);
 #elif IOS
 
                     var nativeLayer = (native as UIKit.UIView).Layer.PresentationLayer;
@@ -111,7 +111,7 @@ namespace Zebble
                 return Thread.UI.Run(() =>
                 {
 #if WINUI
-                    return (float)Windows.UI.Xaml.Controls.Canvas.GetTop((Windows.UI.Xaml.UIElement)native);
+                    return (float)Microsoft.UI.Xaml.Controls.Canvas.GetTop((Microsoft.UI.Xaml.UIElement)native);
 #elif IOS
                     var nativeLayer = (native as UIKit.UIView).Layer.PresentationLayer;
                     if (nativeLayer is null) return -1f;

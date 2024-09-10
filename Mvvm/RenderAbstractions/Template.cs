@@ -18,7 +18,7 @@ namespace Zebble.Mvvm
             if (View == null || View.IsDisposing)
             {
                 View = (View)TemplateType.CreateInstance();
-#if UWP || ANDROID || IOS
+#if WINUI || ANDROID || IOS
                 View.SetViewModelValue(model);
                 View.RefreshBindings();
 #endif

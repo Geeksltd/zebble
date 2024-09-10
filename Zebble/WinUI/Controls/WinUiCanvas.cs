@@ -1,10 +1,10 @@
-namespace Zebble.UWP
+namespace Zebble.WinUI
 {
     using System;
-    using controls = Windows.UI.Xaml.Controls;
+    using controls = Microsoft.UI.Xaml.Controls;
     using Olive;
 
-    public abstract class UWPCanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
+    public abstract class WinUiCanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
     {
         readonly WeakReference<Renderer> RendererRef;
         readonly WeakReference<TView> ViewRef;
@@ -12,7 +12,7 @@ namespace Zebble.UWP
         protected bool IsDisposed;
         protected TView View => ViewRef?.GetTargetOrDefault();
 
-        public UWPCanvasBase(Renderer renderer, TView view)
+        public WinUiCanvasBase(Renderer renderer, TView view)
         {
             RendererRef = renderer.GetWeakReference();
             ViewRef = view.GetWeakReference();
@@ -22,7 +22,7 @@ namespace Zebble.UWP
         protected void Configure()
         {
             HandleTouches();
-            VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
+            VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top;
         }
 
         public void Apply(string property, UIChangedEventArgs change)
@@ -48,7 +48,7 @@ namespace Zebble.UWP
             if (UIRuntime.IsDevMode && view.id.IsAnyOf("ZebbleInspectorHighlightMask", "ZebbleInspectorHighlightBorder"))
             {
                 Background = null;
-                ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
+                ManipulationMode = Microsoft.UI.Xaml.Input.ManipulationModes.None;
                 IsTapEnabled = false;
                 IsHitTestVisible = false;
             }
@@ -67,8 +67,8 @@ namespace Zebble.UWP
         }
     }
 
-    public class UWPCanvas : UWPCanvasBase<View>
+    public class WinUiCanvas : WinUiCanvasBase<View>
     {
-        public UWPCanvas(Renderer renderer, View view) : base(renderer, view) { }
+        public WinUiCanvas(Renderer renderer, View view) : base(renderer, view) { }
     }
 }

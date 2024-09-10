@@ -1,13 +1,12 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net8.0-android;net8.0-ios</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362</TargetFrameworks>
-    <TargetFrameworks Condition="$([MSBuild]::IsOSPlatform('windows'))">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
     <AssemblyName>Zebble</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.63.0</Version>
+    <Version>5.1.0.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
@@ -38,11 +37,8 @@
     <DebugSymbols>true</DebugSymbols>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('uap10')) ">
-    <DefineConstants>$(DefineConstants);UWP</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net8.0-windows10')) ">
-    <DefineConstants>$(DefineConstants);MAUI_Windows</DefineConstants>
+  <PropertyGroup Condition=" $(TargetFramework.Contains('windows')) ">
+    <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
   </PropertyGroup>
   <PropertyGroup Condition=" $(TargetFramework.Contains('droid')) ">
     <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
@@ -66,8 +62,8 @@
   <PropertyGroup Condition=" $(TargetFramework.Equals('net8.0-android')) ">
     <DefineConstants>$(DefineConstants);MAUI_ANDROID</DefineConstants>
   </PropertyGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('UWP')) ">
-    <Compile Include="UWP\**\*.cs" />
+  <ItemGroup Condition=" $(DefineConstants.Contains('WINUI')) ">
+    <Compile Include="WinUI\**\*.cs" />
     <Compile Include="Windows\**\*.cs" />
     <SDKReference Include="WindowsMobile, Version=10.0.19041.0">
       <Name>Windows Mobile Extensions for the UWP</Name>
@@ -88,10 +84,6 @@
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('MAUI')) ">
     <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.0-preview.5.24307.10" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('MAUI_Windows')) ">
-    <Compile Include="MAUIWindows\**\*.cs" />
-    <Compile Include="Windows\**\*.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Remove=".gitignore" />

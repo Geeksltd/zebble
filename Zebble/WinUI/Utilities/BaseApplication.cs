@@ -1,4 +1,4 @@
-namespace Zebble.UWP
+namespace Zebble.WinUI
 {
     using System;
     using System.Collections.Generic;
@@ -8,8 +8,8 @@ namespace Zebble.UWP
     using Windows.ApplicationModel.Activation;
     using Windows.UI.Core;
     using Windows.UI.ViewManagement;
-    using controls = Windows.UI.Xaml.Controls;
-    using xaml = Windows.UI.Xaml;
+    using controls = Microsoft.UI.Xaml.Controls;
+    using xaml = Microsoft.UI.Xaml;
     using Olive;
 
     public abstract partial class BaseApplication : xaml.Application

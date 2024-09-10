@@ -11,7 +11,7 @@
     {
         public static Assembly[] GetAssemblies()
         {
-#if UWP
+#if WINUI
             var assemblies = new List<Assembly>();
             var files = Windows.ApplicationModel.Package.Current.InstalledLocation.GetFilesAsync().AsTask().AwaitResultWithoutContext();
             if (files is null) return assemblies.ToArray();

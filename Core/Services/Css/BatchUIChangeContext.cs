@@ -53,7 +53,7 @@ namespace Zebble
                 Log.For(this).Debug("");
             }
 
-#if UWP
+#if WINUI
             Device.App.ExitWithError("Detected cyclic dependency in layout settings. See the output log.");
 #endif
         }

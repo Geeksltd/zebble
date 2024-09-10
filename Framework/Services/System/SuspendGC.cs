@@ -11,7 +11,7 @@ namespace System
         SuspendGC()
         {
             Original = GCSettings.LatencyMode;
-#if UWP
+#if WINUI
             GCSettings.LatencyMode = GCLatencyMode.LowLatency;
 #else
             GCSettings.LatencyMode = GCLatencyMode.NoGCRegion;

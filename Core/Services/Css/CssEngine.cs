@@ -150,7 +150,7 @@ namespace Zebble.Services
         static CssRule[] FindRules(View view)
         {
             var result = FindPossibleRules(view);
-#if UWP
+#if WINUI
             if (UIRuntime.IsDevMode)
             {
                 result = result.Where(x => x.Platform == null || x.Platform == Platform).ToList();

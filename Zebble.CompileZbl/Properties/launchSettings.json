@@ -2,7 +2,7 @@
   "profiles": {
     "Zebble.CompileZbl": {
       "commandName": "Project",
-      "workingDirectory": "D:\\Geeks\\UWP\\fyioNew\\fyio.mobile"
+      "workingDirectory": "D:\\Geeks\\WinUI\\fyioNew\\fyio.mobile"
     }
   }
 }

@@ -1,4 +1,4 @@
-namespace Zebble.UWP
+namespace Zebble.WinUI
 {
     using System;
     using System.Diagnostics;

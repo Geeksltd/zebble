@@ -1,8 +1,8 @@
 namespace Zebble
 {
     using System;
-    using Windows.UI.Xaml.Media.Animation;
-    using xaml = Windows.UI.Xaml;
+    using Microsoft.UI.Xaml.Media.Animation;
+    using xaml = Microsoft.UI.Xaml;
 
     internal class ZebblePropertyAnimator
     {

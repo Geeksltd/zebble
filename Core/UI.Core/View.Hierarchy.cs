@@ -218,7 +218,7 @@ namespace Zebble
 
         public virtual async Task Remove(View view, bool awaitNative = false)
         {
-#if UWP
+#if WINUI
             if (UIRuntime.IsDevMode) UIRuntime.Inspector.DomUpdated(view).RunInParallel();
 #endif
 
@@ -307,7 +307,7 @@ namespace Zebble
 
             UIWorkBatch.Publish(this, "[ADD]", null);
 
-#if UWP
+#if WINUI
             if (UIRuntime.IsDevMode) await UIRuntime.Inspector.DomUpdated(this);
 #endif
         }

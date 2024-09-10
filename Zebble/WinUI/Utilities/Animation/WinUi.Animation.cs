@@ -5,8 +5,8 @@ namespace Zebble
     using System.Linq;
     using System.Threading.Tasks;
     using Olive;
-    using Windows.UI.Xaml.Media.Animation;
-    using xaml = Windows.UI.Xaml;
+    using Microsoft.UI.Xaml.Media.Animation;
+    using xaml = Microsoft.UI.Xaml;
 
     partial class Animation
     {

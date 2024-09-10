@@ -1,19 +1,19 @@
-namespace Zebble.UWP
+namespace Zebble.WinUI
 {
     using System;
     using System.Threading.Tasks;
-    using controls = Windows.UI.Xaml.Controls;
-    using media = Windows.UI.Xaml.Media;
-    using xaml = Windows.UI.Xaml;
+    using controls = Microsoft.UI.Xaml.Controls;
+    using media = Microsoft.UI.Xaml.Media;
+    using xaml = Microsoft.UI.Xaml;
 
-    class UWPImageView : IRenderOrchestrator
+    class WinUiImageView : IRenderOrchestrator
     {
         ImageView View;
         controls.Border Result;
         string LoadedImageKey;
         readonly EventHandlerDisposer EventHandlerDisposer = new();
 
-        public UWPImageView(ImageView view) => View = view;
+        public WinUiImageView(ImageView view) => View = view;
 
         public async Task<xaml.FrameworkElement> Render()
         {

@@ -9,7 +9,7 @@ namespace Zebble.Device
     using Windows.Graphics.Imaging;
     using Windows.Storage.Streams;
     using Windows.UI.ViewManagement;
-    using Windows.UI.Xaml.Media.Imaging;
+    using Microsoft.UI.Xaml.Media.Imaging;
     using Olive;
 
     partial class Screen
@@ -40,22 +40,11 @@ namespace Zebble.Device
                         }
                     }
                 }
-
-                // Mobile customization
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                {
-                    var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-                    if (statusBar != null)
-                    {
-                        if (backgroundColor != null)
-                            statusBar.BackgroundColor = backgroundColor;
-                    }
-                }
             }
 
             static void DoSetForegroundColor()
             {
-                Windows.UI.Color foreColor;
+                Windows.UI.Color foreColor = default;
 
                 if (ForegroundColor != null)
                 {
@@ -83,48 +72,11 @@ namespace Zebble.Device
                         }
                     }
                 }
-
-                // Mobile customization
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                {
-                    var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-                    if (statusBar != null)
-                    {
-                        if (foreColor != null)
-                            statusBar.ForegroundColor = foreColor;
-                    }
-                }
             }
 
-            static void DoSetTransparency()
-            {
-                // Mobile customization
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                {
-                    var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-                    if (statusBar != null)
-                    {
-                        if (IsTransparent)
-                            statusBar.BackgroundOpacity = 0;
-                        else
-                            statusBar.BackgroundOpacity = 1;
-                    }
-                }
-            }
+            static void DoSetTransparency() { }
 
-            static void DoSetVisibility()
-            {
-                // Mobile customization
-                if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.StatusBar"))
-                {
-                    var statusBar = Windows.UI.ViewManagement.StatusBar.GetForCurrentView();
-                    if (statusBar != null)
-                    {
-                        if (IsVisible) statusBar.ShowAsync().GetResults();
-                        else statusBar.HideAsync().GetResults();
-                    }
-                }
-            }
+            static void DoSetVisibility() { }
 
             static void DoSetHasLightContent() { }
         }
@@ -137,7 +89,7 @@ namespace Zebble.Device
             DisplayInformation.GetForCurrentView().OrientationChanged +=
                 (s, e) => OrientationChanged.SignalRaiseOn(Thread.Pool);
 
-            DarkMode = new UISettings().GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black;
+            DarkMode = new UISettings().GetColorValue(UIColorType.Background) == Microsoft.UI.Colors.Black;
         }
 
         public static float HardwareDensity
@@ -178,7 +130,7 @@ namespace Zebble.Device
         static async Task<FileInfo> DoSaveAsImage(object inputNative)
         {
             var rtb = new RenderTargetBitmap();
-            await rtb.RenderAsync((Windows.UI.Xaml.UIElement)inputNative);
+            await rtb.RenderAsync((Microsoft.UI.Xaml.UIElement)inputNative);
             var image = (await rtb.GetPixelsAsync()).ToArray();
 
             using (var encoded = new InMemoryRandomAccessStream())

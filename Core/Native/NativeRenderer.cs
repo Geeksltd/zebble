@@ -8,8 +8,8 @@ namespace Zebble
     using Android.Runtime;
     using BaseNativeType = Android.Views.View;
     [Preserve]
-#elif UWP
-    using BaseNativeType = Windows.UI.Xaml.FrameworkElement;
+#elif WINUI
+    using BaseNativeType = Microsoft.UI.Xaml.FrameworkElement;
 #else
     using BaseNativeType = object;
 #endif

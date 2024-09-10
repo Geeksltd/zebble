@@ -1,5 +1,6 @@
 namespace Zebble.WinUI
 {
+    using Olive;
     using System;
     using System.Collections.Generic;
     using System.Linq;
@@ -10,7 +11,6 @@ namespace Zebble.WinUI
     using Windows.UI.ViewManagement;
     using controls = Microsoft.UI.Xaml.Controls;
     using xaml = Microsoft.UI.Xaml;
-    using Olive;
 
     public abstract partial class BaseApplication : xaml.Application
     {
@@ -29,9 +29,9 @@ namespace Zebble.WinUI
         {
             UIThread.UIThreadID = Environment.CurrentManagedThreadId;
             Windows.System.MemoryManager.AppMemoryUsageIncreased += MemoryManager_AppMemoryUsageIncreased;
-            EnteredBackground += (_, __) => Device.App.RaiseWentIntoBackground();
-            LeavingBackground += (_, __) => Device.App.RaiseCameToForeground();
-            Suspending += OnSuspending;
+            //EnteredBackground += (_, __) => Device.App.RaiseWentIntoBackground();
+            //LeavingBackground += (_, __) => Device.App.RaiseCameToForeground();
+            //Suspending += OnSuspending;
         }
 
         void MemoryManager_AppMemoryUsageIncreased(object sender, object eventArgs)
@@ -44,7 +44,7 @@ namespace Zebble.WinUI
             Device.App.RaiseReceivedMemoryWarning();
         }
 
-        protected override async void OnLaunched(LaunchActivatedEventArgs args)
+        protected override async void OnLaunched(xaml.LaunchActivatedEventArgs args)
         {
             UIThread.Dispatcher = Window.Dispatcher;
 
@@ -52,7 +52,7 @@ namespace Zebble.WinUI
 
             await HandleArguments(args.Arguments);
 
-            if (args.PreviousExecutionState == ApplicationExecutionState.Running) return;
+            //if (args.PreviousExecutionState == ApplicationExecutionState.Running) return;
 
             Setup.Start();
 
@@ -68,7 +68,7 @@ namespace Zebble.WinUI
             Window.SizeChanged += Window_SizeChanged;
         }
 
-        async void Window_SizeChanged(object sender, WindowSizeChangedEventArgs e)
+        async void Window_SizeChanged(object sender, xaml.WindowSizeChangedEventArgs e)
         {
             var myVersion = LastSizeChanged = LocalTime.UtcNow;
             await Task.Delay(1.Seconds());
@@ -243,15 +243,15 @@ namespace Zebble.WinUI
             deferral.Complete();
         }
 
-        protected override void OnActivated(IActivatedEventArgs args)
-        {
-            if (args.Kind == ActivationKind.Launch)
-            {
-                var launchArgs = (LaunchActivatedEventArgs)args;
-                HandleArguments(launchArgs.Arguments).GetAwaiter();
-            }
+        //protected override void OnActivated(IActivatedEventArgs args)
+        //{
+        //    if (args.Kind == ActivationKind.Launch)
+        //    {
+        //        var launchArgs = (LaunchActivatedEventArgs)args;
+        //        HandleArguments(launchArgs.Arguments).GetAwaiter();
+        //    }
 
-            UIRuntime.OnActivated?.Raise(Tuple.Create(args, Window));
-        }
+        //    UIRuntime.OnActivated?.Raise(Tuple.Create(args, Window));
+        //}
     }
 }

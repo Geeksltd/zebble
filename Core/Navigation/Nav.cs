@@ -471,15 +471,28 @@ namespace Zebble
 
             var page = GetOrCreateTargetPage(typeof(TPage)).Item1;
 
-            if (CacheViewAttribute.IsCacheable(page))
-            {
-                CachedPages.Add(page);
-                await View.Root.Add(page.X(View.Root.ActualWidth).Y(0));
-            }
-            else
+            await WarmUp(page);
+        }
+
+        /// <summary>
+        /// Warmp-up cachable target page to enable to navigate faster.
+        /// </summary>
+        public static async Task WarmUp(Page page)
+        {
+            if (CacheViewAttribute.IsCacheable(page) == false)
             {
                 Log.For<Nav>().Error("The WarmUp navigation just work on cachable pages, please make sure the target page has the CacheViewAttribute");
+                return;
             }
+
+            if (CachedPages.Contains(page))
+            {
+                Log.For<Nav>().Info($"{page.GetType()} is already cached.");
+                return;
+            }
+
+            CachedPages.Add(page);
+            await View.Root.Add(page.X(View.Root.ActualWidth).Y(0));
         }
 
         static IDictionary<string, object> SerializeToDictionary(object navParams)

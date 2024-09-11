@@ -5,7 +5,7 @@ namespace Zebble.Mvvm
 {
     partial class Templates
     {
-        internal static View GetOrCreate(ViewModel target)
+        public static View GetOrCreate(ViewModel target)
         {
             var template = Mappings.GetOrDefault(target.GetType());
 

@@ -8,7 +8,7 @@ namespace Zebble.WinUI
     using controls = Microsoft.UI.Xaml.Controls;
     using xaml = Microsoft.UI.Xaml;
 
-    class WinUiControlWrapper
+    class WinUIControlWrapper
     {
         WeakReference<View> ViewRef;
         View View => ViewRef.GetTargetOrDefault();
@@ -17,7 +17,7 @@ namespace Zebble.WinUI
         controls.Grid BackgroundImageLayer;
         ImageView BackgroundImage;
 
-        public WinUiControlWrapper(Renderer renderer)
+        public WinUIControlWrapper(Renderer renderer)
         {
             ViewRef = renderer.View.GetWeakReference();
             Native = new controls.Border { Child = renderer.NativeElement };
@@ -26,7 +26,7 @@ namespace Zebble.WinUI
             BorderRadiusChanged();
         }
 
-        public Task<WinUiControlWrapper> Render()
+        public Task<WinUIControlWrapper> Render()
         {
             BackgroundChanged(UIChangedEventArgs.Empty);
             return Task.FromResult(this);

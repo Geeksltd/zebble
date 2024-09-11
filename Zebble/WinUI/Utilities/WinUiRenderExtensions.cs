@@ -20,7 +20,7 @@ namespace Zebble
     using ui = Windows.UI;
     using xaml = Microsoft.UI.Xaml;
 
-    public static class WinUiRenderExtensions
+    public static class WinUIRenderExtensions
     {
         static readonly Dictionary<int, media.Brush> BrushesCache = new();
 

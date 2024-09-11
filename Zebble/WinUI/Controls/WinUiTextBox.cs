@@ -9,7 +9,7 @@ namespace Zebble.WinUI
     using Microsoft.UI.Xaml.Input;
     using xaml = Microsoft.UI.Xaml;
 
-    public abstract class WinUiTextBoxBase<TResult> : IRenderOrchestrator, UIChangeCommand.IHandler
+    public abstract class WinUITextBoxBase<TResult> : IRenderOrchestrator, UIChangeCommand.IHandler
         where TResult : Control, new()
     {
         protected bool IsApiChangingText;
@@ -17,7 +17,7 @@ namespace Zebble.WinUI
         protected TextInput View;
         protected TResult Result;
 
-        protected WinUiTextBoxBase(Renderer renderer)
+        protected WinUITextBoxBase(Renderer renderer)
         {
             Renderer = renderer;
             View = renderer.View as TextInput;
@@ -186,9 +186,9 @@ namespace Zebble.WinUI
 		}
     }
 
-    public class WinUiTextBox : WinUiTextBoxBase<TextBox>
+    public class WinUITextBox : WinUITextBoxBase<TextBox>
     {
-        public WinUiTextBox(Renderer renderer) : base(renderer) { }
+        public WinUITextBox(Renderer renderer) : base(renderer) { }
 
         protected override void GenerateResult()
         {

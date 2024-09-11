@@ -10,7 +10,7 @@ namespace Zebble.WinUI
     using Microsoft.UI.Xaml.Input;
     using Olive;
 
-    class WinUiGestureRecognizer
+    class WinUIGestureRecognizer
     {
         const int MOUSE_WHEEL_DELTA_DEGREES = 8  /*slow it down: */ * 2;
         readonly WeakReference<UIElement> ElementRef;
@@ -25,7 +25,7 @@ namespace Zebble.WinUI
         UIElement Element => ElementRef.GetTargetOrDefault();
         View View => ViewRef.GetTargetOrDefault();
 
-        public WinUiGestureRecognizer(UIElement element, View view)
+        public WinUIGestureRecognizer(UIElement element, View view)
         {
             ElementRef = element.GetWeakReference();
             ViewRef = view.GetWeakReference();

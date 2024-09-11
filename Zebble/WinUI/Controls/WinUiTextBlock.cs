@@ -10,7 +10,7 @@ namespace Zebble.WinUI
     using controls = Microsoft.UI.Xaml.Controls;
     using xaml = Microsoft.UI.Xaml;
 
-    public class WinUiTextBlock : controls.Grid, UIChangeCommand.IHandler, INativeRenderer
+    public class WinUITextBlock : controls.Grid, UIChangeCommand.IHandler, INativeRenderer
     {
         WeakReference<TextView> ViewRef;
         TextView View => ViewRef.GetTargetOrDefault();
@@ -19,7 +19,7 @@ namespace Zebble.WinUI
 
         public Task<FrameworkElement> Render(Renderer renderer) => Task.FromResult((FrameworkElement)this);
 
-        public WinUiTextBlock(TextView view)
+        public WinUITextBlock(TextView view)
         {
             ViewRef = view.GetWeakReference();
             Background = Colors.Transparent.RenderBrush(); // Without setting the background, the events won't fire

@@ -6,7 +6,7 @@ namespace Zebble.WinUI
     using xaml = Microsoft.UI.Xaml;
     using Olive;
 
-    public partial class WinUiScrollView : IRenderOrchestrator
+    public partial class WinUIScrollView : IRenderOrchestrator
     {
         const int GAP_UNIT = 30;
         const int REFRESHER_DURATION = 600;
@@ -20,7 +20,7 @@ namespace Zebble.WinUI
 
         internal controls.StackPanel Container = new() { VerticalAlignment = xaml.VerticalAlignment.Top };
 
-        public WinUiScrollView(ScrollView view)
+        public WinUIScrollView(ScrollView view)
         {
             View = view;
             Mappings.Add(view.GetWeakReference(), this.GetWeakReference());

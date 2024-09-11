@@ -4,7 +4,7 @@ namespace Zebble.WinUI
     using controls = Microsoft.UI.Xaml.Controls;
     using Olive;
 
-    public abstract class WinUiCanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
+    public abstract class WinUICanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
     {
         readonly WeakReference<Renderer> RendererRef;
         readonly WeakReference<TView> ViewRef;
@@ -12,7 +12,7 @@ namespace Zebble.WinUI
         protected bool IsDisposed;
         protected TView View => ViewRef?.GetTargetOrDefault();
 
-        public WinUiCanvasBase(Renderer renderer, TView view)
+        public WinUICanvasBase(Renderer renderer, TView view)
         {
             RendererRef = renderer.GetWeakReference();
             ViewRef = view.GetWeakReference();
@@ -67,8 +67,8 @@ namespace Zebble.WinUI
         }
     }
 
-    public class WinUiCanvas : WinUiCanvasBase<View>
+    public class WinUICanvas : WinUICanvasBase<View>
     {
-        public WinUiCanvas(Renderer renderer, View view) : base(renderer, view) { }
+        public WinUICanvas(Renderer renderer, View view) : base(renderer, view) { }
     }
 }

@@ -1,8 +1,8 @@
 namespace Zebble.WinUI
 {
-    public class WinUiBlurBox : WinUiCanvasBase<BlurBox>
+    public class WinUIBlurBox : WinUICanvasBase<BlurBox>
     {
-        public WinUiBlurBox(Renderer renderer, BlurBox view) : base(renderer, view)
+        public WinUIBlurBox(Renderer renderer, BlurBox view) : base(renderer, view)
         {
             view.BlurredChanged.Handle(MaintainBlur);
             CreateBlur();

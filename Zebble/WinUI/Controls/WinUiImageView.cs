@@ -6,14 +6,14 @@ namespace Zebble.WinUI
     using media = Microsoft.UI.Xaml.Media;
     using xaml = Microsoft.UI.Xaml;
 
-    class WinUiImageView : IRenderOrchestrator
+    class WinUIImageView : IRenderOrchestrator
     {
         ImageView View;
         controls.Border Result;
         string LoadedImageKey;
         readonly EventHandlerDisposer EventHandlerDisposer = new();
 
-        public WinUiImageView(ImageView view) => View = view;
+        public WinUIImageView(ImageView view) => View = view;
 
         public async Task<xaml.FrameworkElement> Render()
         {

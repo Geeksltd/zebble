@@ -2,11 +2,11 @@
 {
     using Olive;
 
-    public class FullScreen : ViewModel
+    public abstract class FullScreen : ViewModel
     {
     }
 
-    public class FullScreen<TSource> : FullScreen, IViewModelOf<TSource>
+    public abstract class FullScreen<TSource> : FullScreen, IViewModelOf<TSource>
     {
         /// <summary>
         /// Gets the source object for this view model.

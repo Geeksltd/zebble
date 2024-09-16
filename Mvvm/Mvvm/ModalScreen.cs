@@ -2,11 +2,11 @@
 {
     using Olive;
 
-    public partial class ModalScreen : ViewModel
+    public abstract partial class ModalScreen : ViewModel
     {
     }
 
-    public class ModalScreen<TSource> : ModalScreen, IViewModelOf<TSource>
+    public abstract class ModalScreen<TSource> : ModalScreen, IViewModelOf<TSource>
     {
         /// <summary>
         /// Gets the source object for this view model.

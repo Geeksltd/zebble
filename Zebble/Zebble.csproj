@@ -7,7 +7,7 @@
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.0.61.0</Version>
+    <Version>5.0.63.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
@@ -112,7 +112,7 @@
   <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />
   <Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
   <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
-  <Target Condition=" $(DefineConstants.Contains('UWP')) " Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
     <Exec Command="update-local-nuget-cache $(TargetDir)" />
   </Target>
 </Project>

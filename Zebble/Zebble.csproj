@@ -65,9 +65,6 @@
   <ItemGroup Condition=" $(DefineConstants.Contains('WINUI')) ">
     <Compile Include="WinUI\**\*.cs" />
     <Compile Include="Windows\**\*.cs" />
-    <SDKReference Include="WindowsMobile, Version=10.0.19041.0">
-      <Name>Windows Mobile Extensions for the UWP</Name>
-    </SDKReference>
     <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
   </ItemGroup>
   <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">

@@ -8,6 +8,7 @@ namespace Zebble.WinUI
     using Windows.ApplicationModel;
     using Windows.ApplicationModel.Activation;
     using Windows.UI.Core;
+    using Windows.ApplicationModel.Core;
     using Windows.UI.ViewManagement;
     using controls = Microsoft.UI.Xaml.Controls;
     using xaml = Microsoft.UI.Xaml;
@@ -29,9 +30,9 @@ namespace Zebble.WinUI
         {
             UIThread.UIThreadID = Environment.CurrentManagedThreadId;
             Windows.System.MemoryManager.AppMemoryUsageIncreased += MemoryManager_AppMemoryUsageIncreased;
-            //EnteredBackground += (_, __) => Device.App.RaiseWentIntoBackground();
-            //LeavingBackground += (_, __) => Device.App.RaiseCameToForeground();
-            //Suspending += OnSuspending;
+            CoreApplication.EnteredBackground += (_, __) => Device.App.RaiseWentIntoBackground();
+            CoreApplication.LeavingBackground += (_, __) => Device.App.RaiseCameToForeground();
+            CoreApplication.Suspending += OnSuspending;
         }
 
         void MemoryManager_AppMemoryUsageIncreased(object sender, object eventArgs)
@@ -52,7 +53,7 @@ namespace Zebble.WinUI
 
             await HandleArguments(args.Arguments);
 
-            //if (args.PreviousExecutionState == ApplicationExecutionState.Running) return;
+            if (args.UWPLaunchActivatedEventArgs.PreviousExecutionState == ApplicationExecutionState.Running) return;
 
             Setup.Start();
 
@@ -243,15 +244,16 @@ namespace Zebble.WinUI
             deferral.Complete();
         }
 
-        //protected override void OnActivated(IActivatedEventArgs args)
-        //{
-        //    if (args.Kind == ActivationKind.Launch)
-        //    {
-        //        var launchArgs = (LaunchActivatedEventArgs)args;
-        //        HandleArguments(launchArgs.Arguments).GetAwaiter();
-        //    }
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            if (args.Kind == ActivationKind.Launch)
+            {
+                var launchArgs = (LaunchActivatedEventArgs)args;
+                HandleArguments(launchArgs.Arguments).GetAwaiter();
+            }
 
-        //    UIRuntime.OnActivated?.Raise(Tuple.Create(args, Window));
-        //}
+            UIRuntime.OnActivated?.Raise(Tuple.Create(args, Window));
+        }
+
     }
 }

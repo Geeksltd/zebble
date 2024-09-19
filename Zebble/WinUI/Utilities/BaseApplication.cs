@@ -244,16 +244,16 @@ namespace Zebble.WinUI
             deferral.Complete();
         }
 
-        protected virtual void OnActivated(IActivatedEventArgs args)
-        {
-            if (args.Kind == ActivationKind.Launch)
-            {
-                var launchArgs = (LaunchActivatedEventArgs)args;
-                HandleArguments(launchArgs.Arguments).GetAwaiter();
-            }
+        //protected override void OnActivated(IActivatedEventArgs args)
+        //{
+        //    if (args.Kind == ActivationKind.Launch)
+        //    {
+        //        var launchArgs = (LaunchActivatedEventArgs)args;
+        //        HandleArguments(launchArgs.Arguments).GetAwaiter();
+        //    }
 
-            UIRuntime.OnActivated?.Raise(Tuple.Create(args, Window));
-        }
+        //    UIRuntime.OnActivated?.Raise(Tuple.Create(args, Window));
+        //}
 
     }
 }

@@ -39,8 +39,8 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive" Version="2.1.361" />
-    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.2.1" />
+    <PackageReference Include="Olive" Version="2.1.380" />
+    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.4.1" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\icon.png" Pack="true" PackagePath="" />

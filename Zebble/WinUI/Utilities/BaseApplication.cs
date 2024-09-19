@@ -244,7 +244,7 @@ namespace Zebble.WinUI
             deferral.Complete();
         }
 
-        protected override void OnActivated(IActivatedEventArgs args)
+        protected virtual void OnActivated(IActivatedEventArgs args)
         {
             if (args.Kind == ActivationKind.Launch)
             {

@@ -1,12 +1,12 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
   <PropertyGroup>
     <TargetFrameworks>net8.0;net8.0-android;net8.0-ios</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net8.0-windows10.0.19041.0</TargetFrameworks>
+    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net8.0-windows10.0.19041</TargetFrameworks>
     <AssemblyName>Zebble</AssemblyName>
     <RootNamespace>Zebble</RootNamespace>
     <PackageId>Zebble</PackageId>
     <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.1.0.0</Version>
+    <Version>5.1.2.0</Version>
     <PackOnBuild>true</PackOnBuild>
     <NeutralLanguage>en</NeutralLanguage>
     <NoWarn>0618;0162</NoWarn>
@@ -101,13 +101,7 @@
   <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />
   <Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
   <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Running)'=='local'">
     <Exec Command="update-local-nuget-cache $(TargetDir)" />
   </Target>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls" Version="9.0.0-rc.1.24453.9" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Update="Microsoft.Maui.Controls.Compatibility" Version="9.0.0-rc.1.24453.9" />
-  </ItemGroup>
 </Project>

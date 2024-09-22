@@ -3,52 +3,138 @@ on:
   push:
     branches: [ main ]
 jobs:
- build:
+  build_zebble:
     strategy:
       matrix:
         configuration: [ Release ]
-    runs-on: windows-2019
+    runs-on: windows-2022
     steps:
-    - uses: actions/checkout@v2
-    
-    # - name: Publish a new Zebble package
-      # uses: brandedoutcast/publish-nuget@v2
-      # with:
-        # PROJECT_FILE_PATH: Zebble/Zebble.csproj
-        # NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+
+    - name: Install MAUI
+      run: dotnet workload install ios android maui --source https://aka.ms/dotnet8/nuget/index.json --source https://api.nuget.org/v3/index.json
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
+    - name: Publish a new Zebble package
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble
+
+  build_zebble_build:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.x'
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
     - name: Publish a new Zebble.Build package
-      uses: brandedoutcast/publish-nuget@v2
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble.Build
+
+  build_zebble_compile_zbl:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
       with:
-        PROJECT_FILE_PATH: Zebble.Build/Zebble.Build.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+        dotnet-version: '8.x'
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
     - name: Publish a new Zebble.CompileZbl package
-      uses: brandedoutcast/publish-nuget@v2
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble.CompileZbl
+      
+  build_zebble_css:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
       with:
-        PROJECT_FILE_PATH: Zebble.CompileZbl/Zebble.CompileZbl.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+        dotnet-version: '8.x'
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
     - name: Publish a new Zebble.Css package
-      uses: brandedoutcast/publish-nuget@v2
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble.Css
+      
+  build_zebble_format_zbl:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
       with:
-        PROJECT_FILE_PATH: Zebble.Css/Zebble.Css.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+        dotnet-version: '8.x'
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
     - name: Publish a new Zebble.FormatZbl package
-      uses: brandedoutcast/publish-nuget@v2
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble.FormatZbl
+      
+  build_zebble_image:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
       with:
-        PROJECT_FILE_PATH: Zebble.FormatZbl/Zebble.FormatZbl.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+        dotnet-version: '8.x'
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
     - name: Publish a new Zebble.Image package
-      uses: brandedoutcast/publish-nuget@v2
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble.Image
+
+  build_zebble_schema:
+    strategy:
+      matrix:
+        configuration: [ Release ]
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - uses: actions/setup-dotnet@v4
       with:
-        PROJECT_FILE_PATH: Zebble.Image/Zebble.Image.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
-    
+        dotnet-version: '8.x'
+
+    - name: Install Zebble's CLI tools
+      run: dotnet tool install --global zebble-build
+
     - name: Publish a new Zebble.Schema package
-      uses: brandedoutcast/publish-nuget@v2
-      with:
-        PROJECT_FILE_PATH: Zebble.Schema/Zebble.Schema.csproj
-        NUGET_KEY: ${{secrets.NUGET_API_KEY}}
+      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      working-directory: Zebble.Schema

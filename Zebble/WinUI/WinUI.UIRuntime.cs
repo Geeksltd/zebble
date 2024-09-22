@@ -1,12 +1,11 @@
 namespace Zebble
 {
+    using Microsoft.UI.Xaml;
+    using Olive;
     using System;
     using System.Collections.Generic;
     using System.ComponentModel;
-    using System.Reflection;
     using Windows.ApplicationModel.Activation;
-    using Windows.UI.Xaml;
-    using Olive;
 
     partial class UIRuntime
     {

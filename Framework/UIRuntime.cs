@@ -62,7 +62,7 @@ namespace Zebble
         }
         static IHostBuilder CreateHostBuilder<T>() where T : class
         {
-#if !UWP
+#if !WINUI
             return XamarinHost.CreateDefaultBuilder<T>();
 #else
 return Host.CreateDefaultBuilder();

@@ -148,7 +148,7 @@ namespace Zebble.Device
             WidthProvider = widthProvider;
             HeightProvider = heightProvider;
 
-#if UWP
+#if WINUI
             if (UIRuntime.IsDevMode && UIRuntime.Inspector.IsRotating)
             {
                 Width = widthProvider();
@@ -172,7 +172,7 @@ namespace Zebble.Device
             Width = newWidth;
             Height = newHeight;
 
-#if UWP
+#if WINUI
             var extra = UIRuntime.IsDevMode ? UIRuntime.Inspector.CurrentWidth : 0;
             UIRuntime.RenderRoot.Size(Width + extra, Height);
 #endif

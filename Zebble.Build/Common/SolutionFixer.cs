@@ -117,8 +117,8 @@
             foreach (var token in new[] { "", $"{solutionFile.NameWithoutExtension()}\\" })
             {
                 solutionText = solutionText.Replace(
-                    oldValue: $"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"UWP\", \"{token}Run\\UWP\\UWP.csproj\"",
-                    newValue: $"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"~UWP\", \"{token}Run\\UWP\\~UWP.csproj\""
+                    oldValue: $"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"WinUI\", \"{token}Run\\WinUI\\WinUI.csproj\"",
+                    newValue: $"Project(\"{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}\") = \"~WinUI\", \"{token}Run\\WinUI\\~WinUI.csproj\""
                 );
 
                 solutionText = solutionText.Replace(
@@ -175,11 +175,11 @@
 
             var buildSettings = new List<string>();
 
-            var uwpGUID = "{51AEAFB7-E02B-4F51-8AB0-AA90E034E684}";
+            var winuiGUID = "{51AEAFB7-E02B-4F51-8AB0-AA90E034E684}";
             foreach (var platform in new[] { "Any CPU", "iPhone", "iPhoneSimulator" })
             {
-                buildSettings.Add($"{uwpGUID}.Debug|{platform}.Build.0 = Debug|x86");
-                buildSettings.Add($"{uwpGUID}.Debug|{platform}.Deploy.0 = Debug|x86");
+                buildSettings.Add($"{winuiGUID}.Debug|{platform}.Build.0 = Debug|x86");
+                buildSettings.Add($"{winuiGUID}.Debug|{platform}.Deploy.0 = Debug|x86");
             }
 
             var iosGUID = "{3B21A769-F17C-4219-A595-27A34955228F}";

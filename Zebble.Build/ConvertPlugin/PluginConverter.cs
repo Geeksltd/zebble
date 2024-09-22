@@ -108,7 +108,7 @@
             MoveTo("Shared");
             MoveTo("iOS");
             MoveTo("Android");
-            MoveTo("UWP");
+            MoveTo("WinUI");
         }
 
         void RemoveOldFilesAndFolders()

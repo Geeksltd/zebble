@@ -28,7 +28,7 @@ namespace Zebble
 
             public static void Track(ITrackable trackable, object value, [CallerMemberName] string caller = null)
             {
-#if UWP
+#if WINUI
                 if (!UIRuntime.IsDevMode) return;
                 if (Tracking.None()) return;
                 if (Tracking.Lacks(GetTrackingRef(trackable))) return;

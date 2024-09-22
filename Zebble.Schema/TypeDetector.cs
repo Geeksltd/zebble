@@ -10,7 +10,7 @@
 
     public class TypeDetector
     {
-        static DirectoryInfo AssembliesFolder => DirectoryContext.UWPBinFolder.GetSubDirectory("x86").GetSubDirectory("Debug");
+        static DirectoryInfo AssembliesFolder => DirectoryContext.WinUIBinFolder.GetSubDirectory("x86").GetSubDirectory("Debug");
         static readonly DefaultAssemblyResolver AssemblyResolver = new();
 
         static TypeDetector() => AssemblyResolver.AddSearchDirectory(AssembliesFolder.FullName);

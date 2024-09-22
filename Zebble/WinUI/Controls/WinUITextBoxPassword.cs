@@ -1,12 +1,12 @@
-namespace Zebble.UWP
+namespace Zebble.WinUI
 {
     using System;
-    using controls = Windows.UI.Xaml.Controls;
+    using controls = Microsoft.UI.Xaml.Controls;
     using Olive;
 
-    public class UWPPasswordBox : UWPTextBoxBase<controls.PasswordBox>
+    public class WinUIPasswordBox : WinUITextBoxBase<controls.PasswordBox>
     {
-        public UWPPasswordBox(Renderer renderer) : base(renderer) { }
+        public WinUIPasswordBox(Renderer renderer) : base(renderer) { }
 
         protected override void GenerateResult()
         {

@@ -29,7 +29,7 @@ namespace Zebble
 
             var runner = thread.Run(() => Raise());
 
-#if IOS || ANDROID || UWP
+#if IOS || ANDROID || WINUI
             if (Thread.UI.IsRunning() && thread == Thread.Pool)
                 return Task.CompletedTask;
 #endif

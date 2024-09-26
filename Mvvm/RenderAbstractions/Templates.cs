@@ -16,6 +16,7 @@ namespace Zebble.Mvvm
             var viewTypeInfoes = assembly.DefinedTypes
                 .Where(baseViewTypeInfo.IsAssignableFrom)
                 .Where(x => x.ImplementedInterfaces.OrEmpty().Contains(typeof(ITemplate)))
+                .Except(x => x.IsAbstract)
                 .ToArray();
 
             FromViewsToViewModels();
@@ -50,9 +51,9 @@ namespace Zebble.Mvvm
                     .Select(x => new
                     {
                         ViewType = x,
-                        ParentViewModels = x.GetGenericArguments().FirstOrDefault()?.GetParentTypes().Take(2)
+                        ParentViewModel = x.GetGenericArguments().FirstOrDefault()?.GetParentTypes().FirstOrDefault()
                     })
-                    .Where(x => x.ParentViewModels.HasAny())
+                    .Except(x => x.ParentViewModel is null)
                     .ToArray();
 
                 var baseScreenTypeInfoes = new Type[] {
@@ -63,22 +64,17 @@ namespace Zebble.Mvvm
                 var screenTypeInfoes = assembly.DefinedTypes
                     .Where(x => baseScreenTypeInfoes.Any(ti => ti.IsAssignableFrom(x)))
                     .Except(x => x.IsAbstract)
+                    .Except(Mappings.ContainsKey)
                     .ToArray();
 
                 foreach (var screenTypeInfo in screenTypeInfoes)
                 {
-                    if (Mappings.ContainsKey(screenTypeInfo))
-                    {
-                        continue;
-                    }
-
                     foreach (var screenBaseType in screenTypeInfo.GetParentTypes())
                     {
-                        var matchedTypeInfo = genericViewTypeInfoes.FirstOrDefault(x => x.ParentViewModels.Contains(screenBaseType));
+                        var matchedTypeInfo = genericViewTypeInfoes.FirstOrDefault(x => x.ParentViewModel == screenBaseType);
                         if (matchedTypeInfo is not null)
                         {
-                            try { TryRegister(screenTypeInfo, matchedTypeInfo.ViewType.MakeGenericType(screenTypeInfo)); }
-                            catch (ArgumentException) {/* Ignore */}
+                            TryRegister(screenTypeInfo, matchedTypeInfo.ViewType.MakeGenericType(screenTypeInfo));
                             break;
                         }
                     }

@@ -16,7 +16,7 @@ namespace Zebble.Device
     {
         static Task<bool> DoOpenBrowser(string url)
         {
-            UIApplication.SharedApplication.OpenUrl(url.ToNsUrl());
+            UIApplication.SharedApplication.OpenUrl(url.ToNsUrl(), new NSDictionary(), null);
             return Task.FromResult(result: false);
         }
 
@@ -29,13 +29,13 @@ namespace Zebble.Device
             switch (section)
             {
                 case "Network":
-                    UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"));
+                    UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=WIFI"), new NSDictionary(), null);
                     break;
                 case "Cellular":
-                    UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=MOBILE_DATA_SETTINGS_ID"));
+                    UIApplication.SharedApplication.OpenUrl(new NSUrl("App-Prefs:root=MOBILE_DATA_SETTINGS_ID"), new NSDictionary(), null);
                     break;
                 default:
-                    UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString));
+                    UIApplication.SharedApplication.OpenUrl(new NSUrl(UIApplication.OpenSettingsUrlString), new UIApplicationOpenUrlOptions(), null);
                     break;
             }
             return Task.FromResult(result: true);

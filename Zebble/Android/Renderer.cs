@@ -77,12 +77,8 @@ namespace Zebble
             else if (view is ImageView) Result = AndroidImageFactory.Create(view as ImageView);
             else if (view is ScrollView) Result = ScrollViewFactory.Render(view as ScrollView);
             else if (view == UIRuntime.RenderRoot || view is Overlay { BlocksGestures: true }) Result = new AndroidGestureView(view);
-            else if (view is BlurBox blurBox)
-            {
-                if (OS.IsAtLeast(Android.OS.BuildVersionCodes.S))
-                    Result = new AndroidBlurBox(blurBox);
-                else Result = new AndroidLegacyBlurBox(blurBox);
-            }
+            else if (view is BlurBox blurBox && OS.IsAtLeast(Android.OS.BuildVersionCodes.S))
+                Result = new AndroidBlurBox(blurBox);            
             else Result = new AndroidCustomContainer(view);
         }
 
@@ -222,7 +218,7 @@ namespace Zebble
             Result?.Dispose();
             Result = null;
             View = null;
-			GC.SuppressFinalize(this);
+            GC.SuppressFinalize(this);
         }
     }
 }

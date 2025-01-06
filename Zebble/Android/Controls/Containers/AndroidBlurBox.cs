@@ -92,8 +92,16 @@ namespace Zebble.AndroidOS
 
         protected override void OnSizeChanged(int w, int h, int oldw, int oldh)
         {
-            base.OnSizeChanged(w, h, oldw, oldh);
-            BlurController?.UpdateBlurViewSize();
+            if (IsDead(out var view)) return;
+            try
+            {
+                base.OnSizeChanged(w, h, oldw, oldh);
+                BlurController?.UpdateBlurViewSize();
+            }
+            catch
+            {
+                // Ignore
+            }
         }
 
         bool IsDead(out BlurBox result)

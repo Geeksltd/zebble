@@ -37,7 +37,7 @@
 		<DebugSymbols>true</DebugSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
-	<PropertyGroup Condition=" $(TargetFramework.StartsWith('net9.0-windows10.0.26100.0')) ">
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('net9.0-windows')) ">
 		<DefineConstants>$(DefineConstants);UWP</DefineConstants>
 		<UseUwp>true</UseUwp>
 	</PropertyGroup>

@@ -94,7 +94,7 @@ namespace Zebble
         }
 
         /// <summary>
-        /// Only needed for iOS. In Android and WinUI this can achived by setting SpellChecking.
+        /// Only needed for iOS. In Android and UWP this can achived by setting SpellChecking.
         /// </summary>
         public AutoCorrectionType AutoCorrection
         {

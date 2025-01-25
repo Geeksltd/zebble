@@ -69,8 +69,8 @@ namespace Zebble
             return @this;
         }
 
-#if WINUI
-        public static Microsoft.UI.Xaml.FrameworkElement Native(this View view) => (Microsoft.UI.Xaml.FrameworkElement)view.Native;
+#if UWP
+        public static Windows.UI.Xaml.FrameworkElement Native(this View view) => (Windows.UI.Xaml.FrameworkElement)view.Native;
 
 #elif ANDROID
         public static Android.Views.View Native(this View view) => (Android.Views.View)view.Native;

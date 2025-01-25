@@ -14,7 +14,7 @@
 
         public NavXmlGenerator()
         {
-            _navXmlFile = Path.Combine(DirectoryContext.WinUIObjFolder.FullName, "zebble-nav.xml").AsFile();
+            _navXmlFile = Path.Combine(DirectoryContext.UWPObjFolder.FullName, "zebble-nav.xml").AsFile();
             Log($"Updated navigation info will be written into: {_navXmlFile.FullName}");
         }
 

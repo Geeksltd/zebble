@@ -46,8 +46,8 @@
             {
                 var asses = AppDomain.CurrentDomain.GetAssemblies();
                 var assemblies = asses
-#if WINUI
-                       //  .NET Native (WinUI) and other forms of Native AOT compilers don't support GetReferencedAssemblies
+#if UWP
+                       //  .NET Native (UWP) and other forms of Native AOT compilers don't support GetReferencedAssemblies
                        .Where(c => c.GetName().Name.Contains("Zebble"))
 #else
                        .Where(c => c.References(ZebbleAssembly) || c.GetName().Name.Contains("Zebble"))

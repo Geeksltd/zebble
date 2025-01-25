@@ -88,7 +88,7 @@ namespace Zebble
             return task();
         }
 
-#if IOS || ANDROID || WINUI
+#if IOS || ANDROID || UWP
         public override bool IsRunning() => !Thread.UI.IsRunning();
 #else
 public override bool IsRunning() => true;

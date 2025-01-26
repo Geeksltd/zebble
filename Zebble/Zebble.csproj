@@ -105,7 +105,7 @@
 	<Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
 	<Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
 	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Running)'=='local'">
-		<Exec Command="update-local-nuget-cache $(TargetDir)" />
+		<Exec Command="update-local-nuget-cache $(TargetDir)" Condition="'$(Running)'=='local'" />
 	</Target>
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />

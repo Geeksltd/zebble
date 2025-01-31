@@ -1,7 +1,7 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
 	<PropertyGroup>
 		<TargetFrameworks>net9.0;net9.0-android;net9.0-ios</TargetFrameworks>
-		<TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net9.0-windows10.0.26100</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362;net9.0-windows10.0.26100</TargetFrameworks>
 		<AssemblyName>Zebble</AssemblyName>
 		<RootNamespace>Zebble</RootNamespace>
 		<PackageId>Zebble</PackageId>
@@ -37,6 +37,9 @@
 		<DebugSymbols>true</DebugSymbols>
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
 	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+		<DefineConstants>$(DefineConstants);UWP</DefineConstants>
+	</PropertyGroup>
 	<PropertyGroup Condition=" $(TargetFramework.StartsWith('net9.0-windows')) ">
 		<DefineConstants>$(DefineConstants);UWP</DefineConstants>
 		<UseUwp>true</UseUwp>
@@ -63,12 +66,17 @@
 	<PropertyGroup Condition=" $(TargetFramework.Equals('net9.0-android')) ">
 		<DefineConstants>$(DefineConstants);MAUI_ANDROID</DefineConstants>
 	</PropertyGroup>
-	<ItemGroup Condition=" $(DefineConstants.Contains('UWP')) ">
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net9.0-windows')) ">
 		<Compile Include="UWP\**\*.cs" />
 		<Compile Include="Windows\**\*.cs" />
 		<PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
 		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" IncludeAssets="build" PrivateAssets="all" />
 		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+		<Compile Include="UWP\**\*.cs" />
+		<Compile Include="Windows\**\*.cs" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
 	</ItemGroup>
 	<ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
 		<Compile Include="Android\**\*.cs" />

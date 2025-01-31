@@ -9,7 +9,7 @@ namespace Zebble.Device
     using Windows.Graphics.Imaging;
     using Windows.Storage.Streams;
     using Windows.UI.ViewManagement;
-    using Microsoft.UI.Xaml.Media.Imaging;
+    using Windows.UI.Xaml.Media.Imaging;
     using Olive;
 
     partial class Screen
@@ -44,7 +44,7 @@ namespace Zebble.Device
 
             static void DoSetForegroundColor()
             {
-                Windows.UI.Color foreColor = default;
+                Windows.UI.Color foreColor;
 
                 if (ForegroundColor != null)
                 {
@@ -56,6 +56,8 @@ namespace Zebble.Device
                         R = ForegroundColor.Red
                     };
                 }
+
+                else foreColor = Windows.UI.Colors.Transparent;
 
                 // PC customization
                 if (ApiInformation.IsTypePresent("Windows.UI.ViewManagement.ApplicationView"))
@@ -74,9 +76,15 @@ namespace Zebble.Device
                 }
             }
 
-            static void DoSetTransparency() { }
+            static void DoSetTransparency()
+            {
 
-            static void DoSetVisibility() { }
+            }
+
+            static void DoSetVisibility()
+            {
+
+            }
 
             static void DoSetHasLightContent() { }
         }
@@ -89,7 +97,7 @@ namespace Zebble.Device
             DisplayInformation.GetForCurrentView().OrientationChanged +=
                 (s, e) => OrientationChanged.SignalRaiseOn(Thread.Pool);
 
-            DarkMode = new UISettings().GetColorValue(UIColorType.Background) == Microsoft.UI.Colors.Black;
+            DarkMode = new UISettings().GetColorValue(UIColorType.Background) == Windows.UI.Colors.Black;
         }
 
         public static float HardwareDensity
@@ -130,7 +138,7 @@ namespace Zebble.Device
         static async Task<FileInfo> DoSaveAsImage(object inputNative)
         {
             var rtb = new RenderTargetBitmap();
-            await rtb.RenderAsync((Microsoft.UI.Xaml.UIElement)inputNative);
+            await rtb.RenderAsync((Windows.UI.Xaml.UIElement)inputNative);
             var image = (await rtb.GetPixelsAsync()).ToArray();
 
             using (var encoded = new InMemoryRandomAccessStream())

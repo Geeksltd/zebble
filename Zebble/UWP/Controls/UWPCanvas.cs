@@ -1,10 +1,10 @@
-namespace Zebble.WinUI
+namespace Zebble.UWP
 {
     using System;
-    using controls = Microsoft.UI.Xaml.Controls;
+    using controls = Windows.UI.Xaml.Controls;
     using Olive;
 
-    public abstract class WinUICanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
+    public abstract class UWPCanvasBase<TView> : controls.Canvas, IDisposable, UIChangeCommand.IHandler where TView : View
     {
         readonly WeakReference<Renderer> RendererRef;
         readonly WeakReference<TView> ViewRef;
@@ -12,7 +12,7 @@ namespace Zebble.WinUI
         protected bool IsDisposed;
         protected TView View => ViewRef?.GetTargetOrDefault();
 
-        public WinUICanvasBase(Renderer renderer, TView view)
+        public UWPCanvasBase(Renderer renderer, TView view)
         {
             RendererRef = renderer.GetWeakReference();
             ViewRef = view.GetWeakReference();
@@ -22,7 +22,7 @@ namespace Zebble.WinUI
         protected void Configure()
         {
             HandleTouches();
-            VerticalAlignment = Microsoft.UI.Xaml.VerticalAlignment.Top;
+            VerticalAlignment = Windows.UI.Xaml.VerticalAlignment.Top;
         }
 
         public void Apply(string property, UIChangedEventArgs change)
@@ -48,7 +48,7 @@ namespace Zebble.WinUI
             if (UIRuntime.IsDevMode && view.id.IsAnyOf("ZebbleInspectorHighlightMask", "ZebbleInspectorHighlightBorder"))
             {
                 Background = null;
-                ManipulationMode = Microsoft.UI.Xaml.Input.ManipulationModes.None;
+                ManipulationMode = Windows.UI.Xaml.Input.ManipulationModes.None;
                 IsTapEnabled = false;
                 IsHitTestVisible = false;
             }
@@ -67,8 +67,8 @@ namespace Zebble.WinUI
         }
     }
 
-    public class WinUICanvas : WinUICanvasBase<View>
+    public class UWPCanvas : UWPCanvasBase<View>
     {
-        public WinUICanvas(Renderer renderer, View view) : base(renderer, view) { }
+        public UWPCanvas(Renderer renderer, View view) : base(renderer, view) { }
     }
 }

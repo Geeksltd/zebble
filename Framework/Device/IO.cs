@@ -18,7 +18,7 @@ namespace Zebble.Device
         {
             get
             {
-#if WINUI
+#if UWP
                 return Windows.Storage.KnownFolders.DocumentsLibrary.Path;
 #else
                 return Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments);
@@ -34,7 +34,7 @@ namespace Zebble.Device
         {
             get
             {
-#if WINUI
+#if UWP
                 return Windows.Storage.ApplicationData.Current.LocalFolder.Path;
 #else
                 return Environment.GetFolderPath(Environment.SpecialFolder.Personal);
@@ -92,7 +92,7 @@ namespace Zebble.Device
             else
             {
                 relative = NormalizePath(relative);
-#if WINUI
+#if UWP
                 relative = relative.Replace("/", "\\");
 #endif
             }

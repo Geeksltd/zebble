@@ -6,7 +6,7 @@ namespace Zebble.Services
     using System.Threading.Tasks;
     using Windows.Graphics.Imaging;
     using Windows.Storage.Streams;
-    using Microsoft.UI.Xaml.Media.Imaging;
+    using Windows.UI.Xaml.Media.Imaging;
     using Olive;
 
     partial class ImageService

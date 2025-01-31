@@ -14,9 +14,9 @@ namespace Zebble.Schema
 
         public static void Run()
         {
-            if (!DirectoryContext.WinUIBinFolder.Exists() || DirectoryContext.WinUIBinFolder.GetFiles("*.dll", SearchOption.AllDirectories).None())
+            if (!DirectoryContext.UWPBinFolder.Exists() || DirectoryContext.UWPBinFolder.GetFiles("*.dll", SearchOption.AllDirectories).None())
             {
-                Console.WriteLine("Skipped to update the xml schema as WinUI is not compiled yet.");
+                Console.WriteLine("Skipped to update the xml schema as UWP is not compiled yet.");
                 return;
             }
 

@@ -1,24 +1,24 @@
-namespace Zebble.WinUI
+namespace Zebble.UWP
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using controls = Microsoft.UI.Xaml.Controls;
+    using controls = Windows.UI.Xaml.Controls;
     using ScrollViewRef = System.WeakReference<ScrollView>;
-    using WinUIScrollViewRef = System.WeakReference<WinUIScrollView>;
-    using xaml = Microsoft.UI.Xaml;
+    using UWPScrollViewRef = System.WeakReference<UWPScrollView>;
+    using xaml = Windows.UI.Xaml;
     using Olive;
 
-    partial class WinUIScrollView
+    partial class UWPScrollView
     {
         xaml.Input.ManipulationDeltaRoutedEventArgs RunningInnertia;
 
-        internal static Dictionary<ScrollViewRef, WinUIScrollViewRef> Mappings =
+        internal static Dictionary<ScrollViewRef, UWPScrollViewRef> Mappings =
             new();
 
         public bool SupportsChildPanning;
 
-        static WinUIScrollView GetFor(ScrollView scrollView)
+        static UWPScrollView GetFor(ScrollView scrollView)
         {
             return Mappings
                  .Where(x => x.Key.GetTargetOrDefault() == scrollView)

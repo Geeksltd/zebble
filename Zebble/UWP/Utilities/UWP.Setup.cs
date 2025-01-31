@@ -1,4 +1,4 @@
-namespace Zebble.WinUI
+namespace Zebble.UWP
 {
     using Olive;
 
@@ -13,7 +13,7 @@ namespace Zebble.WinUI
             {
                 IsAddedToNativeParentOnce = true,
                 Id = "RenderRoot",
-                CssClass = "winui-only"
+                CssClass = "uwp-only"
             }.Background(color: Colors.White);
         }
     }

@@ -1,4 +1,4 @@
-namespace Zebble.WinUI
+namespace Zebble.UWP
 {
     using System;
     using System.Collections.Generic;
@@ -6,11 +6,11 @@ namespace Zebble.WinUI
     using System.Threading.Tasks;
     using Windows.System;
     using Windows.UI.Core;
-    using Microsoft.UI.Xaml;
-    using Microsoft.UI.Xaml.Input;
+    using Windows.UI.Xaml;
+    using Windows.UI.Xaml.Input;
     using Olive;
 
-    class WinUIGestureRecognizer
+    class UWPGestureRecognizer
     {
         const int MOUSE_WHEEL_DELTA_DEGREES = 8  /*slow it down: */ * 2;
         readonly WeakReference<UIElement> ElementRef;
@@ -25,7 +25,7 @@ namespace Zebble.WinUI
         UIElement Element => ElementRef.GetTargetOrDefault();
         View View => ViewRef.GetTargetOrDefault();
 
-        public WinUIGestureRecognizer(UIElement element, View view)
+        public UWPGestureRecognizer(UIElement element, View view)
         {
             ElementRef = element.GetWeakReference();
             ViewRef = view.GetWeakReference();

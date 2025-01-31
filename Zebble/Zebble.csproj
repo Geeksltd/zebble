@@ -1,107 +1,121 @@
 ﻿<Project Sdk="MSBuild.Sdk.Extras/3.0.44">
-  <PropertyGroup>
-    <TargetFrameworks>net8.0;net8.0-android;net8.0-ios</TargetFrameworks>
-    <TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);net8.0-windows10.0.19041</TargetFrameworks>
-    <AssemblyName>Zebble</AssemblyName>
-    <RootNamespace>Zebble</RootNamespace>
-    <PackageId>Zebble</PackageId>
-    <Product>$(AssemblyName) ($(TargetFramework))</Product>
-    <Version>5.1.6.0</Version>
-    <PackOnBuild>true</PackOnBuild>
-    <NeutralLanguage>en</NeutralLanguage>
-    <NoWarn>0618;0162</NoWarn>
-    <DefineConstants>$(DefineConstants)</DefineConstants>
-    <UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
-    <LangVersion>latest</LangVersion>
-    <DebugType>portable</DebugType>
-    <PackageProjectUrl>https://nuget.org/packages/Zebble/</PackageProjectUrl>
-    <RepositoryUrl>http://zebble.net/</RepositoryUrl>
-    <PackageIconUrl>https://dashboard.geeksltd.co.uk/content/ZebbleNuGetIcon.png</PackageIconUrl>
-    <PackageTags>xamarin, windows, ios, android, zebble</PackageTags>
-    <Title>Zebble for Xamarin</Title>
-    <Description>Zebble framework for cross platform Xamarin-based solutions.</Description>
-    <PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
-    <Owners>Geeks Ltd</Owners>
-    <Authors>Geeks Ltd</Authors>
-    <Copyright>Geeks Ltd 2024, All rights reserved.</Copyright>
-    <DisableExtraReferences>true</DisableExtraReferences>
-    <DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(Configuration.StartsWith('Debug')) ">
-    <DebugSymbols>true</DebugSymbols>
-    <GenerateDocumentationFile>false</GenerateDocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(Configuration.StartsWith('Release')) ">
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <DebugSymbols>true</DebugSymbols>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.Contains('windows')) ">
-    <DefineConstants>$(DefineConstants);WINUI</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.Contains('droid')) ">
-    <DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
-    <AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.Contains('iOS')) OR $(TargetFramework.Contains('ios')) ">
-    <DefineConstants>$(DefineConstants);IOS</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.Equals('net8.0')) ">
-    <DefineConstants>$(DefineConstants);NET80</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.StartsWith('net8.0-')) ">
-    <DefineConstants>$(DefineConstants);MAUI</DefineConstants>
-    <SingleProject>true</SingleProject>
-    <UseMaui>true</UseMaui>
-    <UseMauiEssentials>true</UseMauiEssentials>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.Equals('net8.0-ios')) ">
-    <DefineConstants>$(DefineConstants);MAUI_IOS</DefineConstants>
-  </PropertyGroup>
-  <PropertyGroup Condition=" $(TargetFramework.Equals('net8.0-android')) ">
-    <DefineConstants>$(DefineConstants);MAUI_ANDROID</DefineConstants>
-  </PropertyGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('WINUI')) ">
-    <Compile Include="WinUI\**\*.cs" />
-    <Compile Include="Windows\**\*.cs" />
-    <PackageReference Include="Microsoft.Bcl.HashCode" Version="1.1.1" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
-    <Compile Include="Android\**\*.cs" />
-    <PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.7.0.3" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.Common" Version="2.8.5.1" />
-    <PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel" Version="2.8.5.1" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
-    <Compile Include="iOS\**\*.cs" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('NET80')) ">
-    <Compile Include="Console\**\*.cs" />
-  </ItemGroup>
-  <ItemGroup Condition=" $(DefineConstants.Contains('MAUI')) ">
-    <PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.0-rc.1.24453.9" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Remove=".gitignore" />
-    <None Remove="icon.png" />
-    <None Remove="README.md" />
-    <None Remove="Zebble-LicenseAgreement.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.0-rc.1.24431.7" />
-    <PackageReference Include="Microsoft.Extensions.Http" Version="9.0.0-rc.1.24431.7" />
-    <PackageReference Include="Olive" Version="2.1.380" />
-    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.4.1" />
-    <PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
-  </ItemGroup>
-  <Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'net8.0' " />
-  <Import Project="..\Css\Css.projitems" Label="Shared" />
-  <Import Project="..\Framework\Framework.projitems" Label="Shared" />
-  <Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />
-  <Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
-  <Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Running)'=='local'">
-    <Exec Command="update-local-nuget-cache $(TargetDir)" />
-  </Target>
+	<PropertyGroup>
+		<TargetFrameworks>net9.0;net9.0-android;net9.0-ios</TargetFrameworks>
+		<TargetFrameworks Condition=" '$(OS)' == 'Windows_NT' ">$(TargetFrameworks);uap10.0.18362;net9.0-windows10.0.26100</TargetFrameworks>
+		<AssemblyName>Zebble</AssemblyName>
+		<RootNamespace>Zebble</RootNamespace>
+		<PackageId>Zebble</PackageId>
+		<Product>$(AssemblyName) ($(TargetFramework))</Product>
+		<Version>5.1.7.0</Version>
+		<PackOnBuild>true</PackOnBuild>
+		<NeutralLanguage>en</NeutralLanguage>
+		<NoWarn>0618;0162</NoWarn>
+		<DefineConstants>$(DefineConstants)</DefineConstants>
+		<UseFullSemVerForNuGet>false</UseFullSemVerForNuGet>
+		<EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+		<LangVersion>latest</LangVersion>
+		<DebugType>portable</DebugType>
+		<PackageProjectUrl>https://nuget.org/packages/Zebble/</PackageProjectUrl>
+		<RepositoryUrl>http://zebble.net/</RepositoryUrl>
+		<PackageIconUrl>https://dashboard.geeksltd.co.uk/content/ZebbleNuGetIcon.png</PackageIconUrl>
+		<PackageTags>xamarin, windows, ios, android, zebble</PackageTags>
+		<Title>Zebble for Xamarin</Title>
+		<Description>Zebble framework for cross platform Xamarin-based solutions.</Description>
+		<PackageReleaseNotes>Minor fixes</PackageReleaseNotes>
+		<Owners>Geeks Ltd</Owners>
+		<Authors>Geeks Ltd</Authors>
+		<Copyright>Geeks Ltd 2024, All rights reserved.</Copyright>
+		<DisableExtraReferences>true</DisableExtraReferences>
+		<DocumentationFile>$(TargetDir)Zebble.xml</DocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(Configuration.StartsWith('Debug')) ">
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>false</GenerateDocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(Configuration.StartsWith('Release')) ">
+		<GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+		<DebugSymbols>true</DebugSymbols>
+		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+		<DefineConstants>$(DefineConstants);UWP</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('net9.0-windows')) ">
+		<DefineConstants>$(DefineConstants);UWP</DefineConstants>
+		<UseUwp>true</UseUwp>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.Contains('droid')) ">
+		<DefineConstants>$(DefineConstants);ANDROID</DefineConstants>
+		<AndroidUseIntermediateDesignerFile>false</AndroidUseIntermediateDesignerFile>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.Contains('iOS')) OR $(TargetFramework.Contains('ios')) ">
+		<DefineConstants>$(DefineConstants);IOS</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.Equals('net9.0')) ">
+		<DefineConstants>$(DefineConstants);NET90</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.StartsWith('net9.0-')) ">
+		<DefineConstants>$(DefineConstants);MAUI</DefineConstants>
+		<SingleProject>true</SingleProject>
+		<UseMaui>true</UseMaui>
+		<UseMauiEssentials>true</UseMauiEssentials>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.Equals('net9.0-ios')) ">
+		<DefineConstants>$(DefineConstants);MAUI_IOS</DefineConstants>
+	</PropertyGroup>
+	<PropertyGroup Condition=" $(TargetFramework.Equals('net9.0-android')) ">
+		<DefineConstants>$(DefineConstants);MAUI_ANDROID</DefineConstants>
+	</PropertyGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('net9.0-windows')) ">
+		<Compile Include="UWP\**\*.cs" />
+		<Compile Include="Windows\**\*.cs" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+		<PackageReference Include="Microsoft.WindowsAppSDK" Version="1.6.250108002" IncludeAssets="build" PrivateAssets="all" />
+		<PackageReference Include="Microsoft.Windows.CsWinRT" Version="2.2.0" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(TargetFramework.StartsWith('uap')) ">
+		<Compile Include="UWP\**\*.cs" />
+		<Compile Include="Windows\**\*.cs" />
+		<PackageReference Include="Microsoft.Bcl.HashCode" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(DefineConstants.Contains('ANDROID')) ">
+		<Compile Include="Android\**\*.cs" />
+		<PackageReference Include="Xamarin.AndroidX.AppCompat" Version="1.7.0.5" />
+		<PackageReference Include="Xamarin.AndroidX.Lifecycle.Common" Version="2.8.7.2" />
+		<PackageReference Include="Xamarin.AndroidX.Lifecycle.ViewModel" Version="2.8.7.2" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(DefineConstants.Contains('IOS')) ">
+		<Compile Include="iOS\**\*.cs" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(DefineConstants.Contains('NET90')) ">
+		<Compile Include="Console\**\*.cs" />
+	</ItemGroup>
+	<ItemGroup Condition=" $(DefineConstants.Contains('MAUI')) ">
+		<PackageReference Include="Microsoft.Maui.Essentials" Version="9.0.30" />
+	</ItemGroup>
+	<ItemGroup>
+		<None Remove=".gitignore" />
+		<None Remove="icon.png" />
+		<None Remove="README.md" />
+		<None Remove="Zebble-LicenseAgreement.txt" />
+	</ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.1" />
+		<PackageReference Include="Microsoft.Extensions.Http" Version="9.0.1" />
+		<PackageReference Include="Olive" Version="2.1.384" />
+		<PackageReference Include="SkiaSharp" Version="3.116.1" />
+		<PackageReference Include="West.Extensions.XamarinHosting" Version="3.0.0-preview1" />
+	</ItemGroup>
+	<Import Project="..\Core\Core.projitems" Label="Shared" Condition=" '$(TargetFramework)' != 'net9.0' " />
+	<Import Project="..\Css\Css.projitems" Label="Shared" />
+	<Import Project="..\Framework\Framework.projitems" Label="Shared" />
+	<Import Project="..\Mvvm\Mvvm.projitems" Label="Shared" />
+	<Import Project="..\SharedApp\SharedApp.projitems" Label="Shared" />
+	<Import Project="..\Abstractions\Abstractions.projitems" Label="Shared" />
+	<Target Name="PostBuild" AfterTargets="PostBuildEvent" Condition="'$(Running)'=='local'">
+		<Exec Command="update-local-nuget-cache $(TargetDir)" Condition="'$(Running)'=='local'" />
+	</Target>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.Maui.Controls" Version="9.0.30" />
+	</ItemGroup>
 </Project>

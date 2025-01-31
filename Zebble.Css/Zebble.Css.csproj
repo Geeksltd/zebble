@@ -39,8 +39,8 @@
     <None Include="Resources\icon.png" Pack="true" PackagePath="" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Olive" Version="2.1.380" />
-    <PackageReference Include="SkiaSharp" Version="3.0.0-preview.4.1" />
+    <PackageReference Include="Olive" Version="2.1.384" />
+    <PackageReference Include="SkiaSharp" Version="3.116.1" />
     <PackageReference Include="SourceMapToolkit" Version="1.1.4" />
     <PackageReference Include="LibSassHost" Version="1.5.0" />
     <PackageReference Include="LibSassHost.Native.osx-x64" Version="1.5.0" />

@@ -4,6 +4,9 @@ on:
     branches: [ main ]
 jobs:
   build_zebble:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -21,11 +24,20 @@ jobs:
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
 
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-1
+      with:
+        user: ${{ vars.NUGET_USER }}
+
     - name: Publish a new Zebble package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-1.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble
 
   build_zebble_build:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -40,11 +52,20 @@ jobs:
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
 
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-2
+      with:
+        user: ${{ vars.NUGET_USER }}
+
     - name: Publish a new Zebble.Build package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-2.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble.Build
 
   build_zebble_compile_zbl:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -58,12 +79,21 @@ jobs:
 
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
+
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-3
+      with:
+        user: ${{ vars.NUGET_USER }}
 
     - name: Publish a new Zebble.CompileZbl package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-3.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble.CompileZbl
-      
+
   build_zebble_css:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -77,12 +107,21 @@ jobs:
 
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
+
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-4
+      with:
+        user: ${{ vars.NUGET_USER }}
 
     - name: Publish a new Zebble.Css package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-4.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble.Css
-      
+
   build_zebble_format_zbl:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -96,12 +135,21 @@ jobs:
 
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
+
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-5
+      with:
+        user: ${{ vars.NUGET_USER }}
 
     - name: Publish a new Zebble.FormatZbl package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-5.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble.FormatZbl
-      
+
   build_zebble_image:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -116,11 +164,20 @@ jobs:
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
 
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-6
+      with:
+        user: ${{ vars.NUGET_USER }}
+
     - name: Publish a new Zebble.Image package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-6.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble.Image
 
   build_zebble_schema:
+    permissions:
+      contents: write
+      id-token: write
     strategy:
       matrix:
         configuration: [ Release ]
@@ -135,6 +192,12 @@ jobs:
     - name: Install Zebble's CLI tools
       run: dotnet tool install --global zebble-build
 
+    - name: Authenticate to NuGet using trusted publishing
+      uses: NuGet/login@v1
+      id: nuget-login-7
+      with:
+        user: ${{ vars.NUGET_USER }}
+
     - name: Publish a new Zebble.Schema package
-      run: zebble-build update-plugin --api-key ${{secrets.NUGET_API_KEY}} --publish
+      run: zebble-build update-plugin --api-key ${{ steps.nuget-login-7.outputs.NUGET_API_KEY }} --publish
       working-directory: Zebble.Schema

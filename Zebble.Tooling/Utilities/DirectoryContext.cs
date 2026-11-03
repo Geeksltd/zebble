@@ -21,9 +21,9 @@ namespace Zebble.Tooling
         public static DirectoryInfo AppUIStylesFolder => AppUIFolder.GetSubDirectory("Styles");
         public static DirectoryInfo RunFolder => RootFolder.GetSubDirectory("Run");
         public static DirectoryInfo AndroidFolder => RunFolder.GetSubDirectory("Android");
-        public static DirectoryInfo WinUIFolder => RunFolder.GetSubDirectory("WinUI");
-        public static DirectoryInfo WinUIBinFolder => WinUIFolder.GetSubDirectory("bin");
-        public static DirectoryInfo WinUIObjFolder => WinUIFolder.GetSubDirectory("obj");
+        public static DirectoryInfo UWPFolder => RunFolder.GetSubDirectory("UWP");
+        public static DirectoryInfo UWPBinFolder => UWPFolder.GetSubDirectory("bin");
+        public static DirectoryInfo UWPObjFolder => UWPFolder.GetSubDirectory("obj");
         public static DirectoryInfo ViewModelFolder => RootFolder.GetSubDirectory("ViewModel");
 
         public static DirectoryInfo[] Platforms => RunFolder.GetDirectories();

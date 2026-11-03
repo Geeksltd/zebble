@@ -37,7 +37,7 @@
                 var message = formatter(state, exception);
                 if (message.IsEmpty()) return;
 
-#if WINUI || IOS
+#if UWP || IOS
                 System.Diagnostics.Debug.WriteLine(logLevel + ": " + Category + "> " + message);
 #elif ANDROID
                 Android.Util.Log.Info("app", message);

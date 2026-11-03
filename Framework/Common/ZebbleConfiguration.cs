@@ -24,7 +24,7 @@ namespace Zebble
             {
                 try
                 {
-#if WINUI || ANDROID || IOS
+#if UWP || ANDROID || IOS
                     var text = UIRuntime.GetEmbeddedResources()
                         .FirstOrDefault(x => x.Key.EndsWith("config.xml", StringComparison.OrdinalIgnoreCase))
                         .Value?.Invoke()?.ToString(Encoding.UTF8);

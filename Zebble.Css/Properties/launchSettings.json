@@ -3,7 +3,7 @@
     "Zebble.Css": {
       "commandName": "Project",
       "commandLineArgs": "generate",
-      "workingDirectory": "D:\\Geeks\\WinUI\\fyioNew\\fyio.mobile"
+      "workingDirectory": "D:\\Geeks\\UWP\\fyioNew\\fyio.mobile"
     }
   }
 }

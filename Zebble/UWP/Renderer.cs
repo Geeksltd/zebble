@@ -3,17 +3,17 @@ namespace Zebble
     using System;
     using System.Linq;
     using System.Threading.Tasks;
-    using WinUI;
-    using Microsoft.UI.Xaml.Media;
-    using controls = Microsoft.UI.Xaml.Controls;
-    using xaml = Microsoft.UI.Xaml;
+    using UWP;
+    using Windows.UI.Xaml.Media;
+    using controls = Windows.UI.Xaml.Controls;
+    using xaml = Windows.UI.Xaml;
     using Olive;
 
     partial class Renderer
     {
         internal xaml.FrameworkElement NativeElement;
-        WinUIControlWrapper ResultWrapper;
-        WinUIGestureRecognizer GestureRecognizer;
+        UWPControlWrapper ResultWrapper;
+        UWPGestureRecognizer GestureRecognizer;
         readonly object RotationSyncLock = new();
 
         xaml.FrameworkElement NativeResult => ResultWrapper?.Native ?? NativeElement;
@@ -29,7 +29,7 @@ namespace Zebble
                 throw new RenderException("Failed to create native object for " + View, ex);
             }
 
-            ResultWrapper = await new WinUIControlWrapper(this).Render();
+            ResultWrapper = await new UWPControlWrapper(this).Render();
             View.Native = NativeResult;
 
             if (UIRuntime.IsDebuggerAttached)
@@ -44,7 +44,7 @@ namespace Zebble
             NativeResult.Loaded += NativeResult_Loaded;
 
             if (View.HandlesGestures())
-                GestureRecognizer = new WinUIGestureRecognizer(NativeResult, View);
+                GestureRecognizer = new UWPGestureRecognizer(NativeResult, View);
 
             if (!View.IsEffectivelyVisible()) NativeResult.Visibility = xaml.Visibility.Collapsed;
             if (View.Opacity != 1) OnOpacityChanged(new UIChangedEventArgs<float>(View, View.Opacity));
@@ -58,20 +58,20 @@ namespace Zebble
         async Task CreateNativeElement()
         {
             if (View is IRenderedBy) NativeElement = CreateFromNativeRenderer();
-            else if (View is TextView tv) NativeElement = new WinUITextBlock(tv);
+            else if (View is TextView tv) NativeElement = new UWPTextBlock(tv);
             else if (View is TextInput input)
             {
                 if (input.GetEffectiveTextMode() == TextMode.Password)
-                    NativeElement = await (RenderOrchestrator = new WinUIPasswordBox(this)).Render();
+                    NativeElement = await (RenderOrchestrator = new UWPPasswordBox(this)).Render();
                 else
-                    NativeElement = await (RenderOrchestrator = new WinUITextBox(this)).Render();
+                    NativeElement = await (RenderOrchestrator = new UWPTextBox(this)).Render();
             }
             else if (View is ImageView image)
-                NativeElement = await (RenderOrchestrator = new WinUIImageView(image)).Render();
+                NativeElement = await (RenderOrchestrator = new UWPImageView(image)).Render();
             else if (View is ScrollView scroll)
-                NativeElement = await (RenderOrchestrator = new WinUIScrollView(scroll)).Render();
-            else if (View is BlurBox blurBox) NativeElement = new WinUIBlurBox(this, blurBox);
-            else NativeElement = new WinUICanvas(this, View);
+                NativeElement = await (RenderOrchestrator = new UWPScrollView(scroll)).Render();
+            else if (View is BlurBox blurBox) NativeElement = new UWPBlurBox(this, blurBox);
+            else NativeElement = new UWPCanvas(this, View);
         }
 
         internal void Apply(string property, UIChangedEventArgs change)
@@ -178,7 +178,7 @@ namespace Zebble
             if (View.Panning.IsHandled() || View.Swiped.IsHandled())
             {
                 foreach (var item in View.GetAllParents().OfType<ScrollView>())
-                    WinUIScrollView.EnableManual(item);
+                    UWPScrollView.EnableManual(item);
             }
 
             View.RaiseShown();

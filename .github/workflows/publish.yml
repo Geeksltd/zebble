@@ -28,7 +28,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-1
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-1.outputs.NUGET_API_KEY }} --publish
@@ -56,7 +56,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-2
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble.Build package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-2.outputs.NUGET_API_KEY }} --publish
@@ -84,7 +84,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-3
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble.CompileZbl package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-3.outputs.NUGET_API_KEY }} --publish
@@ -112,7 +112,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-4
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble.Css package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-4.outputs.NUGET_API_KEY }} --publish
@@ -140,7 +140,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-5
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble.FormatZbl package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-5.outputs.NUGET_API_KEY }} --publish
@@ -168,7 +168,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-6
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble.Image package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-6.outputs.NUGET_API_KEY }} --publish
@@ -196,7 +196,7 @@ jobs:
       uses: NuGet/login@v1
       id: nuget-login-7
       with:
-        user: ${{ vars.NUGET_USER }}
+        user: GeeksLtd
 
     - name: Publish a new Zebble.Schema package
       run: zebble-build update-plugin --api-key ${{ steps.nuget-login-7.outputs.NUGET_API_KEY }} --publish
